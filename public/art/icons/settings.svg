@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Réglages</title>
+  <defs>
+    <g id="sliders" fill="none" stroke-linecap="round">
+      <path d="M19 35h90M19 65h90M19 95h90"/>
+    </g>
+  </defs>
+  <use href="#sliders" stroke="#fff4d6" stroke-width="19"/>
+  <use href="#sliders" stroke="#30271e" stroke-width="13"/>
+  <use href="#sliders" stroke="#f4d79d" stroke-width="5"/>
+  <g fill="#f6cc55" stroke="#fff4d6" stroke-width="13">
+    <rect x="35" y="22" width="20" height="26" rx="7"/>
+    <rect x="76" y="52" width="20" height="26" rx="7"/>
+    <rect x="44" y="82" width="20" height="26" rx="7"/>
+  </g>
+  <g fill="#f6cc55" stroke="#30271e" stroke-width="7">
+    <rect x="35" y="22" width="20" height="26" rx="7"/>
+    <rect x="76" y="52" width="20" height="26" rx="7"/>
+    <rect x="44" y="82" width="20" height="26" rx="7"/>
+  </g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Point de collecte</title>
+  <defs>
+    <path id="ring" d="M75 38C53 51 34 77 29 105M29 151c7 30 25 53 51 67M176 218c26-14 44-37 51-67M227 105c-5-28-24-54-46-67"/>
+    <path id="marks" d="M110 41l18-22 18 22M110 214l18 22 18-22"/>
+  </defs>
+  <use href="#ring" fill="none" stroke="#30271e" stroke-width="17" stroke-linecap="round"/>
+  <use href="#ring" fill="none" stroke="#fff4d6" stroke-width="9" stroke-linecap="round"/>
+  <use href="#marks" fill="none" stroke="#30271e" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+  <use href="#marks" fill="none" stroke="#78c693" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Pièce</title>
+  <defs>
+    <path id="body" d="M66 15C93 13 113 32 113 61L110 76C105 103 79 117 53 111C27 106 12 86 16 60L18 45C23 27 41 15 66 15Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#d89b36" stroke="#30271e" stroke-width="8"/>
+  <path d="M65 17C91 15 110 35 108 59C106 84 86 101 59 99C32 97 17 78 19 55C22 33 40 18 65 17Z" fill="#f6cc55" stroke="#30271e" stroke-width="6"/>
+  <path d="M33 48Q40 31 61 29" fill="none" stroke="#fff0ae" stroke-width="7" stroke-linecap="round"/>
+  <path d="M59 42Q62 39 66 42L81 56Q84 59 81 63L66 79Q63 82 59 79L44 65Q41 62 44 58Z" fill="#d59a31"/>
+  <path d="M61 44l14 14-15 16-13-13Z" fill="#ffe994"/>
+</svg>

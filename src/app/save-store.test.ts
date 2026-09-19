@@ -1,0 +1,68 @@
+import { describe, expect, it } from "vitest";
+import { GameSimulation } from "../game/simulation";
+import { isSaveData } from "./save-store";
+
+describe("isSaveData", () => {
+  it("accepte une sauvegarde complète", () => {
+    expect(isSaveData(new GameSimulation(12).createSave())).toBe(true);
+  });
+
+  it("refuse un état incomplet", () => {
+    expect(isSaveData({ seed: 12, randomState: 12, state: {} })).toBe(false);
+  });
+
+  it("refuse chaque sous-état requis manquant", () => {
+    for (const key of [
+      "tool",
+      "campaign",
+      "sawmill",
+      "monument",
+      "customers",
+      "workers",
+      "pickups",
+      "conveyorItems",
+      "animals",
+      "butcher",
+      "turret",
+    ]) {
+      const save = new GameSimulation(12).createSave();
+      Reflect.deleteProperty(
+        save.state as unknown as Record<string, unknown>,
+        key,
+      );
+      expect(isSaveData(save), key).toBe(false);
+    }
+  });
+
+  it("refuse les niveaux et ressources hors limites", () => {
+    const invalidSaves = [
+      () => {
+        const save = new GameSimulation(12).createSave();
+        save.state.tool.level = 7;
+        return save;
+      },
+      () => {
+        const save = new GameSimulation(12).createSave();
+        save.state.automationLevel = -1;
+        return save;
+      },
+      () => {
+        const save = new GameSimulation(12).createSave();
+        save.state.butcher.level = 4;
+        return save;
+      },
+      () => {
+        const save = new GameSimulation(12).createSave();
+        save.state.turret.level = -1;
+        return save;
+      },
+      () => {
+        const save = new GameSimulation(12).createSave();
+        save.state.inventory.meat = -1;
+        return save;
+      },
+    ];
+    for (const invalidSave of invalidSaves)
+      expect(isSaveData(invalidSave())).toBe(false);
+  });
+});

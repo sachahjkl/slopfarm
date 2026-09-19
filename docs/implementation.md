@@ -50,7 +50,7 @@ Le prototype actuel privilégie la lisibilité. L’instanciation arrive avant l
 
 ## Sauvegarde
 
-La première version écrit une sauvegarde versionnée dans IndexedDB.
+Le jeu écrit une sauvegarde continue dans le stockage local du navigateur.
 
 La sauvegarde contient les améliorations, les monnaies et les zones ouvertes. Elle ne contient pas les objets visuels temporaires.
 

@@ -6,20 +6,488 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#75c65a" />
-    <title>Slopfarm</title>
+    <meta name="theme-color" content="#35563a" />
+    <meta name="color-scheme" content="only light" />
+    <meta
+      name="description"
+      content="Récolte, empile et automatise une forêt cartoon, même hors ligne."
+    />
+    <meta name="application-name" content="Slopfarm" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Slopfarm" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content="Slopfarm" />
+    <meta
+      property="og:description"
+      content="Récolte, empile et automatise une forêt cartoon."
+    />
+    <meta property="og:image" content="%BASE_URL%icon-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <link
+      rel="icon"
+      href="%BASE_URL%favicon-32.png"
+      sizes="32x32"
+      type="image/png"
+    />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+    <link
+      rel="preload"
+      href="%BASE_URL%loading-illustration.png"
+      as="image"
+      type="image/png"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      href="%BASE_URL%icon-192.png"
+      as="image"
+      type="image/png"
+    />
+    <link
+      rel="preload"
+      href="%BASE_URL%art/fonts/figtree-variable.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <style>
+      @font-face {
+        font-family: Figtree;
+        src: url("%BASE_URL%art/fonts/figtree-variable.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 300 900;
+        font-display: swap;
+      }
+      :root {
+        font-family: Figtree, ui-rounded, "Arial Rounded MT Bold", sans-serif;
+        background: #183c2c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body,
+      #app {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: max(80px, 12vh) 24px 24px;
+        color: #fff4d6;
+        background: #183c2c;
+        opacity: 1;
+        transition: opacity 320ms ease;
+      }
+      #loading-screen::after {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            circle at 50% 42%,
+            transparent 15%,
+            #102a1f33 58%,
+            #081b14cc 100%
+          ),
+          linear-gradient(180deg, #102a1f33, transparent 35%, #081b1488);
+        content: "";
+      }
+      #loading-screen.is-hidden {
+        pointer-events: none;
+        opacity: 0;
+      }
+      .loading-illustration {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+      .loading-hanger {
+        position: relative;
+        z-index: 1;
+        width: min(480px, calc(100vw - 48px));
+        animation: loading-sway 2.4s ease-in-out infinite;
+        transform-origin: 50% -100px;
+      }
+      .loading-chain {
+        position: absolute;
+        z-index: -1;
+        bottom: calc(100% - 5px);
+        width: 12px;
+        height: max(84px, 14vh);
+        border: 3px solid #292724;
+        border-radius: 7px;
+        background: repeating-linear-gradient(
+          0deg,
+          #756b5b 0 5px,
+          #292724 5px 10px,
+          #a59477 10px 13px
+        );
+        box-shadow:
+          inset 2px 0 #c7b38e88,
+          2px 2px 3px #081b14aa;
+      }
+      .loading-chain-left {
+        left: 54px;
+      }
+      .loading-chain-right {
+        right: 54px;
+      }
+      .loading-board {
+        position: relative;
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        min-height: 154px;
+        padding: 18px 28px 20px 20px;
+        border: 5px solid #59321f;
+        border-radius: 13px 23px 12px 20px;
+        background:
+          radial-gradient(circle at 13% 23%, #5f351d 0 3px, transparent 4px),
+          radial-gradient(circle at 85% 72%, #5f351d 0 2px, transparent 4px),
+          repeating-linear-gradient(
+            3deg,
+            transparent 0 15px,
+            #efbe7430 16px,
+            #3f211b38 19px
+          ),
+          linear-gradient(145deg, #b77543, #794226 75%);
+        box-shadow:
+          0 8px 0 #3d2418,
+          0 20px 44px #081b14aa,
+          inset 0 4px #efbd7866,
+          inset 0 -5px #41231a88;
+      }
+      .loading-board::before,
+      .loading-board::after {
+        position: absolute;
+        top: 14px;
+        width: 9px;
+        height: 9px;
+        border: 2px solid #342a23;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #d1b080,
+          #51463a 55%,
+          #221f1c
+        );
+        box-shadow: 0 2px 2px #321e16;
+        content: "";
+      }
+      .loading-board::before {
+        left: 16px;
+      }
+      .loading-board::after {
+        right: 16px;
+      }
+      .loading-logo {
+        flex: 0 0 auto;
+        width: 116px;
+        height: 116px;
+        filter: drop-shadow(0 7px 3px #3a211899);
+      }
+      .loading-copy {
+        display: grid;
+        flex: 1;
+        min-width: 0;
+      }
+      #loading-screen strong {
+        color: #e3ae65;
+        font-size: clamp(30px, 8vw, 46px);
+        font-weight: 1000;
+        letter-spacing: -0.055em;
+        line-height: 0.95;
+        text-shadow:
+          0 2px 0 #f2c17a55,
+          0 -3px 1px #3d2119,
+          2px 0 1px #4a291c;
+      }
+      #loading-screen span {
+        margin-top: 10px;
+        color: #fff0bd;
+        font-size: 15px;
+        font-weight: 800;
+        text-shadow: 0 2px 2px #3d2119;
+      }
+      .loading-track {
+        width: 100%;
+        height: 12px;
+        margin-top: 14px;
+        overflow: hidden;
+        border: 3px solid #4a291c;
+        border-radius: 999px;
+        background: #2d1b16;
+        box-shadow:
+          inset 0 2px 3px #160d0a,
+          0 1px #eab77b66;
+      }
+      .loading-track i {
+        display: block;
+        width: 45%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #d67735, #f6cc55, #d67735);
+        box-shadow: 0 0 8px #f6cc5588;
+        animation: loading-slide 1.1s ease-in-out infinite alternate;
+      }
+      @keyframes loading-sway {
+        50% {
+          transform: rotate(-1.2deg) translateY(3px);
+        }
+      }
+      @keyframes loading-slide {
+        from {
+          transform: translateX(-15%);
+        }
+        to {
+          transform: translateX(135%);
+        }
+      }
+      @media (max-width: 520px) {
+        #loading-screen {
+          padding-top: max(72px, 10vh);
+        }
+        .loading-hanger {
+          width: min(360px, calc(100vw - 28px));
+        }
+        .loading-chain {
+          height: max(76px, 12vh);
+        }
+        .loading-chain-left {
+          left: 34px;
+        }
+        .loading-chain-right {
+          right: 34px;
+        }
+        .loading-board {
+          gap: 10px;
+          min-height: 126px;
+          padding: 15px 18px 17px 12px;
+          border-width: 4px;
+        }
+        .loading-logo {
+          width: 92px;
+          height: 92px;
+        }
+        #loading-screen strong {
+          font-size: clamp(26px, 9vw, 36px);
+        }
+        #loading-screen span {
+          margin-top: 7px;
+          font-size: 13px;
+        }
+        .loading-track {
+          margin-top: 10px;
+        }
+      }
+      @media (max-height: 520px) {
+        #loading-screen {
+          align-items: center;
+          padding: 20px;
+        }
+        .loading-hanger {
+          width: min(430px, calc(100vw - 40px));
+        }
+        .loading-chain {
+          display: none;
+        }
+        .loading-board {
+          min-height: 116px;
+          padding-top: 12px;
+          padding-bottom: 14px;
+        }
+        .loading-logo {
+          width: 88px;
+          height: 88px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .loading-hanger,
+        .loading-track i {
+          animation: none;
+        }
+        .loading-track i {
+          width: 100%;
+        }
+      }
+    </style>
+    <title>Slopfarm — Forêt automatisée</title>
   </head>
   <body>
     <main id="app">
+      <section
+        id="loading-screen"
+        role="status"
+        aria-live="polite"
+        aria-label="Chargement de Slopfarm"
+      >
+        <img
+          class="loading-illustration"
+          src="%BASE_URL%loading-illustration.png"
+          width="1024"
+          height="1024"
+          fetchpriority="high"
+          alt=""
+        />
+        <div class="loading-hanger">
+          <i class="loading-chain loading-chain-left" aria-hidden="true"></i>
+          <i class="loading-chain loading-chain-right" aria-hidden="true"></i>
+          <div class="loading-board">
+            <img
+              class="loading-logo"
+              src="%BASE_URL%icon-192.png"
+              width="192"
+              height="192"
+              alt=""
+            />
+            <div class="loading-copy">
+              <strong>SLOPFARM</strong>
+              <span>La forêt se prépare…</span>
+              <div class="loading-track" aria-hidden="true"><i></i></div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section id="hud" aria-live="polite">
-        <div class="brand">SLOPFARM</div>
-        <div class="counter"><span>🪙</span><strong id="coins">0</strong></div>
-        <div class="counter"><span>🪵</span><strong id="wood">0</strong></div>
+        <div class="brand-hanger">
+          <button
+            class="brand"
+            id="brand-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-label="Rétracter le panneau Slopfarm"
+          >
+            <i class="brand-chain brand-chain-left" aria-hidden="true"></i>
+            <i class="brand-chain brand-chain-right" aria-hidden="true"></i>
+            <span class="brand-label">SLOPFARM</span>
+            <i class="brand-tab" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="counter">
+          <img src="%BASE_URL%art/icons/coin.svg" alt="" /><small>Pièces</small
+          ><strong id="coins">0</strong>
+        </div>
+        <div class="counter">
+          <img src="%BASE_URL%art/icons/wood.svg" alt="" /><small>Bois</small
+          ><strong id="wood">0</strong>
+        </div>
+        <div class="counter">
+          <img src="%BASE_URL%art/icons/plank.svg" alt="" /><small
+            >Planches</small
+          ><strong id="planks">0</strong>
+        </div>
+        <div class="counter meat-counter">
+          <span aria-hidden="true">🥩</span><small>Viande</small
+          ><strong id="meat">0</strong>
+        </div>
+      </section>
+      <section id="progress">
+        <div title="Niveau de l’outil">
+          🪓 <strong id="tool-level">1</strong>
+        </div>
+        <div title="Ouvriers">👷 <strong id="workers">0</strong></div>
+        <div title="Automatisation">
+          ⚙️ <strong id="automation">0/3</strong>
+        </div>
+        <div title="Machine monumentale">
+          🏗️ <strong id="monument">0/3</strong>
+        </div>
+      </section>
+      <section id="zone-guide" aria-label="Coûts des zones">
+        <div class="sale-zone">🪵 → 🪙</div>
+        <div class="sawmill-zone">🪵 → 🪚</div>
+        <div class="tool-zone">🪓 <strong id="tool-cost">10 🪙</strong></div>
+        <div class="worker-zone">
+          👷 <strong id="worker-cost">15 🪙</strong>
+        </div>
+        <div class="automation-zone">
+          ⚙️ <strong id="automation-cost">12 🪚</strong>
+        </div>
+        <div class="monument-zone">
+          🏗️ <strong id="monument-cost">18 🪚</strong>
+        </div>
       </section>
       <section id="instructions">
-        <strong>Approche les arbres</strong>
-        <span>ZQSD / WASD · U améliore la hache pendant le prototype</span>
+        <img src="%BASE_URL%art/icons/flag.svg" alt="" />
+        <div>
+          <small>OBJECTIF</small>
+          <strong id="objective">CONSTRUIS TON CAMP</strong>
+          <span id="objective-detail">0 / 25 bois</span>
+        </div>
+        <button
+          id="objective-journal-toggle"
+          type="button"
+          aria-label="Ouvrir le journal des objectifs"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+        <aside id="objective-journal">
+          <b>JOURNAL</b>
+          <ol id="objective-history"></ol>
+        </aside>
       </section>
+      <button id="settings-button" type="button" aria-label="Réglages">
+        <img src="%BASE_URL%art/icons/settings.svg" alt="" />
+      </button>
+      <dialog id="settings-dialog">
+        <header>
+          <strong>⚙️ Carnet de réglages</strong
+          ><button id="settings-close" type="button" aria-label="Fermer">
+            ×
+          </button>
+        </header>
+        <label class="setting-row"
+          ><span>🔊 Son</span><input id="setting-sound" type="checkbox"
+        /></label>
+        <label class="setting-row"
+          ><span>📳 Vibration</span
+          ><input id="setting-vibration" type="checkbox"
+        /></label>
+        <label class="setting-row"
+          ><span>✨ Effets réduits</span
+          ><input id="setting-motion" type="checkbox"
+        /></label>
+        <label class="setting-row"
+          ><span>🎨 Qualité</span>
+          <select id="setting-quality">
+            <option value="high">Élevée</option>
+            <option value="low">Économe</option>
+          </select></label
+        >
+        <div class="settings-actions">
+          <button id="save-export" type="button">
+            ⬇ Exporter la sauvegarde
+          </button>
+          <label class="file-button"
+            >⬆ Importer une sauvegarde<input
+              id="save-import"
+              type="file"
+              accept="application/json"
+          /></label>
+          <button id="replay-export" type="button">▶ Exporter le replay</button>
+          <button id="save-reset" class="danger" type="button">
+            Effacer la progression
+          </button>
+        </div>
+      </dialog>
       <canvas id="game" aria-label="Zone de jeu 3D"></canvas>
       <p id="error" hidden></p>
     </main>

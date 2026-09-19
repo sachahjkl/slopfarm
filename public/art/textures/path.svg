@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Sentier ocre raccordable</title>
+  <rect width="256" height="256" fill="#e5c77f"/>
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#c7a363" stroke-width="12" opacity=".48">
+      <path d="M-24 46q67 19 135 0t169 2M-31 179q72-18 139 0t177-3"/>
+    </g>
+    <g stroke="#f2dc9f" stroke-width="5" opacity=".85">
+      <path d="M12 81q43 11 85 0m38 44q47-12 99 1M31 225q38 8 78-1"/>
+    </g>
+  </g>
+  <g fill="#b99358" opacity=".75">
+    <path d="m45 136 9-6 10 5-5 8-12 1ZM169 28l9-5 9 6-6 8-11-1ZM211 211l10-5 8 7-7 7-10-2ZM105 166l7-4 8 5-4 7-10-1Z"/>
+  </g>
+  <g fill="#fff0b9" opacity=".65">
+    <ellipse cx="21" cy="19" rx="15" ry="4"/><ellipse cx="131" cy="71" rx="18" ry="4"/><ellipse cx="223" cy="104" rx="16" ry="4"/>
+  </g>
+</svg>

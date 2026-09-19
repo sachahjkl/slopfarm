@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Objectif</title>
+  <path d="M31 111V18" fill="none" stroke="#30271e" stroke-width="11" stroke-linecap="round"/>
+  <path d="M36 22h67L86 45l17 24H36Z" fill="#f6cc55" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M45 32h39" fill="none" stroke="#fff4d6" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+  <path d="M18 111h31" fill="none" stroke="#30271e" stroke-width="11" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "blenderVersion": "5.1.1",
+  "status": "passed",
+  "assetCount": 30,
+  "totalTriangles": 77460,
+  "totalBytes": 20048964,
+  "checks": [
+    "glb-structure",
+    "embedded-atlas",
+    "matte-material",
+    "triangle-budgets",
+    "texture-budgets",
+    "finite-geometry",
+    "triangle-area",
+    "normals",
+    "uv",
+    "meters-y-up",
+    "ground-origin",
+    "dimensions",
+    "sockets",
+    "family-skeleton",
+    "animation-content",
+    "animation-loops",
+    "blender-reimport",
+    "visual-progression"
+  ],
+  "reproducibility": {
+    "files": 32,
+    "identical": true,
+    "different": []
+  },
+  "assets": [
+    {
+      "id": "adventurer",
+      "status": "passed",
+      "triangles": 4772,
+      "meshCount": 1,
+      "animationCount": 5
+    },
+    {
+      "id": "adventurer-coral",
+      "status": "passed",
+      "triangles": 4772,
+      "meshCount": 1,
+      "animationCount": 5
+    },
+    {
+      "id": "adventurer-leaf",
+      "status": "passed",
+      "triangles": 4772,
+      "meshCount": 1,
+      "animationCount": 5
+    },
+    {
+      "id": "worker",
+      "status": "passed",
+      "triangles": 4660,
+      "meshCount": 1,
+      "animationCount": 5
+    },
+    {
+      "id": "worker-coral",
+      "status": "passed",
+      "triangles": 4660,
+      "meshCount": 1,
+      "animationCount": 5
+    },
+    {
+      "id": "worker-leaf",
+      "status": "passed",
+      "triangles": 4660,
+      "meshCount": 1,
+      "animationCount": 5
+    },
+    {
+      "id": "axe-simple",
+      "status": "passed",
+      "triangles": 604,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "axe-reinforced-double",
+      "status": "passed",
+      "triangles": 1096,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-01",
+      "status": "passed",
+      "triangles": 808,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-02",
+      "status": "passed",
+      "triangles": 808,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-03",
+      "status": "passed",
+      "triangles": 808,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-04",
+      "status": "passed",
+      "triangles": 808,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-05",
+      "status": "passed",
+      "triangles": 808,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-stump",
+      "status": "passed",
+      "triangles": 392,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "tree-regrowth",
+      "status": "passed",
+      "triangles": 608,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "log",
+      "status": "passed",
+      "triangles": 164,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "plank",
+      "status": "passed",
+      "triangles": 120,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "coin",
+      "status": "passed",
+      "triangles": 100,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "sale-bench",
+      "status": "passed",
+      "triangles": 1752,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "sawmill-tier-1",
+      "status": "passed",
+      "triangles": 2852,
+      "meshCount": 2,
+      "animationCount": 1
+    },
+    {
+      "id": "sawmill-tier-2",
+      "status": "passed",
+      "triangles": 4296,
+      "meshCount": 2,
+      "animationCount": 1
+    },
+    {
+      "id": "sawmill-tier-3",
+      "status": "passed",
+      "triangles": 6380,
+      "meshCount": 2,
+      "animationCount": 1
+    },
+    {
+      "id": "sawmill-tier-4",
+      "status": "passed",
+      "triangles": 7636,
+      "meshCount": 2,
+      "animationCount": 1
+    },
+    {
+      "id": "conveyor-straight",
+      "status": "passed",
+      "triangles": 900,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "conveyor-corner",
+      "status": "passed",
+      "triangles": 1620,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "conveyor-end",
+      "status": "passed",
+      "triangles": 1008,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "upgrade-zone",
+      "status": "passed",
+      "triangles": 844,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "monument-stage-1",
+      "status": "passed",
+      "triangles": 2412,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "monument-stage-2",
+      "status": "passed",
+      "triangles": 5216,
+      "meshCount": 2,
+      "animationCount": 1
+    },
+    {
+      "id": "monument-stage-3",
+      "status": "passed",
+      "triangles": 7124,
+      "meshCount": 2,
+      "animationCount": 1
+    }
+  ],
+  "failures": []
+}

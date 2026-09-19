@@ -146,6 +146,27 @@ button.primary {
   font-size: 12px;
   line-height: 1.4;
 }
+#annotations {
+  display: grid;
+  gap: 8px;
+  padding-left: 28px;
+}
+#annotations input {
+  width: 100%;
+  padding: 7px;
+  color: inherit;
+  border: 1px solid #46524c;
+  border-radius: 7px;
+  background: #202724;
+}
+#annotations .empty {
+  color: #839089;
+}
+#annotate.active {
+  color: #10200f;
+  border-color: #9ce27b;
+  background: #9ce27b;
+}
 @media (max-width: 800px) {
   #viewer {
     position: relative;

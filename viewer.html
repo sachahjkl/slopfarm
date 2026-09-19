@@ -17,6 +17,12 @@
             <h1>Model Lab</h1>
           </div>
         </header>
+        <section id="catalog-section">
+          <h2>Catalogue du jeu</h2>
+          <select id="model-catalog">
+            <option value="">Chargement…</option>
+          </select>
+        </section>
         <label id="drop-zone" for="model-file">
           <strong>Dépose un modèle GLB</strong>
           <span>ou sélectionne un fichier local</span>
@@ -52,6 +58,13 @@
             ><input id="grid" type="checkbox" checked /> Grille et axes</label
           >
           <button id="reset-camera" type="button">Cadrer le modèle</button>
+          <button id="annotate" type="button">Poser un repère 3D</button>
+        </section>
+        <section>
+          <h2>Annotations 3D</h2>
+          <ol id="annotations">
+            <li class="empty">Aucun repère</li>
+          </ol>
         </section>
         <section>
           <h2>Retour</h2>

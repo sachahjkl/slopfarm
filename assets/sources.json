@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "method": "procedural-blender",
+  "date": "2026-09-19",
+  "assistant": "openai/gpt-6-astra",
+  "generator": "scripts/blender/generate_forest.py",
+  "inputs": ["docs/product-spec.md", "docs/art-pipeline.md"],
+  "externalModels": [],
+  "externalTextures": [],
+  "license": null,
+  "brief": "Crée un pipeline Blender CLI reproductible pour les assets définitifs cartoon organiques du jalon forêt. Produis un script Python Blender qui génère et exporte des GLB cohérents pour: aventurier ouvrier avec grand sac, hache simple, double hache renforcée, arbre avec souche/repousse, bûche, établi de vente, scierie à quatre paliers visuels, ouvrier, convoyeur modulaire, zone d’amélioration, et trois étapes de machine monumentale. Utilise des matériaux mats colorés, des origines et échelles conformes aux docs. Ajoute un manifeste JSON avec dimensions, budgets et noms. Ajoute un script de validation Blender headless."
+}

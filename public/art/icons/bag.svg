@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Cargaison</title>
+  <defs>
+    <path id="body" d="M43 31V21Q64 8 86 22v11Q105 38 108 57l5 43Q112 113 94 114H33Q17 114 17 98l6-45Q26 37 43 31Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#b97744" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M50 29v-4q14-6 28 0v5" fill="none" stroke="#f4d79d" stroke-width="6"/>
+  <path d="M29 44Q61 28 101 44l-2 23Q65 83 27 66Z" fill="#dfae6b" stroke="#30271e" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M32 83q30 9 65 0v23H31Z" fill="#398f91" stroke="#30271e" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M59 64h13v25H59Z" fill="#f6cc55" stroke="#30271e" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M38 48q18-6 31-5" fill="none" stroke="#f4d79d" stroke-width="6" stroke-linecap="round"/>
+</svg>

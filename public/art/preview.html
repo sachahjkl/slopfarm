@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Slopfarm — kit artistique</title>
+    <style>
+      @font-face {
+        font-family: Figtree;
+        src: url("./fonts/figtree-variable.ttf") format("truetype");
+        font-weight: 300 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      :root {
+        font-family: Figtree, sans-serif;
+        font-synthesis: none;
+        color: #fff4d6;
+        background: #30271e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 1200px;
+        margin: auto;
+      }
+      header,
+      section {
+        padding: 28px;
+      }
+      header {
+        background: #fff4d6;
+        color: #30271e;
+      }
+      h1 {
+        font-size: clamp(28px, 5vw, 44px);
+        font-weight: 900;
+        margin: 8px 0;
+      }
+      h2 {
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0 0 12px;
+      }
+      p {
+        max-width: 72ch;
+        line-height: 1.5;
+        margin: 8px 0;
+      }
+      .eyebrow {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .scene {
+        position: relative;
+        min-height: 460px;
+        padding: 0;
+        overflow: hidden;
+        background: url("./textures/grass.svg") repeat;
+        background-size: 192px;
+        isolation: isolate;
+      }
+      .scene::before {
+        content: "";
+        position: absolute;
+        inset: 8% -8% 8% 57%;
+        background: url("./textures/grove.svg") repeat;
+        background-size: 192px;
+        border-radius: 48% 25% 40% 20%;
+        transform: rotate(-9deg);
+        z-index: -3;
+      }
+      .road {
+        position: absolute;
+        inset: 51% -10% auto;
+        height: 100px;
+        border-block: 9px solid #9b7c55;
+        border-radius: 35%;
+        transform: rotate(-12deg);
+        background: url("./textures/path.svg") repeat;
+        background-size: 192px;
+        z-index: -2;
+      }
+      .yard {
+        position: absolute;
+        width: 42%;
+        height: 260px;
+        left: 7%;
+        top: 26%;
+        border-radius: 48% 33% 40% 28%;
+        background: url("./textures/yard.svg") repeat;
+        background-size: 192px;
+        z-index: -1;
+      }
+      .outlined {
+        color: #fff4d6;
+        font-weight: 900;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 5px #30271e;
+        text-shadow: 0 3px 0 #30271e;
+      }
+      .counters {
+        position: absolute;
+        top: max(16px, env(safe-area-inset-top));
+        left: max(16px, env(safe-area-inset-left));
+        display: flex;
+        gap: 20px;
+        font-size: 24px;
+        font-variant-numeric: tabular-nums;
+      }
+      .counter {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .counter img {
+        width: 36px;
+        height: 36px;
+      }
+      .sign {
+        position: absolute;
+        top: 100px;
+        left: 9%;
+        width: 230px;
+        text-align: center;
+      }
+      .sign h2 {
+        margin: 0;
+        font-size: 30px;
+        letter-spacing: 0.025em;
+      }
+      .sign .level {
+        font-size: 16px;
+        -webkit-text-stroke-width: 3px;
+      }
+      .recipe {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0 5px;
+      }
+      .recipe img {
+        width: 56px;
+        height: 56px;
+      }
+      .recipe .arrow {
+        width: 32px;
+        height: 32px;
+      }
+      .sign .detail {
+        font-size: 18px;
+        -webkit-text-stroke-width: 3px;
+        margin: 0;
+      }
+      .deposit {
+        position: absolute;
+        width: 108px;
+        height: 70px;
+        top: 302px;
+        left: calc(9% + 61px);
+      }
+      .tree {
+        position: absolute;
+        width: 88px;
+        height: 88px;
+      }
+      .tree.one {
+        right: 8%;
+        top: 95px;
+      }
+      .tree.two {
+        right: 21%;
+        top: 142px;
+        width: 108px;
+        height: 108px;
+      }
+      .tree.three {
+        right: 9%;
+        top: 227px;
+        width: 110px;
+        height: 110px;
+      }
+      .tree.four {
+        right: 33%;
+        top: 50px;
+      }
+      .player {
+        position: absolute;
+        width: 76px;
+        height: 76px;
+        left: 50%;
+        top: 270px;
+      }
+      .orbit {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        left: calc(50% + 64px);
+        top: 255px;
+        transform: rotate(-22deg);
+      }
+      .scene-note {
+        position: absolute;
+        bottom: 14px;
+        left: 16px;
+        font-size: 14px;
+        -webkit-text-stroke-width: 3px;
+      }
+      .settings {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+      }
+      .icons {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 20px 10px;
+      }
+      figure {
+        margin: 0;
+        text-align: center;
+      }
+      .icons img {
+        width: 72px;
+        height: 72px;
+      }
+      figcaption {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 6px;
+      }
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+      }
+      .swatch {
+        height: 256px;
+        background-size: 128px;
+        border-radius: 16px 25px 18px 21px;
+      }
+      .grass {
+        background-image: url("./textures/grass.svg");
+      }
+      .grove {
+        background-image: url("./textures/grove.svg");
+      }
+      .dirt {
+        background-image: url("./textures/yard.svg");
+      }
+      .path {
+        background-image: url("./textures/path.svg");
+      }
+      .edge {
+        background-image: url("./textures/path-edge.svg");
+      }
+      .size-row {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .size-row img {
+        display: block;
+        margin: auto;
+      }
+      .states {
+        display: flex;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+      .states img {
+        width: 64px;
+        height: 64px;
+      }
+      .decals img {
+        width: 100px;
+        height: 100px;
+      }
+      a {
+        color: inherit;
+      }
+      footer {
+        padding: 24px 28px;
+        color: #30271e;
+        background: #fff4d6;
+        line-height: 1.5;
+      }
+      @media (max-width: 600px) {
+        header,
+        section {
+          padding: 20px 16px;
+        }
+        .scene {
+          min-height: 530px;
+        }
+        .counters {
+          gap: 12px;
+          font-size: 22px;
+        }
+        .counter img {
+          width: 32px;
+          height: 32px;
+        }
+        .sign {
+          width: 200px;
+          top: 155px;
+          left: 3%;
+        }
+        .sign h2 {
+          font-size: 24px;
+          -webkit-text-stroke-width: 4px;
+        }
+        .recipe img {
+          width: 48px;
+          height: 48px;
+        }
+        .yard {
+          left: -8%;
+          width: 73%;
+          top: 31%;
+        }
+        .deposit {
+          top: 320px;
+          left: calc(3% + 46px);
+        }
+        .tree.one {
+          right: 0;
+          top: 80px;
+        }
+        .tree.two {
+          right: 15%;
+          top: 33px;
+          width: 82px;
+          height: 82px;
+        }
+        .tree.three {
+          right: -7%;
+          top: 203px;
+          width: 90px;
+          height: 90px;
+        }
+        .tree.four {
+          display: none;
+        }
+        .player {
+          top: 355px;
+          left: 53%;
+        }
+        .orbit {
+          top: 350px;
+          left: calc(53% + 64px);
+        }
+        .icons {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .swatches {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .swatch {
+          height: 192px;
+          background-size: 96px;
+        }
+        .scene-note {
+          max-width: 230px;
+        }
+      }
+      @media (orientation: landscape) and (max-height: 500px) {
+        .scene {
+          min-height: 340px;
+        }
+        .sign {
+          top: 72px;
+        }
+        .sign h2 {
+          font-size: 22px;
+          -webkit-text-stroke-width: 4px;
+        }
+        .recipe img {
+          width: 44px;
+          height: 44px;
+        }
+        .deposit {
+          top: 218px;
+        }
+        .yard {
+          height: 180px;
+        }
+        .player {
+          top: 200px;
+        }
+        .orbit {
+          top: 184px;
+        }
+        .tree.three {
+          top: 173px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Slopfarm · kit artistique 01</p>
+        <h1>Du bois, de la peinture, du relief.</h1>
+        <p>
+          Des titres flottants. Des pictogrammes épais. Un terrain calme pour
+          laisser lire les ressources.
+        </p>
+      </header>
+      <section
+        id="scene"
+        class="scene"
+        aria-label="Maquette de composition de la scierie"
+      >
+        <div class="road"></div>
+        <div class="yard"></div>
+        <div class="counters outlined">
+          <span class="counter"
+            ><img src="./icons/coin.svg" alt="Pièces" />240</span
+          >
+          <span class="counter"
+            ><img src="./icons/wood.svg" alt="Bûches" />18</span
+          >
+          <span class="counter"
+            ><img src="./icons/plank.svg" alt="Planches" />6</span
+          >
+        </div>
+        <div class="sign outlined">
+          <h2>SCIERIE</h2>
+          <span class="level">NIV. 2 / 4</span>
+          <div class="recipe">
+            <img src="./icons/wood.svg" alt="Bûche" />
+            <img class="arrow" src="./icons/arrow.svg" alt="vers" />
+            <img src="./icons/plank.svg" alt="Planche" />
+          </div>
+          <p class="detail">3 bûches en attente</p>
+        </div>
+        <img
+          class="deposit"
+          src="./decals/deposit-ring.svg"
+          alt="Zone de dépôt"
+        />
+        <img class="tree one" src="./icons/tree.svg" alt="" />
+        <img class="tree two" src="./icons/tree.svg" alt="" />
+        <img class="tree three" src="./icons/tree.svg" alt="" />
+        <img class="tree four" src="./icons/tree.svg" alt="" />
+        <img
+          class="player"
+          src="./icons/worker.svg"
+          alt="Repère du personnage"
+        />
+        <img class="orbit" src="./icons/tool.svg" alt="Hache orbitale" />
+        <span class="scene-note outlined"
+          >Maquette 2D · composition, pas capture du jeu</span
+        >
+        <img class="settings" src="./icons/settings.svg" alt="Réglages" />
+      </section>
+      <section>
+        <h2>14 pictogrammes originaux</h2>
+        <p>
+          Le contour brun sépare la couleur. Le liseré crème protège la
+          silhouette sur le sous-bois.
+        </p>
+        <div class="icons">
+          <figure>
+            <img src="./icons/wood.svg" alt="" />
+            <figcaption>Bûche</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/plank.svg" alt="" />
+            <figcaption>Planche</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/coin.svg" alt="" />
+            <figcaption>Pièce</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/tool.svg" alt="" />
+            <figcaption>Hache</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/worker.svg" alt="" />
+            <figcaption>Ouvrier</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/gear.svg" alt="" />
+            <figcaption>Automatisation</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/monument.svg" alt="" />
+            <figcaption>Monument</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/sawmill.svg" alt="" />
+            <figcaption>Scierie</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/tree.svg" alt="" />
+            <figcaption>Arbre</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/bag.svg" alt="" />
+            <figcaption>Cargaison</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/arrow.svg" alt="" />
+            <figcaption>Destination</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/lock.svg" alt="" />
+            <figcaption>Prérequis</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/check.svg" alt="" />
+            <figcaption>Terminé</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/settings.svg" alt="" />
+            <figcaption>Réglages</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>5 matières raccordables</h2>
+        <p>
+          Chaque échantillon répète sa tuile sur deux lignes. Les touches
+          traversent les raccords.
+        </p>
+        <div class="swatches">
+          <figure>
+            <div class="swatch grass"></div>
+            <figcaption>Herbe · 4 m / tuile</figcaption>
+          </figure>
+          <figure>
+            <div class="swatch grove"></div>
+            <figcaption>Sous-bois · 4 m / tuile</figcaption>
+          </figure>
+          <figure>
+            <div class="swatch dirt"></div>
+            <figcaption>Terre battue · 4 m / tuile</figcaption>
+          </figure>
+          <figure>
+            <div class="swatch path"></div>
+            <figcaption>Sentier · 4 m / tuile</figcaption>
+          </figure>
+          <figure>
+            <div class="swatch edge"></div>
+            <figcaption>Bordure · 4 m / tuile</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>Lecture à taille réelle</h2>
+        <div class="size-row">
+          <figure>
+            <img width="24" height="24" src="./icons/wood.svg" alt="" />
+            <figcaption>24 px · minimum</figcaption>
+          </figure>
+          <figure>
+            <img width="32" height="32" src="./icons/wood.svg" alt="" />
+            <figcaption>32 px · compteur</figcaption>
+          </figure>
+          <figure>
+            <img width="48" height="48" src="./icons/wood.svg" alt="" />
+            <figcaption>48 px · recette</figcaption>
+          </figure>
+          <figure>
+            <img width="72" height="72" src="./icons/wood.svg" alt="" />
+            <figcaption>72 px · découverte</figcaption>
+          </figure>
+        </div>
+      </section>
+      <section>
+        <h2>Prérequis, résultat et points au sol</h2>
+        <div class="states">
+          <figure>
+            <img src="./icons/lock.svg" alt="" />
+            <figcaption>Chaîne niv. 1 requise</figcaption>
+          </figure>
+          <figure>
+            <img src="./icons/check.svg" alt="" />
+            <figcaption>Construction terminée</figcaption>
+          </figure>
+          <figure class="decals">
+            <img src="./decals/deposit-ring.svg" alt="" />
+            <figcaption>Déposer</figcaption>
+          </figure>
+          <figure class="decals">
+            <img src="./decals/stock-ring.svg" alt="" />
+            <figcaption>Collecter</figcaption>
+          </figure>
+        </div>
+      </section>
+      <footer>
+        <strong>Figtree · 600 / 700 / 800 / 900</strong><br />
+        ÉCHANGE · BÛCHES · CHAÎNE · 0123456789<br />
+        <a href="./manifest.json">Manifeste</a> ·
+        <a href="./fonts/OFL.txt">Licence de la police</a>
+      </footer>
+    </main>
+  </body>
+</html>

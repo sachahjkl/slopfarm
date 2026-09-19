@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Automatisation</title>
+  <defs>
+    <path id="body" d="M54 14h19l3 14 10 5 12-8 13 14-8 12 4 10 13 3-1 19-14 2-6 9 6 13-16 11-11-9-11 1-7 12-18-6 1-15-8-7-14 3-8-18 11-9 1-11-11-9 9-18 14 4 9-6Z"/>
+  </defs>
+  <g transform="translate(5 5) scale(.92)">
+    <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="12" stroke-linejoin="round"/>
+    <use href="#body" fill="#ac89ce" stroke="#30271e" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M38 58Q46 36 69 37" fill="none" stroke="#d7bced" stroke-width="7" stroke-linecap="round"/>
+    <path d="M67 47C78 46 86 54 85 66S76 85 64 83 45 74 47 63 55 48 67 47Z" fill="#fff4d6" stroke="#30271e" stroke-width="7"/>
+  </g>
+</svg>

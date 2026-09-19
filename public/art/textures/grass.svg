@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Herbe peinte raccordable</title>
+  <rect width="256" height="256" fill="#87bd61"/>
+  <g fill="none" stroke-linecap="round">
+    <g stroke="#a8d47c" stroke-width="4" opacity=".7">
+      <path d="M18 42l7-13m0 13 9-10M93 76l5-16m1 16 10-12M185 35l6-15m0 15 9-11M226 112l6-14m0 14 10-9M54 159l5-15m1 15 9-12M145 202l6-16m0 16 10-12M232 239l6-14m0 14 9-10"/>
+    </g>
+    <g stroke="#568f42" stroke-width="3" opacity=".72">
+      <path d="M45 93l5-11m0 11 7-8M132 31l4-10m1 10 6-8M169 126l5-12m0 12 8-9M27 223l5-12m0 12 8-9M111 164l5-11m0 11 7-8M211 185l5-13m0 13 8-10"/>
+    </g>
+  </g>
+  <g fill="#76aa53" opacity=".5">
+    <ellipse cx="63" cy="26" rx="24" ry="8" transform="rotate(-8 63 26)"/>
+    <ellipse cx="153" cy="94" rx="29" ry="9" transform="rotate(12 153 94)"/>
+    <ellipse cx="72" cy="203" rx="27" ry="8" transform="rotate(-15 72 203)"/>
+    <ellipse cx="235" cy="53" rx="28" ry="8" transform="rotate(9 235 53)"/>
+  </g>
+  <g fill="#f2cf69" opacity=".8">
+    <circle cx="37" cy="132" r="3"/><circle cx="192" cy="165" r="3"/><circle cx="121" cy="231" r="2.5"/>
+  </g>
+</svg>

@@ -26,8 +26,9 @@
         pname = "slopfarm";
         version = "0.1.0";
         src = source;
+        pnpm = pkgs.pnpm_10;
         fetcherVersion = 3;
-        hash = "sha256-9/Tb80d3ndZUN2tSlrNPxvP5NS1H+Hp8dQwBJtiaftw=";
+        hash = "sha256-jjVohaMIgwIWHnFzbouCKiC5cIhTNlueJn9Gdufk2Z8=";
       };
     in {
       default = pkgs.stdenvNoCC.mkDerivation {
@@ -35,7 +36,7 @@
         version = "0.1.0";
         src = source;
         inherit pnpmDeps;
-        nativeBuildInputs = [pkgs.nodejs_24 pkgs.pnpm pkgs.pnpmConfigHook];
+        nativeBuildInputs = [pkgs.nodejs_24 pkgs.pnpm_10 pkgs.pnpmConfigHook];
         buildPhase = "pnpm build";
         installPhase = "cp -r dist $out";
       };
@@ -68,6 +69,10 @@
       lint = mkPnpmCheck "lint" "pnpm lint";
       test = mkPnpmCheck "test" "pnpm test";
       format = mkPnpmCheck "format" "pnpm format:check";
+      assets = import ./scripts/blender/check.nix {
+        inherit pkgs;
+        src = inputs.self;
+      };
       pre-commit = preCommitCheck;
     });
 
@@ -78,11 +83,11 @@
       preCommitCheck = inputs.self.checks.${system}.pre-commit;
     in {
       default = pkgs.mkShell {
-        packages = [pkgs.nodejs_24 pkgs.pnpm pkgs.jq] ++ preCommitCheck.enabledPackages;
+        packages = [pkgs.nodejs_24 pkgs.pnpm_10 pkgs.jq] ++ preCommitCheck.enabledPackages;
         inherit (preCommitCheck) shellHook;
       };
       assets = pkgs.mkShell {
-        packages = [pkgs.blender pkgs.imagemagick pkgs.gltf-transform];
+        packages = [pkgs.blender pkgs.imagemagick];
       };
     });
   };

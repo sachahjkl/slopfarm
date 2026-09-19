@@ -24,6 +24,9 @@ const metricsElement = find("#metrics", HTMLDListElement);
 const animationSelect = find("#animation", HTMLSelectElement);
 const feedbackInput = find("#feedback", HTMLTextAreaElement);
 const status = find("#status", HTMLParagraphElement);
+const catalogSelect = find("#model-catalog", HTMLSelectElement);
+const annotateButton = find("#annotate", HTMLButtonElement);
+const annotationList = find("#annotations", HTMLOListElement);
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x222826);
@@ -56,6 +59,19 @@ let mixer: THREE.AnimationMixer | undefined;
 let animations: THREE.AnimationClip[] = [];
 let objectUrl: string | undefined;
 let previousTime = performance.now();
+let annotationMode = false;
+let annotations: {
+  id: number;
+  position: [number, number, number];
+  note: string;
+}[] = [];
+const annotationMarkers = new THREE.Group();
+scene.add(annotationMarkers);
+const modelCatalog = import.meta.glob<string>("../../assets/forest/*.glb", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 
 function frameModel(): void {
   if (!currentModel) return;
@@ -129,14 +145,12 @@ function configureAnimations(gltf: GLTF): void {
   }
 }
 
-async function loadFile(file: File): Promise<void> {
-  if (!file.name.toLowerCase().endsWith(".glb"))
-    throw new Error("Le viewer accepte uniquement les fichiers GLB.");
-  if (objectUrl) URL.revokeObjectURL(objectUrl);
-  objectUrl = URL.createObjectURL(file);
-  const gltf = await new GLTFLoader().loadAsync(objectUrl);
+function showModel(gltf: GLTF, name: string): void {
   disposeModel();
-  currentFile = file.name;
+  annotations = [];
+  annotationMarkers.clear();
+  renderAnnotations();
+  currentFile = name;
   currentModel = gltf.scene;
   currentModel.traverse((node) => {
     if ("isMesh" in node) (node as THREE.Mesh).castShadow = true;
@@ -146,7 +160,19 @@ async function loadFile(file: File): Promise<void> {
   showMetrics(currentMetrics);
   configureAnimations(gltf);
   frameModel();
-  status.textContent = `${file.name} est prêt pour la revue.`;
+  status.textContent = `${name} est prêt pour la revue.`;
+}
+
+async function loadFile(file: File): Promise<void> {
+  if (!file.name.toLowerCase().endsWith(".glb"))
+    throw new Error("Le viewer accepte uniquement les fichiers GLB.");
+  if (objectUrl) URL.revokeObjectURL(objectUrl);
+  objectUrl = URL.createObjectURL(file);
+  showModel(await new GLTFLoader().loadAsync(objectUrl), file.name);
+}
+
+async function loadCatalogModel(name: string, url: string): Promise<void> {
+  showModel(await new GLTFLoader().loadAsync(url), name);
 }
 
 function download(name: string, source: BlobPart, type: string): void {
@@ -166,6 +192,20 @@ function showError(cause: unknown): void {
 fileInput.addEventListener("change", () => {
   const file = fileInput.files?.[0];
   if (file) void loadFile(file).catch(showError);
+});
+const catalogEntries = Object.entries(modelCatalog)
+  .map(([path, url]) => ({ name: path.split("/").at(-1) ?? path, url }))
+  .sort((left, right) => left.name.localeCompare(right.name));
+catalogSelect.replaceChildren(
+  ...catalogEntries.map(({ name, url }) => new Option(name, url)),
+);
+catalogSelect.disabled = catalogEntries.length === 0;
+catalogSelect.addEventListener("change", () => {
+  const selected = catalogEntries.find(
+    ({ url }) => url === catalogSelect.value,
+  );
+  if (selected)
+    void loadCatalogModel(selected.name, selected.url).catch(showError);
 });
 for (const name of ["dragenter", "dragover"]) {
   dropZone.addEventListener(name, (event) => {
@@ -207,6 +247,40 @@ find("#wireframe", HTMLInputElement).addEventListener("change", (event) => {
   });
 });
 find("#reset-camera", HTMLButtonElement).addEventListener("click", frameModel);
+annotateButton.addEventListener("click", () => {
+  annotationMode = !annotationMode;
+  annotateButton.classList.toggle("active", annotationMode);
+  controls.enabled = !annotationMode;
+  status.textContent = annotationMode
+    ? "Clique sur le modèle pour poser un repère."
+    : "Mode annotation désactivé.";
+});
+canvas.addEventListener("click", (event) => {
+  if (!annotationMode || !currentModel) return;
+  const bounds = canvas.getBoundingClientRect();
+  const pointer = new THREE.Vector2(
+    ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+    -((event.clientY - bounds.top) / bounds.height) * 2 + 1,
+  );
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(pointer, camera);
+  const hit = raycaster.intersectObject(currentModel, true)[0];
+  if (!hit) return;
+  const id = annotations.length + 1;
+  annotations.push({ id, position: hit.point.toArray(), note: "" });
+  const marker = new THREE.Mesh(
+    new THREE.SphereGeometry(
+      0.035 * Math.max(1, camera.position.distanceTo(hit.point)),
+      12,
+      8,
+    ),
+    new THREE.MeshBasicMaterial({ color: 0xff4f68, depthTest: false }),
+  );
+  marker.position.copy(hit.point);
+  marker.renderOrder = 10;
+  annotationMarkers.add(marker);
+  renderAnnotations();
+});
 find("#screenshot", HTMLButtonElement).addEventListener("click", () => {
   renderer.render(scene, camera);
   canvas.toBlob((blob) => {
@@ -224,6 +298,7 @@ find("#export-feedback", HTMLButtonElement).addEventListener("click", () => {
     file: currentFile,
     feedback: feedbackInput.value.trim(),
     metrics: currentMetrics,
+    annotations,
     view: {
       camera: camera.position.toArray(),
       target: controls.target.toArray(),
@@ -239,6 +314,28 @@ find("#export-feedback", HTMLButtonElement).addEventListener("click", () => {
     "Retour exporté. Envoie le JSON avec le modèle ou sa référence.";
 });
 
+function renderAnnotations(): void {
+  annotationList.replaceChildren();
+  if (annotations.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "empty";
+    empty.textContent = "Aucun repère";
+    annotationList.append(empty);
+    return;
+  }
+  for (const annotation of annotations) {
+    const item = document.createElement("li");
+    const input = document.createElement("input");
+    input.placeholder = `Retouche du repère ${String(annotation.id)}`;
+    input.value = annotation.note;
+    input.addEventListener("input", () => {
+      annotation.note = input.value;
+    });
+    item.append(input);
+    annotationList.append(item);
+  }
+}
+
 function resize(): void {
   const panelWidth = innerWidth > 800 ? Math.min(390, innerWidth * 0.38) : 0;
   const width = innerWidth - panelWidth;
@@ -252,6 +349,13 @@ addEventListener("resize", resize);
 resize();
 
 await renderer.init();
+const firstCatalogModel = catalogEntries[0];
+if (firstCatalogModel) {
+  catalogSelect.value = firstCatalogModel.url;
+  await loadCatalogModel(firstCatalogModel.name, firstCatalogModel.url).catch(
+    showError,
+  );
+}
 void renderer.setAnimationLoop((time) => {
   mixer?.update(Math.min((time - previousTime) / 1000, 0.1));
   previousTime = time;

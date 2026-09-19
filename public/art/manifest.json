@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "name": "Slopfarm — forêt peinte",
+  "baseUrl": "/art/",
+  "preview": "preview.html",
+  "direction": "docs/ui-art-direction.md",
+  "provenance": "SVG originaux dessinés pour Slopfarm. Aucune image de référence incorporée.",
+  "palette": {
+    "ink": "#30271e",
+    "cream": "#fff4d6",
+    "wood": "#a9683f",
+    "plank": "#edc483",
+    "coin": "#f6cc55",
+    "steel": "#9bc1bd",
+    "teal": "#398f91",
+    "worker": "#e8a265",
+    "automation": "#ac89ce",
+    "monument": "#78c693",
+    "coral": "#dc8162",
+    "grass": "#87bd61",
+    "grove": "#4f713d",
+    "yard": "#bc9662",
+    "path": "#e5c77f",
+    "pathEdge": "#806746"
+  },
+  "font": {
+    "family": "Figtree",
+    "file": "fonts/figtree-variable.ttf",
+    "format": "truetype",
+    "style": "normal",
+    "weightRange": [300, 900],
+    "usedWeights": [600, 700, 800, 900],
+    "license": "OFL-1.1",
+    "licenseFile": "fonts/OFL.txt",
+    "officialPage": "https://www.erikdkennedy.com/projects/figtree.html",
+    "repository": "https://github.com/erikdkennedy/figtree",
+    "distribution": "https://fonts.google.com/specimen/Figtree",
+    "sourceCommit": "032dfa7fe219ef3a02890d6d3add84eacc9aebfe",
+    "sourceUrl": "https://raw.githubusercontent.com/erikdkennedy/figtree/032dfa7fe219ef3a02890d6d3add84eacc9aebfe/fonts/variable/Figtree%5Bwght%5D.ttf",
+    "bytes": 62712,
+    "sha256": "c8d9e77bb970c18f7b55fd2d8c91f86c9e9cc42696da9c3e7bc4fffba1d3ef5a"
+  },
+  "textureDefaults": {
+    "size": [256, 256],
+    "tileable": true,
+    "wrapS": "RepeatWrapping",
+    "wrapT": "RepeatWrapping",
+    "colorSpace": "SRGBColorSpace",
+    "tileMeters": 4,
+    "materialColor": "#ffffff",
+    "roughness": 1,
+    "metalness": 0,
+    "transparent": false,
+    "generateMipmaps": true,
+    "minFilter": "LinearMipmapLinearFilter",
+    "magFilter": "LinearFilter",
+    "anisotropy": 4
+  },
+  "iconDefaults": {
+    "size": [128, 128],
+    "colorSpace": "SRGBColorSpace",
+    "transparent": true,
+    "minimumCssPixels": 24,
+    "preferredCssPixels": 48,
+    "minimumTouchPixels": 48,
+    "outline": "#30271e",
+    "halo": "#fff4d6"
+  },
+  "decalDefaults": {
+    "size": [256, 256],
+    "colorSpace": "SRGBColorSpace",
+    "transparent": true,
+    "tileable": false,
+    "worldDiameterMeters": 2.4,
+    "depthWrite": false
+  },
+  "assets": [
+    {
+      "id": "grass",
+      "kind": "texture",
+      "file": "textures/grass.svg",
+      "label": "Herbe"
+    },
+    {
+      "id": "grove",
+      "kind": "texture",
+      "file": "textures/grove.svg",
+      "label": "Humus forestier"
+    },
+    {
+      "id": "yard",
+      "kind": "texture",
+      "file": "textures/yard.svg",
+      "label": "Terre battue"
+    },
+    {
+      "id": "path",
+      "kind": "texture",
+      "file": "textures/path.svg",
+      "label": "Sentier"
+    },
+    {
+      "id": "path-edge",
+      "kind": "texture",
+      "file": "textures/path-edge.svg",
+      "label": "Bordure du sentier"
+    },
+    {
+      "id": "wood",
+      "kind": "icon",
+      "file": "icons/wood.svg",
+      "label": "Bûche"
+    },
+    {
+      "id": "plank",
+      "kind": "icon",
+      "file": "icons/plank.svg",
+      "label": "Planche"
+    },
+    {
+      "id": "coin",
+      "kind": "icon",
+      "file": "icons/coin.svg",
+      "label": "Pièce"
+    },
+    {
+      "id": "tool",
+      "kind": "icon",
+      "file": "icons/tool.svg",
+      "label": "Hache orbitale"
+    },
+    {
+      "id": "worker",
+      "kind": "icon",
+      "file": "icons/worker.svg",
+      "label": "Ouvrier"
+    },
+    {
+      "id": "gear",
+      "kind": "icon",
+      "file": "icons/gear.svg",
+      "label": "Automatisation"
+    },
+    {
+      "id": "monument",
+      "kind": "icon",
+      "file": "icons/monument.svg",
+      "label": "Machine monumentale"
+    },
+    {
+      "id": "sawmill",
+      "kind": "icon",
+      "file": "icons/sawmill.svg",
+      "label": "Scierie"
+    },
+    {
+      "id": "tree",
+      "kind": "icon",
+      "file": "icons/tree.svg",
+      "label": "Arbre"
+    },
+    {
+      "id": "bag",
+      "kind": "icon",
+      "file": "icons/bag.svg",
+      "label": "Cargaison"
+    },
+    {
+      "id": "arrow",
+      "kind": "icon",
+      "file": "icons/arrow.svg",
+      "label": "Destination"
+    },
+    {
+      "id": "lock",
+      "kind": "icon",
+      "file": "icons/lock.svg",
+      "label": "Prérequis manquant"
+    },
+    {
+      "id": "check",
+      "kind": "icon",
+      "file": "icons/check.svg",
+      "label": "Terminé"
+    },
+    {
+      "id": "settings",
+      "kind": "icon",
+      "file": "icons/settings.svg",
+      "label": "Réglages"
+    },
+    {
+      "id": "deposit-ring",
+      "kind": "decal",
+      "file": "decals/deposit-ring.svg",
+      "label": "Dépôt"
+    },
+    {
+      "id": "stock-ring",
+      "kind": "decal",
+      "file": "decals/stock-ring.svg",
+      "label": "Collecte"
+    }
+  ]
+}

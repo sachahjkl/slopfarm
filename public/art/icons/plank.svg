@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Planche</title>
+  <defs>
+    <path id="body" d="M18 53L90 25Q96 23 102 29L116 55Q119 63 111 68L41 102Q33 106 28 98L12 67Q8 58 18 53Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#d89e58" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M17 58L93 29 108 54 33 87Z" fill="#efc889"/>
+  <path d="M35 90l77-35M36 62l45-18M52 72l36-14" fill="none" stroke="#a9683f" stroke-width="5" stroke-linecap="round"/>
+  <path d="M31 53l57-22" fill="none" stroke="#fff4d6" stroke-width="4" stroke-linecap="round"/>
+</svg>

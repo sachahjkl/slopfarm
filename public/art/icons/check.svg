@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Terminé</title>
+  <defs>
+    <path id="body" d="M16 66l13-13q4-4 8 0l18 20 41-50q4-5 9-1l12 11q4 4 0 9l-54 65q-5 6-11 0L15 75q-4-4 1-9Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#78c693" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M32 64l23 25 47-56" fill="none" stroke="#c7ebae" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

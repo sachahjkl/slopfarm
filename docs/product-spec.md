@@ -64,9 +64,9 @@ Le joueur commence avec deux haches orbitales. Les outils frappent le bois, le m
 
 Les sons, traînées et impacts changent selon la matière touchée. L’outil conserve ainsi une interface de gameplay unique.
 
-La progression complète contient 18 niveaux et six formes. Chaque biome contient six niveaux et deux formes.
+La progression se déroule dans une seule forêt persistante. Elle ne réinitialise jamais la base ni les ressources du joueur.
 
-La forêt utilise des haches simples, puis des doubles haches renforcées. Les premiers niveaux ajoutent des outils.
+La forêt utilise des haches simples, puis des doubles haches renforcées. Les premières améliorations ajoutent des outils.
 
 Les transformations suivantes privilégient la qualité, la vitesse, la taille, les dégâts et les effets.
 
@@ -97,9 +97,36 @@ Les zones d’embauche utilisent des pièces. Les zones de construction aspirent
 
 Les ateliers gagnent taille, animation, stockage et personnel à chaque palier. Routes, lampes, végétation et habitants densifient aussi la base.
 
-Le monument final est une machine géante construite en dix étapes. Chaque biome finance trois étapes.
+La base peut déplacer, remplacer ou supprimer un ancien poste pendant une transformation. La disposition ne doit pas figer les premières étapes.
 
-La dernière étape combine les produits des trois biomes. Chaque étape fournit un bonus global visible.
+Les nouvelles ailes ajoutent des boutiques et des sources de revenus. Le bois brut, les planches et les produits animaux alimentent des marchés distincts.
+
+Des ours attaquent trois voies depuis la forêt. Le joueur les repousse avec ses outils et vend leur viande à la boucherie.
+
+Les attaques ne détruisent aucun bâtiment. Elles interrompent temporairement le marché, la scierie ou le travail forestier selon la voie.
+
+Chaque palier de défense construit une tourelle sur une nouvelle voie. Chaque tourelle exige des ventes de viande, des planches et des pièces.
+
+La progression alterne les seuils de boucherie et de défense. Elle utilise successivement 6, 8, 18, 24 et 36 viandes vendues.
+
+La boucherie possède trois paliers. La viande vendue débloque un palier, puis les planches construisent son équipement.
+
+Chaque palier de boucherie augmente le prix de la viande. Il augmente aussi la vitesse et la capacité des travailleurs.
+
+Chaque palier de défense augmente la fréquence des attaques, leur résistance et leur rendement en viande.
+
+La boucle animale suit cet ordre :
+
+1. Un animal arrive depuis la forêt distante.
+2. L’animal avance vers la base et joue une animation d’attaque.
+3. Les haches et les tourelles réduisent sa santé.
+4. L’animal éliminé laisse tomber de la viande physique.
+5. Le joueur dépose la viande dans une boutique spécialisée.
+6. La boutique produit des pièces et améliore les travailleurs.
+7. Les planches et les pièces construisent une nouvelle tourelle.
+8. La nouvelle tourelle protège une voie supplémentaire et attire une attaque plus rentable.
+
+Le monument final est une machine géante construite par étapes. Chaque étape fournit un bonus global visible.
 
 L’activation finale déclenche une production extrême. Le mode libre permet ensuite de terminer toutes les améliorations.
 
@@ -117,7 +144,7 @@ La caméra pseudo-isométrique reste fixe. Son zoom conserve une surface de jeu 
 
 ## Sauvegarde et diagnostic
 
-La sauvegarde locale est continue et versionnée. Le joueur peut l’exporter et l’importer en JSON.
+La sauvegarde locale est continue. Le joueur peut l’exporter et l’importer en JSON.
 
 Un reset exige une confirmation explicite. Le jeu ne transmet aucune télémétrie distante.
 
@@ -151,10 +178,12 @@ Le premier jalon livre la forêt complète avec une cible de 15 minutes.
 
 Il comprend :
 
-- les six premiers niveaux et deux formes d’outil ;
+- les six améliorations d’outil et deux formes d’outil ;
 - le bois, les planches, la vente et les pièces physiques ;
 - les quatre paliers d’automatisation ;
 - jusqu’à dix travailleurs ;
+- les attaques visuelles d’ours et les ressources de viande ;
+- la boucherie et trois paliers de tourelles ;
 - les convoyeurs prédéfinis ;
 - trois étapes du monument ;
 - la sauvegarde, le replay et la suite de debug ;

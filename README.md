@@ -34,5 +34,8 @@ Ouvre `/viewer.html` pour inspecter un fichier GLB et préparer un retour de ret
 - [Vision et boucle de jeu](docs/gameplay.md)
 - [Architecture et plan d’implémentation](docs/implementation.md)
 - [Pipeline des modèles 3D](docs/art-pipeline.md)
+- [Références visuelles](docs/visual-reference.md)
+- [Plan de la forêt](docs/forest-map-plan.md)
+- [Outils de développement](tools/README.md)
 - [Outils de développement](docs/development-tools.md)
 - [Feuille de route](docs/roadmap.md)

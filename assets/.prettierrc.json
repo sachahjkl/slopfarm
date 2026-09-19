@@ -1,0 +1,8 @@
+{
+  "overrides": [
+    {
+      "files": ["forest/manifest.json", "forest/validation-report.json"],
+      "options": { "parser": "json-stringify" }
+    }
+  ]
+}

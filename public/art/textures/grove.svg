@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Humus forestier raccordable</title>
+  <rect width="256" height="256" fill="#4f713d"/>
+  <g fill="#3d5d34" opacity=".8">
+    <path d="M-8 38q34-29 73-8t7 42q-40 14-80-7ZM113 111q35-31 79-9t6 43q-45 17-85-8ZM28 211q30-28 72-9t7 39q-40 17-78-4Z"/>
+  </g>
+  <g fill="#775d3b" opacity=".75">
+    <ellipse cx="40" cy="111" rx="10" ry="5" transform="rotate(28 40 111)"/>
+    <ellipse cx="89" cy="53" rx="12" ry="5" transform="rotate(-22 89 53)"/>
+    <ellipse cx="157" cy="183" rx="11" ry="5" transform="rotate(35 157 183)"/>
+    <ellipse cx="224" cy="79" rx="12" ry="5" transform="rotate(-35 224 79)"/>
+    <ellipse cx="213" cy="230" rx="9" ry="4" transform="rotate(18 213 230)"/>
+  </g>
+  <g fill="none" stroke="#9a7a4b" stroke-width="4" stroke-linecap="round" opacity=".65">
+    <path d="M23 171q17-9 31 2m62-94 24-13m44 90q15 10 28 2M5 12l22 9M236 194l24 8"/>
+  </g>
+  <g fill="#729653" opacity=".7">
+    <circle cx="76" cy="145" r="5"/><circle cx="184" cy="43" r="4"/><circle cx="126" cy="229" r="5"/>
+  </g>
+</svg>

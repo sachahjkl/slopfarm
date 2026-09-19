@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Bûche</title>
+  <defs>
+    <path id="body" d="M34 33C23 30 13 41 13 62S25 91 37 94L89 101C106 103 117 91 116 74S104 44 92 42Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#a9683f" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M32 44L86 53M27 72l55 10" fill="none" stroke="#c68952" stroke-width="7" stroke-linecap="round"/>
+  <path d="M53 56l19 3" fill="none" stroke="#754b35" stroke-width="5" stroke-linecap="round"/>
+  <path d="M91 43C78 44 71 54 74 74S87 103 100 98C111 93 115 83 113 70S102 43 91 43Z" fill="#edc483" stroke="#30271e" stroke-width="6"/>
+  <path d="M92 59C85 59 84 69 86 77S95 87 100 80C104 73 98 62 93 66" fill="none" stroke="#a9683f" stroke-width="5" stroke-linecap="round"/>
+</svg>

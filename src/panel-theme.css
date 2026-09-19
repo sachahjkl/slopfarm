@@ -1,0 +1,481 @@
+:root {
+  --panel-ink: #30271e;
+  --panel-cream: #fff4d6;
+  --panel-gold: #f6cc55;
+  --panel-wood-light: #c98249;
+  --panel-wood: #9a5834;
+  --panel-wood-dark: #57321f;
+  --panel-edge: #3c281c;
+  --panel-green: #315c43;
+  --panel-green-dark: #183c2c;
+  --panel-paper: #f2d99d;
+}
+
+/* The objective is a carved sign. Its compact state remains readable above the play area. */
+#instructions {
+  gap: 12px;
+  padding: 12px 64px 13px 16px;
+  color: var(--panel-cream);
+  border: 3px solid var(--panel-edge);
+  border-radius: 9px 16px 9px 14px;
+  background:
+    radial-gradient(
+      circle at 11px 11px,
+      #e6ad67 0 2px,
+      #5d3824 3px 4px,
+      transparent 5px
+    ),
+    radial-gradient(
+      circle at calc(100% - 11px) 11px,
+      #e6ad67 0 2px,
+      #5d3824 3px 4px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      2deg,
+      transparent 0 11px,
+      #f4c27a12 12px,
+      #49291b1b 14px
+    ),
+    linear-gradient(145deg, #ad6b3cf7, #774126f7);
+  box-shadow:
+    0 6px 0 #3d2418,
+    0 15px 32px #10251b66,
+    inset 0 2px #eab77b73,
+    inset 0 -3px #4a281c73;
+}
+
+#instructions::before,
+#instructions::after {
+  position: absolute;
+  top: -15px;
+  width: 7px;
+  height: 17px;
+  border: 2px solid #332f29;
+  border-radius: 5px;
+  background: repeating-linear-gradient(#93846d 0 3px, #332f29 3px 6px);
+  box-shadow: 1px 2px 2px #10251b66;
+  content: "";
+}
+
+#instructions::before {
+  left: 32px;
+}
+
+#instructions::after {
+  right: 32px;
+}
+
+#instructions img {
+  width: 54px;
+  height: 54px;
+  padding: 5px;
+  border: 2px solid #5a3522;
+  border-radius: 50%;
+  background: #f1d28c;
+  box-shadow:
+    0 3px 0 #4a2a1d,
+    inset 0 2px #fff0bd;
+  filter: none;
+}
+
+#instructions small {
+  color: #ffe38a;
+  text-shadow: 0 1px #3d2119;
+}
+
+#instructions strong {
+  color: var(--panel-cream);
+  letter-spacing: 0.015em;
+  text-shadow:
+    0 2px 0 #3d2119,
+    1px 0 #3d2119;
+}
+
+#instructions span {
+  color: #f4dca9;
+}
+
+#instructions.is-compact {
+  gap: 9px;
+  padding: 9px 56px 10px 10px;
+  border-radius: 8px 13px 8px 12px;
+}
+
+#instructions.is-compact img {
+  width: 44px;
+  height: 44px;
+  padding: 4px;
+}
+
+#instructions.is-compact:hover,
+#instructions.is-compact:focus-within {
+  border-color: #6a4028;
+  box-shadow:
+    0 7px 0 #3d2418,
+    0 18px 42px #10251b88,
+    inset 0 2px #f3c78288,
+    inset 0 -3px #4a281c66;
+}
+
+#objective-journal-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  color: #ffe6a1;
+  border: 2px solid #4e301f;
+  border-radius: 7px 11px 7px 10px;
+  background:
+    repeating-linear-gradient(
+      3deg,
+      transparent 0 7px,
+      #f2c17a20 8px,
+      transparent 9px
+    ),
+    linear-gradient(#8d5231, #684029);
+  box-shadow:
+    0 3px 0 #39251a,
+    inset 0 1px #e7ac68;
+  text-shadow: 0 2px #352117;
+  transform: translateY(-50%);
+}
+
+#objective-journal-toggle:hover {
+  background-color: #a8663d;
+}
+
+#objective-journal-toggle:active {
+  box-shadow: inset 0 2px 3px #35211799;
+  transform: translateY(calc(-50% + 2px));
+}
+
+#objective-journal-toggle:focus-visible,
+#settings-button:focus-visible,
+#settings-dialog button:focus-visible,
+.file-button:has(input:focus-visible),
+.setting-row select:focus-visible,
+.setting-row input:focus-visible {
+  outline: 3px solid #fff1a6;
+  outline-offset: 3px;
+}
+
+/* The journal uses a dark ledger surface, distinct from the objective sign. */
+#objective-journal {
+  top: calc(100% + 12px);
+  padding: 16px 17px 17px;
+  color: var(--panel-cream);
+  border: 3px solid #4b3021;
+  border-radius: 8px 15px 9px 13px;
+  background:
+    linear-gradient(90deg, #ffffff0d 1px, transparent 1px) 26px 0 / 1px 100%,
+    repeating-linear-gradient(0deg, transparent 0 29px, #d3e3c00e 30px),
+    linear-gradient(145deg, #315c43fa, #183c2cfa);
+  box-shadow:
+    0 7px 0 #102a1f,
+    0 18px 42px #10251b99,
+    inset 0 2px #ffffff26,
+    inset 4px 0 #9a5834;
+}
+
+#objective-journal b {
+  display: block;
+  padding-bottom: 9px;
+  color: var(--panel-gold);
+  border-bottom: 1px dashed #e6c97980;
+  font-size: 13px;
+  text-shadow: 0 2px #102a1f;
+}
+
+#objective-history {
+  gap: 0;
+  margin-top: 2px;
+  scrollbar-color: #b77a43 #163727;
+  scrollbar-width: thin;
+}
+
+#objective-history:empty::after {
+  padding: 14px 2px 2px;
+  color: #d9e9cc;
+}
+
+#objective-history li {
+  position: relative;
+  padding: 10px 4px 10px 22px;
+  color: #e7eed7;
+  border-top: 1px solid #ffffff1c;
+  font-size: 14px;
+}
+
+#objective-history li::before {
+  position: absolute;
+  top: 10px;
+  left: 2px;
+  color: #f6cc55;
+  content: "✓";
+  font-weight: 900;
+}
+
+/* Settings resemble a bound workshop notebook inside a timber frame. */
+#settings-button {
+  width: 50px;
+  height: 50px;
+  padding: 7px;
+  border: 3px solid var(--panel-edge);
+  border-radius: 9px 15px 9px 14px;
+  background:
+    radial-gradient(circle at 8px 8px, #6b4027 0 2px, transparent 3px),
+    repeating-linear-gradient(
+      3deg,
+      transparent 0 8px,
+      #ffffff20 9px,
+      transparent 10px
+    ),
+    linear-gradient(145deg, #d28a4e, #995735);
+  box-shadow:
+    0 5px 0 #3d281c,
+    0 10px 20px #10251b55,
+    inset 0 2px #edb46f;
+}
+
+#settings-button:hover {
+  transform: translateY(-1px);
+}
+
+#settings-button:active {
+  box-shadow: 0 2px 0 #3d281c;
+  transform: translateY(3px);
+}
+
+#settings-dialog {
+  width: min(92vw, 420px);
+  max-height: min(88dvh, 650px);
+  padding: 21px 20px 22px 27px;
+  overflow: auto;
+  color: var(--panel-ink);
+  border: 5px solid #5c3824;
+  border-radius: 10px 22px 11px 19px;
+  background:
+    linear-gradient(90deg, #9c5a36 0 7px, transparent 7px),
+    repeating-linear-gradient(0deg, transparent 0 34px, #8d63351c 35px),
+    linear-gradient(145deg, #fff2c9, #e5c783);
+  box-shadow:
+    0 9px 0 #3d281c,
+    0 24px 70px #10251bc0,
+    inset 0 2px #fffdf0,
+    inset 7px 0 #c77a45;
+}
+
+#settings-dialog::backdrop {
+  background: #10251bad;
+  backdrop-filter: blur(4px) saturate(0.8);
+}
+
+#settings-dialog header {
+  align-items: center;
+  padding: 0 0 13px;
+  color: #56351f;
+  border-bottom: 2px dashed #9f713e;
+  font-size: 22px;
+  text-shadow: 0 1px #fff2c9;
+}
+
+#settings-close {
+  width: 48px;
+  height: 48px;
+  padding: 0 !important;
+  color: #603b25 !important;
+  border: 2px solid #9d6d3e !important;
+  border-radius: 50% !important;
+  background: #efd495 !important;
+  box-shadow: 0 2px 0 #9d6d3e !important;
+  line-height: 1;
+}
+
+.setting-row {
+  min-height: 50px;
+  margin: 12px 0;
+  padding: 8px 10px 8px 12px;
+  border: 2px solid #a97845;
+  border-radius: 7px 13px 7px 12px;
+  background: #fff8dfb8;
+  box-shadow:
+    0 3px 0 #ad8050,
+    inset 0 1px #ffffffc7;
+}
+
+.setting-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 50px;
+  height: 29px;
+  border-color: #63432e;
+  background: #aa8d64;
+  box-shadow: inset 0 2px 3px #4e352866;
+}
+
+.setting-row input[type="checkbox"]::before {
+  width: 18px;
+  height: 18px;
+  background: #fff0bc;
+}
+
+.setting-row input[type="checkbox"]:checked {
+  background: #4f9162;
+}
+
+.setting-row input[type="checkbox"]:checked::before {
+  transform: translateX(21px);
+}
+
+.setting-row select {
+  min-height: 40px;
+  color: #3f2c1f;
+  border: 2px solid #68462f;
+  border-radius: 7px 12px 7px 11px;
+  background: #fff1be;
+  box-shadow:
+    0 2px 0 #a87948,
+    inset 0 1px #fffdf0;
+  cursor: pointer;
+}
+
+.settings-actions {
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 2px dashed #a57a46;
+}
+
+#settings-dialog .settings-actions button,
+#settings-dialog .file-button {
+  min-height: 46px;
+  padding: 10px 12px;
+  color: #3f2b1d;
+  border: 2px solid #5d3c28;
+  border-radius: 7px 13px 7px 12px;
+  background:
+    repeating-linear-gradient(
+      2deg,
+      transparent 0 8px,
+      #ffffff1a 9px,
+      transparent 10px
+    ),
+    linear-gradient(#efc983, #c98a4c);
+  box-shadow:
+    0 4px 0 #64432c,
+    inset 0 1px #ffe8b2;
+  font-family: inherit;
+  font-size: 14px;
+  text-shadow: 0 1px #ffe7b0;
+}
+
+#settings-dialog .settings-actions button:hover,
+#settings-dialog .file-button:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+#settings-dialog .settings-actions button:active,
+#settings-dialog .file-button:active {
+  box-shadow: 0 1px 0 #64432c;
+  transform: translateY(3px);
+}
+
+#settings-dialog .settings-actions .danger {
+  color: #fff0df !important;
+  border-color: #4c2524;
+  background: linear-gradient(#914a43, #6f2e32) !important;
+  box-shadow:
+    0 4px 0 #421f20,
+    inset 0 1px #d98775;
+  text-shadow: 0 1px #401d20;
+}
+
+@media (max-width: 540px) {
+  #instructions {
+    width: calc(100vw - 20px);
+    padding: 10px 58px 11px 11px;
+  }
+
+  #instructions.is-compact {
+    width: min(330px, calc(100vw - 20px));
+    padding-right: 62px;
+  }
+
+  #instructions::before {
+    left: 23px;
+  }
+
+  #instructions::after {
+    right: 23px;
+  }
+
+  #objective-journal-toggle {
+    right: 6px;
+    width: 48px;
+    height: 48px;
+  }
+
+  #objective-journal {
+    right: 0;
+    width: min(360px, calc(100vw - 20px));
+    max-height: min(58dvh, 390px);
+  }
+
+  #settings-button {
+    right: 12px;
+    bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  #settings-dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 24px);
+    padding: 17px 14px 19px 20px;
+  }
+
+  #settings-dialog header {
+    font-size: 19px;
+  }
+
+  .setting-row {
+    font-size: 15px;
+  }
+
+  #settings-dialog .settings-actions button,
+  #settings-dialog .file-button {
+    min-height: 48px;
+  }
+}
+
+@media (max-height: 540px) and (pointer: coarse) {
+  #settings-dialog {
+    width: min(94vw, 680px);
+    max-height: calc(100dvh - 16px);
+    padding: 12px 16px 14px 22px;
+  }
+
+  #settings-dialog header {
+    padding-bottom: 8px;
+    font-size: 18px;
+  }
+
+  #settings-dialog .setting-row {
+    display: inline-flex;
+    width: calc(50% - 6px);
+    min-height: 44px;
+    margin: 6px 4px 6px 0;
+  }
+
+  .settings-actions {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    margin-top: 8px;
+    padding-top: 10px;
+  }
+
+  #settings-dialog .settings-actions button,
+  #settings-dialog .file-button {
+    min-height: 48px;
+  }
+}

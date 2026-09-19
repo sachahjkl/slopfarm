@@ -1,0 +1,1875 @@
+{
+  "schemaVersion": 1,
+  "biome": "forest",
+  "generator": "scripts/blender/generate_forest.py",
+  "blenderVersion": "5.1.1",
+  "seed": 73421,
+  "units": "meters",
+  "up": "+Y",
+  "forward": "+Z",
+  "ground": 0,
+  "atlas": {
+    "file": "forest-atlas.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "sha256": "7b4e5d48e9c575b519c8efba301e19c3f220c0f212cadc40ebd5d89cd96713be",
+    "palette": {
+      "bark": "76503b",
+      "wood": "b6804d",
+      "cut": "e5ba75",
+      "leaf": "53934d",
+      "leaf-light": "82b85a",
+      "leaf-dark": "326b48",
+      "teal": "388d91",
+      "navy": "304b63",
+      "canvas": "d8ac67",
+      "leather": "965437",
+      "skin": "f0b887",
+      "cream": "f8e7b7",
+      "steel": "aac8c6",
+      "iron": "57787e",
+      "gold": "eabd4b",
+      "coral": "da7052"
+    }
+  },
+  "assets": [
+    {
+      "id": "adventurer",
+      "file": "adventurer.glb",
+      "name": "adventurer",
+      "kind": "character",
+      "dimensionsMeters": [
+        1.5042,
+        2.37,
+        1.2375
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.75096,
+          0,
+          -0.7525
+        ],
+        "max": [
+          0.75324,
+          2.37,
+          0.485
+        ]
+      },
+      "origin": "feet",
+      "forward": "+Z",
+      "triangles": 4772,
+      "triangleBudget": 8000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "skeleton": "human-skeleton",
+      "sockets": {
+        "cargo-wood": [
+          -0.25,
+          1.87,
+          -0.42
+        ],
+        "cargo-plank": [
+          0.25,
+          1.87,
+          -0.42
+        ],
+        "tool-orbit": [
+          0,
+          0.9,
+          0
+        ],
+        "label": [
+          0,
+          2.55,
+          0
+        ]
+      },
+      "bytes": 854684,
+      "sha256": "2ef6b963c3133f9b2bdbc8607eb22ed6ed50aa6b498442f250da0048e9216f5a",
+      "family": "adventurer",
+      "variant": 1
+    },
+    {
+      "id": "adventurer-coral",
+      "file": "adventurer-coral.glb",
+      "name": "adventurer-coral",
+      "kind": "character",
+      "dimensionsMeters": [
+        1.5042,
+        2.37,
+        1.2375
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.75096,
+          0,
+          -0.7525
+        ],
+        "max": [
+          0.75324,
+          2.37,
+          0.485
+        ]
+      },
+      "origin": "feet",
+      "forward": "+Z",
+      "triangles": 4772,
+      "triangleBudget": 8000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "skeleton": "human-skeleton",
+      "sockets": {
+        "cargo-wood": [
+          -0.25,
+          1.87,
+          -0.42
+        ],
+        "cargo-plank": [
+          0.25,
+          1.87,
+          -0.42
+        ],
+        "tool-orbit": [
+          0,
+          0.9,
+          0
+        ],
+        "label": [
+          0,
+          2.55,
+          0
+        ]
+      },
+      "bytes": 854704,
+      "sha256": "0a1a5696891023a02d2ca856925cd96541d54a41bff035da6108f31cbe0575c2",
+      "family": "adventurer",
+      "variant": 2
+    },
+    {
+      "id": "adventurer-leaf",
+      "file": "adventurer-leaf.glb",
+      "name": "adventurer-leaf",
+      "kind": "character",
+      "dimensionsMeters": [
+        1.5042,
+        2.37,
+        1.2375
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.75096,
+          0,
+          -0.7525
+        ],
+        "max": [
+          0.75324,
+          2.37,
+          0.485
+        ]
+      },
+      "origin": "feet",
+      "forward": "+Z",
+      "triangles": 4772,
+      "triangleBudget": 8000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "skeleton": "human-skeleton",
+      "sockets": {
+        "cargo-wood": [
+          -0.25,
+          1.87,
+          -0.42
+        ],
+        "cargo-plank": [
+          0.25,
+          1.87,
+          -0.42
+        ],
+        "tool-orbit": [
+          0,
+          0.9,
+          0
+        ],
+        "label": [
+          0,
+          2.55,
+          0
+        ]
+      },
+      "bytes": 854700,
+      "sha256": "29ca478a98e7aeacea57d65bd038ac03543d1bbaa4e35d8a89f20e6c52036c9f",
+      "family": "adventurer",
+      "variant": 3
+    },
+    {
+      "id": "worker",
+      "file": "worker.glb",
+      "name": "worker",
+      "kind": "character",
+      "dimensionsMeters": [
+        1.5042,
+        2.2,
+        1.2375
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.75096,
+          0,
+          -0.7525
+        ],
+        "max": [
+          0.75324,
+          2.2,
+          0.485
+        ]
+      },
+      "origin": "feet",
+      "forward": "+Z",
+      "triangles": 4660,
+      "triangleBudget": 8000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "skeleton": "human-skeleton",
+      "sockets": {
+        "cargo-wood": [
+          -0.25,
+          1.87,
+          -0.42
+        ],
+        "cargo-plank": [
+          0.25,
+          1.87,
+          -0.42
+        ],
+        "tool-orbit": [
+          0,
+          0.9,
+          0
+        ],
+        "label": [
+          0,
+          2.55,
+          0
+        ]
+      },
+      "bytes": 848280,
+      "sha256": "1e8e763853e06421cb148d8f83f8023978d246603418dd7453425a482c85dcba",
+      "family": "worker",
+      "variant": 1
+    },
+    {
+      "id": "worker-coral",
+      "file": "worker-coral.glb",
+      "name": "worker-coral",
+      "kind": "character",
+      "dimensionsMeters": [
+        1.5042,
+        2.2,
+        1.2375
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.75096,
+          0,
+          -0.7525
+        ],
+        "max": [
+          0.75324,
+          2.2,
+          0.485
+        ]
+      },
+      "origin": "feet",
+      "forward": "+Z",
+      "triangles": 4660,
+      "triangleBudget": 8000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "skeleton": "human-skeleton",
+      "sockets": {
+        "cargo-wood": [
+          -0.25,
+          1.87,
+          -0.42
+        ],
+        "cargo-plank": [
+          0.25,
+          1.87,
+          -0.42
+        ],
+        "tool-orbit": [
+          0,
+          0.9,
+          0
+        ],
+        "label": [
+          0,
+          2.55,
+          0
+        ]
+      },
+      "bytes": 848300,
+      "sha256": "0ff08158677fa390e75a89297045103f283925899a59ed839d5a4c049a08bf75",
+      "family": "worker",
+      "variant": 2
+    },
+    {
+      "id": "worker-leaf",
+      "file": "worker-leaf.glb",
+      "name": "worker-leaf",
+      "kind": "character",
+      "dimensionsMeters": [
+        1.5042,
+        2.2,
+        1.2375
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.75096,
+          0,
+          -0.7525
+        ],
+        "max": [
+          0.75324,
+          2.2,
+          0.485
+        ]
+      },
+      "origin": "feet",
+      "forward": "+Z",
+      "triangles": 4660,
+      "triangleBudget": 8000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle",
+        "walk",
+        "attack",
+        "hit",
+        "death"
+      ],
+      "skeleton": "human-skeleton",
+      "sockets": {
+        "cargo-wood": [
+          -0.25,
+          1.87,
+          -0.42
+        ],
+        "cargo-plank": [
+          0.25,
+          1.87,
+          -0.42
+        ],
+        "tool-orbit": [
+          0,
+          0.9,
+          0
+        ],
+        "label": [
+          0,
+          2.55,
+          0
+        ]
+      },
+      "bytes": 848296,
+      "sha256": "9a58db0bbca5c4843449485b95d2a2fa59c4ac6fa40ce8256a838fdec4f5fb67",
+      "family": "worker",
+      "variant": 3
+    },
+    {
+      "id": "axe-simple",
+      "file": "axe-simple.glb",
+      "name": "axe-simple",
+      "kind": "tool",
+      "dimensionsMeters": [
+        0.71,
+        1.12536,
+        0.19
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.355,
+          0,
+          -0.095
+        ],
+        "max": [
+          0.355,
+          1.12536,
+          0.095
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 604,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "grip": [
+          -0.195,
+          0.19326,
+          0
+        ],
+        "impact": [
+          0.325,
+          0.91326,
+          0
+        ]
+      },
+      "bytes": 538072,
+      "sha256": "a404c1d6d101a40c5d18b125df9b3c5858ae9ca1aa4598d6def86d7dd659dafa",
+      "form": 1
+    },
+    {
+      "id": "axe-reinforced-double",
+      "file": "axe-reinforced-double.glb",
+      "name": "axe-reinforced-double",
+      "kind": "tool",
+      "dimensionsMeters": [
+        1.22,
+        1.12536,
+        0.2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.61,
+          0,
+          -0.1
+        ],
+        "max": [
+          0.61,
+          1.12536,
+          0.1
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1096,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "grip": [
+          0.06,
+          0.19326,
+          0
+        ],
+        "impact": [
+          0.58,
+          0.91326,
+          0
+        ]
+      },
+      "bytes": 572224,
+      "sha256": "75e8c222d46e59e9bf7e1d38937ddf5539570b792ba743dad6064cc40add1f7a",
+      "form": 2
+    },
+    {
+      "id": "tree-01",
+      "file": "tree-01.glb",
+      "name": "tree-01",
+      "kind": "tree",
+      "dimensionsMeters": [
+        2.69232,
+        3.62298,
+        1.94048
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.34616,
+          0,
+          -0.97024
+        ],
+        "max": [
+          1.34616,
+          3.62298,
+          0.97024
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 808,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "harvest": [
+          -0.04267,
+          0.78298,
+          -0.09138
+        ],
+        "regrowth": [
+          -0.04267,
+          -0.01702,
+          -0.09138
+        ]
+      },
+      "bytes": 534144,
+      "sha256": "c7bd5ece522b5fed456f98bfe23e40c71598fbd6ac7a9197fbd3c5f02f9d45b2",
+      "family": "tree",
+      "variant": 1
+    },
+    {
+      "id": "tree-02",
+      "file": "tree-02.glb",
+      "name": "tree-02",
+      "kind": "tree",
+      "dimensionsMeters": [
+        2.1157,
+        3.87298,
+        1.50598
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.05785,
+          0,
+          -0.75299
+        ],
+        "max": [
+          1.05785,
+          3.87298,
+          0.75299
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 808,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "harvest": [
+          0.00406,
+          0.78298,
+          -0.03805
+        ],
+        "regrowth": [
+          0.00406,
+          -0.01702,
+          -0.03805
+        ]
+      },
+      "bytes": 534912,
+      "sha256": "fc106474c62575f3a5e87c6a4b61e75a2abe413db6dafbe86243719e095af0ff",
+      "family": "tree",
+      "variant": 2
+    },
+    {
+      "id": "tree-03",
+      "file": "tree-03.glb",
+      "name": "tree-03",
+      "kind": "tree",
+      "dimensionsMeters": [
+        3.18552,
+        3.09298,
+        2.07872
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.59276,
+          0,
+          -1.03936
+        ],
+        "max": [
+          1.59276,
+          3.09298,
+          1.03936
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 808,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "harvest": [
+          -0.0043,
+          0.78298,
+          -0.16625
+        ],
+        "regrowth": [
+          -0.0043,
+          -0.01702,
+          -0.16625
+        ]
+      },
+      "bytes": 533572,
+      "sha256": "888b4dd519b506d87eaf67dfdfa6b16ad078390ebc3f41b8e86f8f3dbbaae0f2",
+      "family": "tree",
+      "variant": 3
+    },
+    {
+      "id": "tree-04",
+      "file": "tree-04.glb",
+      "name": "tree-04",
+      "kind": "tree",
+      "dimensionsMeters": [
+        2.51008,
+        3.92298,
+        1.79786
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.25504,
+          0,
+          -0.89893
+        ],
+        "max": [
+          1.25504,
+          3.92298,
+          0.89893
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 808,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "harvest": [
+          0.06125,
+          0.78298,
+          -0.10858
+        ],
+        "regrowth": [
+          0.06125,
+          -0.01702,
+          -0.10858
+        ]
+      },
+      "bytes": 534912,
+      "sha256": "0c4582a6bd46f7d634cf69f1bb47719b75470e15d32eee35b21298bba57a277d",
+      "family": "tree",
+      "variant": 4
+    },
+    {
+      "id": "tree-05",
+      "file": "tree-05.glb",
+      "name": "tree-05",
+      "kind": "tree",
+      "dimensionsMeters": [
+        2.85288,
+        3.69298,
+        1.80224
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.42644,
+          0,
+          -0.90112
+        ],
+        "max": [
+          1.42644,
+          3.69298,
+          0.90112
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 808,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "harvest": [
+          0.00761,
+          0.78298,
+          -0.02227
+        ],
+        "regrowth": [
+          0.00761,
+          -0.01702,
+          -0.02227
+        ]
+      },
+      "bytes": 534660,
+      "sha256": "30877609cf0975085ec461cfa1d234bf13330b674db68c6f408027953ee003b0",
+      "family": "tree",
+      "variant": 5
+    },
+    {
+      "id": "tree-stump",
+      "file": "tree-stump.glb",
+      "name": "tree-stump",
+      "kind": "tree",
+      "dimensionsMeters": [
+        0.87734,
+        0.32279,
+        0.77946
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.43867,
+          0,
+          -0.38973
+        ],
+        "max": [
+          0.43867,
+          0.32279,
+          0.38973
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 392,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "regrowth": [
+          0,
+          0,
+          0
+        ]
+      },
+      "bytes": 518532,
+      "sha256": "b1514ba2bd2b1095d98fe837a0c41c78238b05292c48d206c560a95404ad6978",
+      "state": "depleted"
+    },
+    {
+      "id": "tree-regrowth",
+      "file": "tree-regrowth.glb",
+      "name": "tree-regrowth",
+      "kind": "tree",
+      "dimensionsMeters": [
+        0.89054,
+        1.22,
+        0.77946
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.44527,
+          0,
+          -0.38973
+        ],
+        "max": [
+          0.44527,
+          1.22,
+          0.38973
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 608,
+      "triangleBudget": 1500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "regrowth": [
+          -0.00659,
+          0,
+          0
+        ]
+      },
+      "bytes": 527368,
+      "sha256": "38b186c3501e4f1407cd149326bfa43afaec935e9a8a83c27ecc47bff58e645c",
+      "state": "regrowing"
+    },
+    {
+      "id": "log",
+      "file": "log.glb",
+      "name": "log",
+      "kind": "stackable",
+      "dimensionsMeters": [
+        0.782,
+        0.32,
+        0.30434
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.391,
+          0,
+          -0.15217
+        ],
+        "max": [
+          0.391,
+          0.32,
+          0.15217
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 164,
+      "triangleBudget": 200,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {},
+      "bytes": 508944,
+      "sha256": "1475d1ccd1bd56227f5c7f69736c9d09c551edea2b989c6e2c4d8656bf31c55c",
+      "instanceRotationsDegrees": [
+        0,
+        60,
+        120,
+        180,
+        240,
+        300
+      ]
+    },
+    {
+      "id": "plank",
+      "file": "plank.glb",
+      "name": "plank",
+      "kind": "stackable",
+      "dimensionsMeters": [
+        0.88,
+        0.113,
+        0.22
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.44,
+          0,
+          -0.11
+        ],
+        "max": [
+          0.44,
+          0.113,
+          0.11
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 120,
+      "triangleBudget": 200,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {},
+      "bytes": 509436,
+      "sha256": "40c8963a93ec4c98fa30d158047282ae5c8301997c312e5dcc8d844bc7c61835",
+      "instanceRotationsDegrees": [
+        0,
+        60,
+        120,
+        180,
+        240,
+        300
+      ]
+    },
+    {
+      "id": "coin",
+      "file": "coin.glb",
+      "name": "coin",
+      "kind": "stackable",
+      "dimensionsMeters": [
+        0.28,
+        0.0665,
+        0.28
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.14,
+          0,
+          -0.14
+        ],
+        "max": [
+          0.14,
+          0.0665,
+          0.14
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 100,
+      "triangleBudget": 200,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {},
+      "bytes": 505988,
+      "sha256": "e92764442504693d620e0cdbcc21710571fadad5db2a12b0533fc1f48a6a5f0c",
+      "instanceRotationsDegrees": [
+        0,
+        60,
+        120,
+        180,
+        240,
+        300
+      ]
+    },
+    {
+      "id": "sale-bench",
+      "file": "sale-bench.glb",
+      "name": "sale-bench",
+      "kind": "building",
+      "dimensionsMeters": [
+        2.1,
+        2.275,
+        0.92
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.05,
+          0,
+          -0.46
+        ],
+        "max": [
+          1.05,
+          2.275,
+          0.46
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1752,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "deposit": [
+          -0.53,
+          1.22,
+          0
+        ],
+        "coins": [
+          0.57,
+          1.25,
+          0
+        ],
+        "interaction": [
+          0,
+          0,
+          1
+        ]
+      },
+      "bytes": 620840,
+      "sha256": "a41bf348e48af8680dfab75bc40e6ede00cccfc22c3df0ae4f1cfb54ce91b556"
+    },
+    {
+      "id": "sawmill-tier-1",
+      "file": "sawmill-tier-1.glb",
+      "name": "sawmill-tier-1",
+      "kind": "building",
+      "dimensionsMeters": [
+        2.6,
+        1.80525,
+        1.74
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.3,
+          0,
+          -0.87
+        ],
+        "max": [
+          1.3,
+          1.80525,
+          0.87
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 2852,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle"
+      ],
+      "skeleton": null,
+      "sockets": {
+        "deposit": [
+          -0.8,
+          1.6,
+          0.255
+        ],
+        "output": [
+          0.25,
+          0.9,
+          -0.57
+        ],
+        "worker": [
+          -1.1,
+          0,
+          0.955
+        ],
+        "smoke": [
+          0.92,
+          3,
+          -0.445
+        ]
+      },
+      "bytes": 696808,
+      "sha256": "4cedc76ae4277b0beacb71f4f4d679b5e6c68bc001d82066529f1d3219148bb3",
+      "family": "sawmill",
+      "tier": 1
+    },
+    {
+      "id": "sawmill-tier-2",
+      "file": "sawmill-tier-2.glb",
+      "name": "sawmill-tier-2",
+      "kind": "building",
+      "dimensionsMeters": [
+        2.986,
+        2.52888,
+        2.0645
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.493,
+          0,
+          -1.03225
+        ],
+        "max": [
+          1.493,
+          2.52888,
+          1.03225
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 4296,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle"
+      ],
+      "skeleton": null,
+      "sockets": {
+        "deposit": [
+          -0.797,
+          1.6,
+          0.26725
+        ],
+        "output": [
+          0.253,
+          0.9,
+          -0.70775
+        ],
+        "worker": [
+          -1.097,
+          0,
+          0.96725
+        ],
+        "smoke": [
+          1.113,
+          3,
+          -0.43275
+        ]
+      },
+      "bytes": 785104,
+      "sha256": "364fc4df5d869940edb31ffd350b100a92abbfb360c61383b6bd2bc7d493dcbb",
+      "family": "sawmill",
+      "tier": 2
+    },
+    {
+      "id": "sawmill-tier-3",
+      "file": "sawmill-tier-3.glb",
+      "name": "sawmill-tier-3",
+      "kind": "building",
+      "dimensionsMeters": [
+        3.37674,
+        2.52888,
+        2.34
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.68837,
+          0,
+          -1.17
+        ],
+        "max": [
+          1.68837,
+          2.52888,
+          1.17
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 6380,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle"
+      ],
+      "skeleton": null,
+      "sockets": {
+        "conveyor-input": [
+          -1.68237,
+          0.62,
+          -0.045
+        ],
+        "deposit": [
+          -0.80238,
+          1.6,
+          0.255
+        ],
+        "output": [
+          0.24762,
+          0.9,
+          -0.87
+        ],
+        "worker": [
+          -1.10238,
+          0,
+          0.955
+        ],
+        "smoke": [
+          1.29762,
+          3,
+          -0.445
+        ]
+      },
+      "bytes": 927632,
+      "sha256": "a3b73db59e14c19c23e1125463108d395eafb1f3d4950320a90d535677efbf3d",
+      "family": "sawmill",
+      "tier": 3
+    },
+    {
+      "id": "sawmill-tier-4",
+      "file": "sawmill-tier-4.glb",
+      "name": "sawmill-tier-4",
+      "kind": "building",
+      "dimensionsMeters": [
+        3.761,
+        2.96,
+        2.685
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.8805,
+          0,
+          -1.3425
+        ],
+        "max": [
+          1.8805,
+          2.96,
+          1.3425
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 7636,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle"
+      ],
+      "skeleton": null,
+      "sockets": {
+        "conveyor-input": [
+          -1.8745,
+          0.62,
+          -0.0225
+        ],
+        "conveyor-output": [
+          1.8655,
+          0.62,
+          -0.0225
+        ],
+        "deposit": [
+          -0.8045,
+          1.6,
+          0.2775
+        ],
+        "output": [
+          0.2455,
+          0.9,
+          -0.9975
+        ],
+        "worker": [
+          -1.1045,
+          0,
+          0.9775
+        ],
+        "smoke": [
+          1.4855,
+          3,
+          -0.4225
+        ]
+      },
+      "bytes": 986800,
+      "sha256": "573fce70292703986bbc120162d5d271e75fe32d8e75a79ad165338b5f60bf54",
+      "family": "sawmill",
+      "tier": 4
+    },
+    {
+      "id": "conveyor-straight",
+      "file": "conveyor-straight.glb",
+      "name": "conveyor-straight",
+      "kind": "building",
+      "dimensionsMeters": [
+        1.08,
+        0.655,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.54,
+          0,
+          -1
+        ],
+        "max": [
+          0.54,
+          0.655,
+          1
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 900,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.62,
+          1
+        ],
+        "output": [
+          0,
+          0.62,
+          -1
+        ]
+      },
+      "bytes": 558404,
+      "sha256": "f3fc7e38a5a3f707156a09f2e33a301814fbca8f22fad11f6ae485e9d61a94ee",
+      "family": "conveyor",
+      "module": "straight",
+      "gridMeters": 1,
+      "surfaceHeightMeters": 0.62
+    },
+    {
+      "id": "conveyor-corner",
+      "file": "conveyor-corner.glb",
+      "name": "conveyor-corner",
+      "kind": "building",
+      "dimensionsMeters": [
+        1.54,
+        0.655,
+        1.54
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.77,
+          0,
+          -0.77
+        ],
+        "max": [
+          0.77,
+          0.655,
+          0.77
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1620,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          -0.23,
+          0.62,
+          0.77
+        ],
+        "output": [
+          0.77,
+          0.62,
+          -0.23
+        ]
+      },
+      "bytes": 607240,
+      "sha256": "855b828ddc74e52b7e914455587f3f5128452fe93e8279e0e3b3c20574cecd07",
+      "family": "conveyor",
+      "module": "corner",
+      "gridMeters": 1,
+      "surfaceHeightMeters": 0.62
+    },
+    {
+      "id": "conveyor-end",
+      "file": "conveyor-end.glb",
+      "name": "conveyor-end",
+      "kind": "building",
+      "dimensionsMeters": [
+        1.08,
+        1.04,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.54,
+          0,
+          -1
+        ],
+        "max": [
+          0.54,
+          1.04,
+          1
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1008,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.62,
+          1
+        ],
+        "output": [
+          0,
+          0.62,
+          -1
+        ]
+      },
+      "bytes": 565948,
+      "sha256": "b8684685c32a829fc4bc0cf7ae3e53789c18d47d343581a1d21c32d458e6570c",
+      "family": "conveyor",
+      "module": "end",
+      "gridMeters": 1,
+      "surfaceHeightMeters": 0.62
+    },
+    {
+      "id": "upgrade-zone",
+      "file": "upgrade-zone.glb",
+      "name": "upgrade-zone",
+      "kind": "building",
+      "dimensionsMeters": [
+        2,
+        0.92,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -1,
+          0,
+          -1
+        ],
+        "max": [
+          1,
+          0.92,
+          1
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 844,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "interaction": [
+          0,
+          0.08,
+          0
+        ],
+        "label": [
+          0,
+          1.45,
+          0
+        ]
+      },
+      "bytes": 532320,
+      "sha256": "3610e3370acc73cbbb75727f14a98dcd0a86e31794ea00d32f95f938caf7c8ce"
+    },
+    {
+      "id": "monument-stage-1",
+      "file": "monument-stage-1.glb",
+      "name": "monument-stage-1",
+      "kind": "building",
+      "dimensionsMeters": [
+        4.4,
+        1.46392,
+        4.4
+      ],
+      "boundsMeters": {
+        "min": [
+          -2.2,
+          0,
+          -2.2
+        ],
+        "max": [
+          2.2,
+          1.46392,
+          2.2
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 2412,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "deposit": [
+          0,
+          0.1,
+          2.45
+        ],
+        "next-stage": [
+          0,
+          1.4,
+          0
+        ],
+        "beacon": [
+          0,
+          5.2,
+          -0.56
+        ]
+      },
+      "bytes": 620948,
+      "sha256": "6222c384946e4b85124d1cf4e81cee72f776c25bb14c482b97375cdedcdac9f8",
+      "family": "monument",
+      "stage": 1
+    },
+    {
+      "id": "monument-stage-2",
+      "file": "monument-stage-2.glb",
+      "name": "monument-stage-2",
+      "kind": "building",
+      "dimensionsMeters": [
+        4.4,
+        3.635,
+        4.4
+      ],
+      "boundsMeters": {
+        "min": [
+          -2.2,
+          0,
+          -2.2
+        ],
+        "max": [
+          2.2,
+          3.635,
+          2.2
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 5216,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle"
+      ],
+      "skeleton": null,
+      "sockets": {
+        "deposit": [
+          0,
+          0.1,
+          2.45
+        ],
+        "next-stage": [
+          0,
+          3.6,
+          0
+        ],
+        "beacon": [
+          0,
+          5.2,
+          -0.56
+        ]
+      },
+      "bytes": 806904,
+      "sha256": "8c2ca4030d6a3c301a0b9d81dfb9d4f6b908914d9edf396dd6a420de7caca2a8",
+      "family": "monument",
+      "stage": 2
+    },
+    {
+      "id": "monument-stage-3",
+      "file": "monument-stage-3.glb",
+      "name": "monument-stage-3",
+      "kind": "building",
+      "dimensionsMeters": [
+        4.4,
+        5.21,
+        4.4
+      ],
+      "boundsMeters": {
+        "min": [
+          -2.2,
+          0,
+          -2.2
+        ],
+        "max": [
+          2.2,
+          5.21,
+          2.2
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 7124,
+      "triangleBudget": 12000,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        2048,
+        2048
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [
+        "idle"
+      ],
+      "skeleton": null,
+      "sockets": {
+        "deposit": [
+          0,
+          0.1,
+          2.45
+        ],
+        "next-stage": [
+          0,
+          5.3,
+          0
+        ],
+        "beacon": [
+          0,
+          5.2,
+          -0.56
+        ]
+      },
+      "bytes": 878288,
+      "sha256": "836b31d0f255a670d2c905d0aab8bdad708023ccb648d2cb6fda0bf96da60d5a",
+      "family": "monument",
+      "stage": 3
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Ouvrier</title>
+  <defs>
+    <path id="body" d="M34 47C33 29 44 18 63 18S96 29 95 47L106 52Q111 58 98 62L91 64Q90 77 82 81C99 83 106 95 104 112H24C22 95 29 84 45 81Q36 74 36 64L26 61Q17 57 23 52Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#398f91" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M38 60h52Q92 84 66 89 37 84 38 60Z" fill="#f1bc8b" stroke="#30271e" stroke-width="6"/>
+  <path d="M34 48C33 28 44 18 63 18S96 29 95 48L105 53Q110 61 94 62H32Q18 60 24 53Z" fill="#f6cc55" stroke="#30271e" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M62 23l-1 21M38 51h50" fill="none" stroke="#ffe994" stroke-width="6" stroke-linecap="round"/>
+  <path d="M44 89l2 20M83 89l-2 20" fill="none" stroke="#e9c37d" stroke-width="9"/>
+  <path d="M52 69v3M76 69v3" stroke="#30271e" stroke-width="5" stroke-linecap="round"/>
+</svg>

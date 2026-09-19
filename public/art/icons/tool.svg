@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Hache orbitale</title>
+  <defs>
+    <path id="body" d="M65 19Q72 12 78 18L85 25Q99 24 107 19C113 35 112 51 100 63L86 52 77 51 39 109Q34 116 28 111L22 107Q17 104 22 96L60 41 51 32Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#dba662" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M62 41l17 8-36 54-17-10Z" fill="#ba7b43"/>
+  <path d="M72 26Q88 33 107 21C113 35 111 51 100 62L72 46Z" fill="#9bc1bd" stroke="#30271e" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M103 29q3 12-6 25" fill="none" stroke="#fff4d6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M59 32l16 12M29 90l13 8M36 79l13 8" fill="none" stroke="#754b35" stroke-width="6" stroke-linecap="round"/>
+</svg>

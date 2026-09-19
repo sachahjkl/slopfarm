@@ -1,16 +1,42 @@
 import type { GameCommand, Vector2 } from "../game/simulation";
+import { screenToWorldDirection } from "./camera-layout";
 
 export class KeyboardInput {
   readonly #keys = new Set<string>();
+  #pointerId: number | undefined;
+  #pointerOrigin = { x: 0, y: 0 };
+  #pointer = { x: 0, y: 0 };
   #upgradeRequests = 0;
 
-  constructor(target: Window = window) {
+  constructor(
+    surface: HTMLElement,
+    target: Window = window,
+    allowDebug = false,
+  ) {
     target.addEventListener("keydown", (event) => {
       this.#keys.add(event.code);
-      if (event.code === "KeyU" && !event.repeat) this.#upgradeRequests += 1;
+      if (allowDebug && event.code === "KeyU" && !event.repeat)
+        this.#upgradeRequests += 1;
     });
     target.addEventListener("keyup", (event) => this.#keys.delete(event.code));
     target.addEventListener("blur", () => this.#keys.clear());
+    surface.addEventListener("pointerdown", (event) => {
+      if (this.#pointerId !== undefined) return;
+      this.#pointerId = event.pointerId;
+      this.#pointerOrigin = { x: event.clientX, y: event.clientY };
+      this.#pointer = { ...this.#pointerOrigin };
+      surface.setPointerCapture(event.pointerId);
+    });
+    surface.addEventListener("pointermove", (event) => {
+      if (event.pointerId === this.#pointerId) {
+        this.#pointer = { x: event.clientX, y: event.clientY };
+      }
+    });
+    const release = (event: PointerEvent): void => {
+      if (event.pointerId === this.#pointerId) this.#pointerId = undefined;
+    };
+    surface.addEventListener("pointerup", release);
+    surface.addEventListener("pointercancel", release);
   }
 
   readCommands(): GameCommand[] {
@@ -40,9 +66,17 @@ export class KeyboardInput {
     )
       screen.x -= 1;
     if (this.#keys.has("KeyD") || this.#keys.has("ArrowRight")) screen.x += 1;
-    return {
-      x: (screen.x + screen.z) * Math.SQRT1_2,
-      z: (screen.z - screen.x) * Math.SQRT1_2,
-    };
+    if (this.#pointerId !== undefined) {
+      const maximum = 64;
+      screen.x += Math.max(
+        -1,
+        Math.min(1, (this.#pointer.x - this.#pointerOrigin.x) / maximum),
+      );
+      screen.z += Math.max(
+        -1,
+        Math.min(1, (this.#pointer.y - this.#pointerOrigin.y) / maximum),
+      );
+    }
+    return screenToWorldDirection(screen);
   }
 }

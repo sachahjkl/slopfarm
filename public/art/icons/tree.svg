@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Arbre à récolter</title>
+  <defs>
+    <path id="body" d="M52 80C34 85 16 76 16 59Q15 39 33 33C34 17 50 11 64 16Q82 8 94 24L99 35Q114 39 113 57C114 76 98 84 79 82L84 111Q64 119 45 111Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#a9683f" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M52 80C34 85 16 76 16 59Q15 39 33 33C34 17 50 11 64 16Q82 8 94 24L99 35Q114 39 113 57C114 76 98 84 79 82Q65 88 52 80Z" fill="#72ab56" stroke="#30271e" stroke-width="6"/>
+  <path d="M91 36C81 43 78 68 66 78Q93 88 106 69C115 52 105 38 91 36Z" fill="#427950"/>
+  <path d="M35 48Q39 27 58 30M66 28q11-6 19 2" fill="none" stroke="#a2cc72" stroke-width="9" stroke-linecap="round"/>
+  <path d="M60 93l-1 13" fill="none" stroke="#e0ad69" stroke-width="6" stroke-linecap="round"/>
+</svg>

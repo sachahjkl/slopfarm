@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Prérequis manquant</title>
+  <defs>
+    <path id="body" d="M33 53V39C33 4 96 4 96 39v14h7q9 0 9 10l-3 42q0 9-12 9H30q-11 0-12-10l-3-39q0-11 10-12Zm17 0h28V39c0-15-28-15-28 0Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round" fill-rule="evenodd"/>
+  <use href="#body" fill="#68766b" stroke="#30271e" stroke-width="7" stroke-linejoin="round" fill-rule="evenodd"/>
+  <path d="M25 59q40 6 78 0l-3 43H28Z" fill="#30271e"/>
+  <path d="M65 70a9 9 0 0 1 5 17l2 10H56l3-10a9 9 0 0 1 6-17Z" fill="#fff4d6"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>Zone de dépôt</title>
+  <defs>
+    <path id="ring" d="M100 21C59 27 27 59 22 103M21 149c7 45 40 77 84 85M151 234c43-9 75-40 83-85M234 103c-8-44-40-76-83-83"/>
+    <path id="arrow" d="M113 68h30l-2 65 27-4-39 53-41-52 28 3Z"/>
+  </defs>
+  <use href="#ring" fill="none" stroke="#30271e" stroke-width="19" stroke-linecap="round"/>
+  <use href="#ring" fill="none" stroke="#f6cc55" stroke-width="11" stroke-linecap="round"/>
+  <use href="#arrow" fill="#fff4d6" stroke="#30271e" stroke-width="9" stroke-linejoin="round"/>
+</svg>

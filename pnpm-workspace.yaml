@@ -2,7 +2,12 @@ packages:
   - "."
 
 overrides:
+  "@babel/parser": 7.29.8
+  electron-to-chromium: 1.5.431
+  "path-scurry>lru-cache": 11.5.2
+  regjsparser: 0.13.2
   rollup: 4.50.0
+  which-typed-array: 1.1.23
 
 onlyBuiltDependencies:
   - esbuild

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>Machine monumentale</title>
+  <defs>
+    <path id="body" d="M18 100h10V43Q28 38 34 38h45V27L91 14l13 13v69l9 4v13H17Z"/>
+  </defs>
+  <use href="#body" fill="#fff4d6" stroke="#fff4d6" stroke-width="14" stroke-linejoin="round"/>
+  <use href="#body" fill="#d6a367" stroke="#30271e" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M79 30h25v65H79Z" fill="#dc8162" stroke="#30271e" stroke-width="5"/>
+  <path d="M32 49h47M37 54v39" fill="none" stroke="#f4d79d" stroke-width="7" stroke-linecap="round"/>
+  <path d="M56 58C69 55 81 65 81 78S70 101 57 99 35 89 36 76 44 60 56 58Z" fill="#f6cc55" stroke="#30271e" stroke-width="6"/>
+  <circle cx="59" cy="78" r="10" fill="#398f91" stroke="#30271e" stroke-width="5"/>
+  <path d="M18 100q46 4 94 0v13H18Z" fill="#398f91" stroke="#30271e" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M87 41h9" stroke="#fff4d6" stroke-width="5" stroke-linecap="round"/>
+</svg>
