@@ -19,6 +19,8 @@ La caméra réduit les détails. Consacre les polygones aux silhouettes, aux out
 
 Entre dans l’environnement Blender avec `nix develop .#assets`.
 
+Inspecte chaque export dans le [Model Lab](../viewer.html). Exporte son retour JSON avant une demande de retouche.
+
 ## IA générative
 
 Ne lie pas le pipeline à un nom de modèle non confirmé comme « GPT-6 Astra ».

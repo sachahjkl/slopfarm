@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#151918" />
+    <title>Slopfarm — Model Lab</title>
+  </head>
+  <body>
+    <main id="viewer-app">
+      <canvas id="viewer" aria-label="Aperçu du modèle 3D"></canvas>
+      <aside id="panel">
+        <header>
+          <a href="/">← Jeu</a>
+          <div>
+            <small>SLOPFARM</small>
+            <h1>Model Lab</h1>
+          </div>
+        </header>
+        <label id="drop-zone" for="model-file">
+          <strong>Dépose un modèle GLB</strong>
+          <span>ou sélectionne un fichier local</span>
+          <input id="model-file" type="file" accept=".glb,model/gltf-binary" />
+        </label>
+        <section>
+          <h2>Inspection</h2>
+          <dl id="metrics">
+            <dt>État</dt>
+            <dd>Aucun modèle</dd>
+          </dl>
+        </section>
+        <section>
+          <h2>Affichage</h2>
+          <label
+            >Animation<select id="animation" disabled>
+              <option>Aucune</option>
+            </select></label
+          >
+          <label
+            >Éclairage<input
+              id="light"
+              type="range"
+              min="0"
+              max="6"
+              step="0.1"
+              value="2.5"
+          /></label>
+          <label
+            ><input id="wireframe" type="checkbox" /> Maillage filaire</label
+          >
+          <label
+            ><input id="grid" type="checkbox" checked /> Grille et axes</label
+          >
+          <button id="reset-camera" type="button">Cadrer le modèle</button>
+        </section>
+        <section>
+          <h2>Retour</h2>
+          <label for="feedback">Décris les retouches à faire</label>
+          <textarea
+            id="feedback"
+            rows="5"
+            placeholder="Exemple : agrandir la tête de hache de 20 %…"
+          ></textarea>
+          <div class="actions">
+            <button id="screenshot" type="button">Capture PNG</button>
+            <button id="export-feedback" class="primary" type="button">
+              Exporter JSON
+            </button>
+          </div>
+          <p id="status" role="status"></p>
+        </section>
+      </aside>
+    </main>
+    <script type="module" src="/src/viewer/main.ts"></script>
+  </body>
+</html>

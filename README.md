@@ -14,6 +14,8 @@ pnpm dev
 
 Ouvre ensuite l’adresse affichée par Vite. Utilise `ZQSD`, `WASD` ou les flèches pour marcher. Maintiens `Espace` près d’un arbre.
 
+Ouvre `/viewer.html` pour inspecter un fichier GLB et préparer un retour de retouche reproductible.
+
 ## Commandes
 
 | Commande          | Fonction                                   |
@@ -28,7 +30,9 @@ Ouvre ensuite l’adresse affichée par Vite. Utilise `ZQSD`, `WASD` ou les flè
 
 ## Documents
 
+- [Spécification produit validée](docs/product-spec.md)
 - [Vision et boucle de jeu](docs/gameplay.md)
 - [Architecture et plan d’implémentation](docs/implementation.md)
 - [Pipeline des modèles 3D](docs/art-pipeline.md)
+- [Outils de développement](docs/development-tools.md)
 - [Feuille de route](docs/roadmap.md)

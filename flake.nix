@@ -17,17 +17,17 @@
       pkgs = nixpkgs.legacyPackages.${system};
       source = pkgs.lib.cleanSourceWith {
         src = ./.;
-        filter = path: type: let
+        filter = path: _: let
           name = baseNameOf path;
         in
           !builtins.elem name [".direnv" "dist" "node_modules" "result"];
       };
-      pnpmDeps = pkgs.pnpm.fetchDeps {
+      pnpmDeps = pkgs.fetchPnpmDeps {
         pname = "slopfarm";
         version = "0.1.0";
         src = source;
-        fetcherVersion = 2;
-        hash = pkgs.lib.fakeHash;
+        fetcherVersion = 3;
+        hash = "sha256-9/Tb80d3ndZUN2tSlrNPxvP5NS1H+Hp8dQwBJtiaftw=";
       };
     in {
       default = pkgs.stdenvNoCC.mkDerivation {
@@ -35,7 +35,7 @@
         version = "0.1.0";
         src = source;
         inherit pnpmDeps;
-        nativeBuildInputs = [pkgs.nodejs_24 pkgs.pnpm pkgs.pnpm.configHook];
+        nativeBuildInputs = [pkgs.nodejs_24 pkgs.pnpm pkgs.pnpmConfigHook];
         buildPhase = "pnpm build";
         installPhase = "cp -r dist $out";
       };
@@ -55,15 +55,10 @@
             enable = true;
             types_or = ["javascript" "ts" "css" "html" "json" "markdown"];
           };
-          eslint = {
-            enable = true;
-            entry = "pnpm lint";
-            pass_filenames = false;
-          };
         };
       };
       mkPnpmCheck = name: command:
-        package.overrideAttrs (old: {
+        package.overrideAttrs (_: {
           pname = "slopfarm-${name}";
           buildPhase = command;
           installPhase = "touch $out";
