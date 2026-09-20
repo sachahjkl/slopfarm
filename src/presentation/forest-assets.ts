@@ -10,13 +10,18 @@ import adventurerLeafUrl from "../../assets/forest/adventurer-leaf.glb?url";
 import axeDoubleUrl from "../../assets/forest/axe-reinforced-double.glb?url";
 import axeSimpleUrl from "../../assets/forest/axe-simple.glb?url";
 import coinUrl from "../../assets/forest/coin.glb?url";
-import conveyorStraightUrl from "../../assets/forest/conveyor-straight.glb?url";
+import conveyorStraightUrl from "../../assets/forest/industry-conveyor-straight.glb?url";
+import industryBufferUrl from "../../assets/forest/industry-roller-buffer.glb?url";
+import industryCraneUrl from "../../assets/forest/industry-gantry-crane.glb?url";
+import industryDockUrl from "../../assets/forest/industry-loading-dock.glb?url";
+import industryRackUrl from "../../assets/forest/industry-storage-rack.glb?url";
+import industrySorterUrl from "../../assets/forest/industry-sorter.glb?url";
 import logUrl from "../../assets/forest/log.glb?url";
 import monument1Url from "../../assets/forest/monument-stage-1.glb?url";
 import monument2Url from "../../assets/forest/monument-stage-2.glb?url";
 import monument3Url from "../../assets/forest/monument-stage-3.glb?url";
 import plankUrl from "../../assets/forest/plank.glb?url";
-import saleUrl from "../../assets/forest/sale-bench.glb?url";
+import saleUrl from "../../assets/forest/industry-market-stall.glb?url";
 import sawmill1Url from "../../assets/forest/sawmill-tier-1.glb?url";
 import sawmill2Url from "../../assets/forest/sawmill-tier-2.glb?url";
 import sawmill3Url from "../../assets/forest/sawmill-tier-3.glb?url";
@@ -30,6 +35,11 @@ export interface MeshAsset {
   material: THREE.Material | THREE.Material[];
 }
 
+export interface AnimatedAsset {
+  object: THREE.Object3D;
+  animations: THREE.AnimationClip[];
+}
+
 export interface ForestAssets {
   adventurer: THREE.Object3D;
   worker: THREE.Object3D;
@@ -39,7 +49,14 @@ export interface ForestAssets {
   conveyorStraight: THREE.Object3D;
   sale: THREE.Object3D;
   sawmills: THREE.Object3D[];
-  monuments: THREE.Object3D[];
+  monuments: AnimatedAsset[];
+  industry: {
+    buffer: THREE.Object3D;
+    rack: THREE.Object3D;
+    crane: THREE.Object3D;
+    sorter: THREE.Object3D;
+    dock: THREE.Object3D;
+  };
   regrowth: MeshAsset;
   stump: MeshAsset;
   resources: {
@@ -96,6 +113,11 @@ export async function loadForestAssets(): Promise<ForestAssets> {
     coinUrl,
     adventurerCoralUrl,
     adventurerLeafUrl,
+    industryBufferUrl,
+    industryRackUrl,
+    industryCraneUrl,
+    industrySorterUrl,
+    industryDockUrl,
   ] as const;
   const models = await Promise.all(urls.map((url) => loader.loadAsync(url)));
   const scenes = models.map(({ scene }) => scene);
@@ -108,7 +130,17 @@ export async function loadForestAssets(): Promise<ForestAssets> {
     conveyorStraight: flattenAsset(scenes[4]!),
     sale: flattenAsset(scenes[5]!),
     sawmills: scenes.slice(6, 10).map(flattenAsset),
-    monuments: scenes.slice(10, 13).map(flattenAsset),
+    monuments: scenes.slice(10, 13).map((scene, index) => ({
+      object: prepareAsset(scene),
+      animations: models[index + 10]!.animations,
+    })),
+    industry: {
+      buffer: flattenAsset(scenes[20]!),
+      rack: flattenAsset(scenes[21]!),
+      crane: flattenAsset(scenes[22]!),
+      sorter: flattenAsset(scenes[23]!),
+      dock: flattenAsset(scenes[24]!),
+    },
     regrowth: extractMesh(scenes[13]!),
     stump: extractMesh(scenes[14]!),
     resources: {
@@ -122,6 +154,19 @@ export async function loadForestAssets(): Promise<ForestAssets> {
 function flattenAsset(root: THREE.Object3D): THREE.Object3D {
   const asset = extractMesh(root);
   return new THREE.Mesh(asset.geometry, asset.material);
+}
+
+function prepareAsset(root: THREE.Object3D): THREE.Object3D {
+  root.traverse((child) => {
+    if (!(child instanceof THREE.Mesh)) return;
+    const material = child.material as THREE.Material | THREE.Material[];
+    child.material = Array.isArray(material)
+      ? material.map(toToonMaterial)
+      : toToonMaterial(material);
+    child.castShadow = false;
+    child.receiveShadow = true;
+  });
+  return root;
 }
 
 export function cloneAsset(asset: THREE.Object3D): THREE.Object3D {

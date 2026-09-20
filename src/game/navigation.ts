@@ -30,6 +30,7 @@ export function findPath(
   to: Vector2,
   options: PathOptions,
 ): Vector2[] | undefined {
+  if (distance(from, to) <= options.goalRadius) return [];
   const start = snap(from, options.step);
   const startKey = key(start);
   const nodes = new Map<string, SearchNode>();
@@ -45,8 +46,12 @@ export function findPath(
     const currentKey = minimumEstimate(open, nodes);
     const current = nodes.get(currentKey)!;
     open.delete(currentKey);
-    if (distance(current.point, to) <= options.goalRadius)
-      return rebuildPath(currentKey, nodes);
+    if (distance(current.point, to) <= options.goalRadius) {
+      const path = rebuildPath(currentKey, nodes);
+      if (path.length === 0 && distance(from, to) > options.goalRadius)
+        return [start];
+      return path;
+    }
 
     for (const direction of DIRECTIONS) {
       const point = {

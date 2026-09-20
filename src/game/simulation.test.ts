@@ -6,6 +6,7 @@ import { runReplay } from "./replay";
 import {
   FOREST,
   MONUMENT_CONVEYOR_PATH,
+  MONUMENT_PLANK_OUTPUT,
   SALE_OUTPUT,
   SAWMILL_BUILDING,
   SAWMILL_OUTPUT,
@@ -334,7 +335,7 @@ describe("GameSimulation", () => {
     game.restore(unlocked);
     game.enqueue({ type: "movement.changed", direction: { x: 0, z: -1 } });
     advance(game, 0.5);
-    expect(game.state.player.position.z).toBeLessThan(-4.5);
+    expect(game.state.player.position.z).toBeLessThan(-4.2);
   });
 
   it("laisse libre l’ancien collider surdimensionné de la scierie", () => {
@@ -369,6 +370,28 @@ describe("GameSimulation", () => {
     expect(plank?.position.z).toBeCloseTo(SAWMILL_OUTPUT.z, 1);
   });
 
+  it("agrège les ressources proches dans une seule pile", () => {
+    const game = new GameSimulation(22);
+    const save = game.createSave();
+    save.state.player.position = { x: 0, z: 0 };
+    save.state.pickups = [0, 0.4, 0.8].map((offset, index) => ({
+      id: 7000 + index,
+      kind: "wood" as const,
+      amount: 1,
+      fixed: false,
+      position: { x: 8 + offset, y: 0.18, z: 8 },
+      rotation: 0,
+    }));
+    game.restore(save);
+    game.advance(1 / 60);
+    expect(game.state.pickups).toHaveLength(1);
+    expect(game.state.pickups[0]).toMatchObject({
+      kind: "wood",
+      amount: 3,
+      fixed: false,
+    });
+  });
+
   it("laisse le joueur atteindre le dépôt du chargement", () => {
     const game = new GameSimulation();
     const save = game.createSave();
@@ -377,7 +400,12 @@ describe("GameSimulation", () => {
     game.restore(save);
     game.enqueue({ type: "movement.changed", direction: { x: 0, z: -1 } });
     advance(game, 0.35);
-    expect(game.state.player.position.z).toBeLessThan(-5.5);
+    expect(
+      Math.hypot(
+        game.state.player.position.x - ZONES.monument.x,
+        game.state.player.position.z - ZONES.monument.z,
+      ),
+    ).toBeLessThan(0.2);
   });
 
   it("applique les améliorations dans l’ordre de la file", () => {
@@ -425,12 +453,12 @@ describe("GameSimulation", () => {
     expect(game.state.inventory.coins).toBe(0);
     expect(game.state.campaign.customersServed).toBe(3);
     expect(
-      game.state.pickups.filter(({ kind }) => kind === "coin"),
-    ).toHaveLength(6);
+      game.state.pickups
+        .filter(({ kind }) => kind === "coin")
+        .reduce((total, { amount }) => total + amount, 0),
+    ).toBe(6);
     const coins = game.state.pickups.filter(({ kind }) => kind === "coin");
-    expect(
-      new Set(coins.map(({ position }) => position.x)).size,
-    ).toBeGreaterThan(1);
+    expect(coins).toHaveLength(1);
     expect(
       coins.every(
         ({ position }) =>
@@ -438,9 +466,7 @@ describe("GameSimulation", () => {
           Math.abs(position.z - SALE_OUTPUT.z) <= 0.04,
       ),
     ).toBe(true);
-    expect(coins.at(-1)!.position.y - coins[0]!.position.y).toBeGreaterThan(
-      0.5,
-    );
+    expect(coins[0]!.amount).toBe(6);
     const save = game.createSave();
     save.state.player.position = { ...SALE_OUTPUT };
     game.restore(save);
@@ -583,6 +609,66 @@ describe("GameSimulation", () => {
     advance(game, 3);
     expect(game.state.campaign.step).toBe(7);
     expect(game.state.campaign.exitPlanks).toBe(35);
+    expect(game.state.monument).toEqual({ stage: 0, progress: 0 });
+  });
+
+  it("ne construit pas le monument automatiquement avant le convoi", () => {
+    const game = gameWithSawmillWood(1, CAMPAIGN_STEPS.worker);
+    advance(game, FOREST.sawmillSecondsPerPlank + 2);
+    expect(game.state.monument).toEqual({ stage: 0, progress: 0 });
+    expect(game.state.pickups.some(({ kind }) => kind === "plank")).toBe(true);
+  });
+
+  it("charge le convoi automatiquement sans construire le monument", () => {
+    const game = gameWithSawmillWood(1, CAMPAIGN_STEPS.convoy);
+    game.advance(1 / 60);
+    game.restore(game.createSave());
+    advance(game, 20);
+    expect(game.state.campaign.exitPlanks).toBe(1);
+    expect(game.state.monument).toEqual({ stage: 0, progress: 0 });
+  });
+
+  it("empile les livraisons déjà en route quand le convoi est plein", () => {
+    const game = gameWithSawmillWood(3, CAMPAIGN_STEPS.convoy);
+    const save = game.createSave();
+    save.state.campaign.exitPlanks = campaignCosts().exitPlanks - 1;
+    game.restore(save);
+    advance(game, 30);
+    expect(game.state.campaign.exitPlanks).toBe(campaignCosts().exitPlanks);
+    expect(game.state.pickups).toContainEqual(
+      expect.objectContaining({ kind: "plank", amount: 2, fixed: true }),
+    );
+  });
+
+  it("construit le monument seulement après le convoi", () => {
+    const game = gameAtZone("monument", {
+      planks: 1,
+      campaignStep: CAMPAIGN_STEPS.departure,
+    });
+    advance(game, 0.2);
+    expect(game.state.campaign.exitPlanks).toBe(0);
+    expect(game.state.monument.progress).toBe(1);
+  });
+
+  it("empile les planches livrées après la fin du monument", () => {
+    const game = gameWithSawmillWood(3, CAMPAIGN_STEPS.defense, 3);
+    advance(game, 30);
+    const piles = game.state.pickups.filter(({ kind }) => kind === "plank");
+    expect(game.state.monument).toEqual({ stage: 3, progress: 0 });
+    expect(piles).toHaveLength(1);
+    expect(piles[0]).toMatchObject({ amount: 3, fixed: true });
+    expect(piles[0]!.position.x).toBeCloseTo(MONUMENT_PLANK_OUTPUT.x);
+    expect(piles[0]!.position.z).toBeCloseTo(MONUMENT_PLANK_OUTPUT.z);
+  });
+
+  it("ne consomme pas un dépôt manuel quand le monument est terminé", () => {
+    const game = gameAtZone("monument", {
+      planks: 1,
+      campaignStep: CAMPAIGN_STEPS.defense,
+      monumentStage: 3,
+    });
+    advance(game, 1);
+    expect(game.state.inventory.planks).toBe(1);
   });
 
   it("ouvre l’extension animale sans réinitialiser la base", () => {
@@ -601,8 +687,47 @@ describe("GameSimulation", () => {
     const save = game.createSave();
     save.state.campaign.step = CAMPAIGN_STEPS.departure;
     game.restore(save);
-    advance(game, FOREST.animalSpawnSeconds + 1);
+    advance(
+      game,
+      FOREST.wildlifeCalmSeconds + FOREST.wildlifeWarningSeconds + 1,
+    );
     expect(game.state.animals).toHaveLength(0);
+  });
+
+  it("annonce une voie avant de lancer une vague bornée", () => {
+    const game = new GameSimulation(22);
+    const save = game.createSave();
+    save.state.campaign.step = CAMPAIGN_STEPS.wildlife;
+    game.restore(save);
+    game.advance(1 / 60);
+    expect(game.state.wildlife.phase).toBe("calm");
+    advance(game, FOREST.wildlifeCalmSeconds + 0.1);
+    expect(game.state.wildlife.phase).toBe("warning");
+    expect(game.state.animals).toHaveLength(0);
+    const lane = game.state.wildlife.lane;
+    advance(game, FOREST.wildlifeWarningSeconds + 0.1);
+    expect(game.state.wildlife.phase).toBe("active");
+    expect(game.state.wildlife.target).toBeGreaterThan(0);
+    expect(game.state.animals.every(({ route }) => route === lane)).toBe(true);
+  });
+
+  it("passe en récupération quand tous les animaux de la vague sont éliminés", () => {
+    const game = new GameSimulation(22);
+    const save = game.createSave();
+    save.state.campaign.step = CAMPAIGN_STEPS.wildlife;
+    save.state.wildlife = {
+      phase: "active",
+      lane: 1,
+      wave: 2,
+      remaining: 0,
+      spawned: 3,
+      target: 3,
+    };
+    game.restore(save);
+    game.advance(1 / 60);
+    expect(game.state.wildlife.phase).toBe("recovery");
+    advance(game, FOREST.wildlifeRecoverySeconds + 0.1);
+    expect(game.state.wildlife.phase).toBe("calm");
   });
 
   it("transforme un ours éliminé en viande physique", () => {
@@ -693,8 +818,10 @@ describe("GameSimulation", () => {
     advance(game, 0.5);
     expect(game.state.inventory.meat).toBe(0);
     expect(
-      game.state.pickups.filter(({ kind }) => kind === "coin"),
-    ).toHaveLength(FOREST.meatPrice);
+      game.state.pickups
+        .filter(({ kind }) => kind === "coin")
+        .reduce((total, { amount }) => total + amount, 0),
+    ).toBe(FOREST.meatPrice);
   });
 
   it("construit la première tourelle sans arrêter la progression", () => {
@@ -804,15 +931,98 @@ describe("GameSimulation", () => {
     });
     advance(game, 0.5);
     expect(game.state.inventory).toMatchObject({ meat: 0, planks: 0 });
-    expect(game.state.butcher).toEqual({ level: 1, planks: 0 });
+    expect(game.state.butcher).toMatchObject({ level: 1, planks: 0 });
   });
 
-  it("transforme les améliorations de boucherie en capacité ouvrière", () => {
+  it("transforme la viande en rations sans compter une vente", () => {
+    const game = gameAtZone("canteen", {
+      meat: FOREST.rationCosts[0],
+      campaignStep: CAMPAIGN_STEPS.defense,
+      butcherLevel: 1,
+    });
+    advance(game, 2);
+    expect(game.state.butcher.rationLevel).toBe(1);
+    expect(game.state.campaign.meatSold).toBe(0);
+    expect(game.state.inventory.meat).toBe(0);
+  });
+
+  it("lie chaque niveau de rations au niveau de la boucherie", () => {
+    const game = gameAtZone("canteen", {
+      meat: 1,
+      campaignStep: CAMPAIGN_STEPS.defense,
+      butcherLevel: 1,
+      rationLevel: 1,
+    });
+    advance(game, 1);
+    expect(game.state.butcher).toMatchObject({ rationLevel: 1, rations: 0 });
+    expect(game.state.inventory.meat).toBe(1);
+  });
+
+  it("fait collecter puis livrer la viande par un ouvrier rationné", () => {
+    const game = new GameSimulation(22);
+    const save = game.createSave();
+    save.state.campaign.step = CAMPAIGN_STEPS.defense;
+    save.state.butcher.level = 1;
+    save.state.butcher.rationLevel = 1;
+    save.state.wildlife = {
+      phase: "recovery",
+      lane: 0,
+      wave: 1,
+      remaining: 100,
+      spawned: 0,
+      target: 0,
+    };
+    save.state.workers = [
+      {
+        id: 5000,
+        position: { x: -4.6, z: 4.5 },
+        heading: 0,
+        carriedWood: 0,
+        carriedMeat: 0,
+        phase: "seeking",
+      },
+    ];
+    save.state.pickups = [
+      {
+        id: 5001,
+        kind: "meat",
+        amount: 1,
+        fixed: false,
+        position: { x: -4.6, y: 0.18, z: 4.5 },
+        rotation: 0,
+      },
+    ];
+    game.restore(save);
+    advance(game, 10);
+    expect(game.state.butcher.stock).toBe(1);
+    expect(game.state.pickups).toHaveLength(0);
+    expect(game.state.workers[0]!.carriedMeat).toBe(0);
+    expect(["collecting-meat", "delivering-meat"]).not.toContain(
+      game.state.workers[0]!.phase,
+    );
+  });
+
+  it("permet d’affecter le stock livré aux rations", () => {
+    const game = gameAtZone("canteen", {
+      campaignStep: CAMPAIGN_STEPS.defense,
+      butcherLevel: 1,
+      butcherStock: FOREST.rationCosts[0],
+    });
+    advance(game, 2);
+    expect(game.state.butcher).toMatchObject({
+      rationLevel: 1,
+      rations: 0,
+      stock: 0,
+    });
+  });
+
+  it("transforme les rations en capacité ouvrière", () => {
     const game = new GameSimulation(22);
     const save = game.createSave();
     save.state.campaign.step = CAMPAIGN_STEPS.defense;
     save.state.automationLevel = 2;
     save.state.butcher.level = 3;
+    save.state.butcher.rationLevel = 2;
     game.restore(save);
     game.enqueue({ type: "debug.progress", worker: true });
     game.advance(1 / 60);
@@ -821,16 +1031,17 @@ describe("GameSimulation", () => {
       if (game.state.conveyorItems.length > 0) break;
     }
     expect(game.state.conveyorItems).toHaveLength(
-      FOREST.workerCapacity + FOREST.butcherWorkerCapacityBonuses[2],
+      FOREST.workerCapacity + FOREST.rationWorkerCapacityBonuses[2],
     );
   });
 
-  it("termine la progression après le monument, la boucherie et les tourelles", () => {
+  it("termine la progression au retour devant le monument", () => {
     const game = new GameSimulation(22);
     const save = game.createSave();
     save.state.campaign.step = CAMPAIGN_STEPS.defense;
     save.state.monument.stage = 3;
     save.state.butcher.level = 3;
+    save.state.butcher.rationLevel = 2;
     save.state.turret.level = 2;
     save.state.campaign.meatSold = FOREST.turretMeatRequirements[2];
     save.state.turret.planks = FOREST.turretPlankCosts[2];
@@ -840,7 +1051,18 @@ describe("GameSimulation", () => {
     game.restore(save);
     game.advance(1 / 60);
     expect(game.state.turret.level).toBe(3);
+    expect(game.state.campaign.completed).toBe(false);
+    game.drainEvents();
+    game.state.player.position = { ...ZONES.monument };
+    game.advance(1 / 60);
     expect(game.state.campaign.completed).toBe(true);
+    expect(
+      game.drainEvents().filter(({ type }) => type === "monument.activated"),
+    ).toHaveLength(1);
+    game.advance(1 / 60);
+    expect(
+      game.drainEvents().filter(({ type }) => type === "monument.activated"),
+    ).toHaveLength(0);
   });
 
   it("attend le monument final avant de terminer la campagne", () => {
@@ -849,6 +1071,7 @@ describe("GameSimulation", () => {
     save.state.campaign.step = CAMPAIGN_STEPS.defense;
     save.state.monument.stage = 2;
     save.state.butcher.level = 3;
+    save.state.butcher.rationLevel = 2;
     save.state.turret.level = 2;
     save.state.campaign.meatSold = FOREST.turretMeatRequirements[2];
     save.state.turret.planks = FOREST.turretPlankCosts[2];
@@ -885,6 +1108,32 @@ describe("GameSimulation", () => {
       carriedWood: 0,
       phase: "seeking",
     });
+  });
+
+  it("reprend un trajet A* dont le départ arrondi touche la cible", () => {
+    const game = new GameSimulation(22);
+    const initial = game.createSave();
+    initial.state.campaign.step = CAMPAIGN_STEPS.worker;
+    initial.state.automationLevel = 1;
+    game.restore(initial);
+    game.enqueue({ type: "debug.progress", worker: true });
+    game.advance(1 / 60);
+    const save = game.createSave();
+    const worker = save.state.workers[0]! as WorkerState & {
+      targetTreeId?: number;
+      path: Vector2[];
+      pathIndex: number;
+      pathRetryRemaining: number;
+    };
+    worker.position = { x: 8.402490195380716, z: 10.158737130145463 };
+    worker.targetTreeId = 3084;
+    worker.path = [];
+    worker.pathIndex = 0;
+    worker.pathRetryRemaining = 0;
+    game.restore(save);
+    const before = { ...game.state.workers[0]!.position };
+    advance(game, 3);
+    expect(game.state.workers[0]!.position).not.toEqual(before);
   });
 
   it("laisse un ouvrier sortir d’un arbre qui a repoussé", () => {
@@ -978,7 +1227,10 @@ function gameAtZone(
     campaignStep?: number;
     turretLevel?: number;
     butcherLevel?: number;
+    rationLevel?: number;
+    butcherStock?: number;
     meatSold?: number;
+    monumentStage?: number;
   },
 ): GameSimulation {
   const game = new GameSimulation(22);
@@ -993,7 +1245,25 @@ function gameAtZone(
   save.state.campaign.step = campaignStep;
   save.state.campaign.meatSold = options.meatSold ?? 0;
   save.state.butcher.level = options.butcherLevel ?? 0;
+  save.state.butcher.rationLevel = options.rationLevel ?? 0;
+  save.state.butcher.stock = options.butcherStock ?? 0;
   save.state.turret.level = options.turretLevel ?? 0;
+  save.state.monument.stage = options.monumentStage ?? 0;
+  game.restore(save);
+  return game;
+}
+
+function gameWithSawmillWood(
+  wood: number,
+  campaignStep: number,
+  monumentStage = 0,
+): GameSimulation {
+  const game = new GameSimulation(22);
+  const save = game.createSave();
+  save.state.sawmill.wood = wood;
+  save.state.automationLevel = 3;
+  save.state.campaign.step = campaignStep;
+  save.state.monument.stage = monumentStage;
   game.restore(save);
   return game;
 }

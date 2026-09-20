@@ -24,8 +24,10 @@ export const FOREST = {
   workerCosts: [15, 24, 36, 52, 72, 96, 124, 156, 192, 232],
   automationCosts: [0, 12, 30, 65],
   monumentCosts: [18, 35, 60],
-  animalSpawnSeconds: 14,
-  animalSpawnSecondsByTurret: [14, 11, 8, 6],
+  wildlifeCalmSeconds: 10,
+  wildlifeWarningSeconds: 4,
+  wildlifeSpawnInterval: 1.25,
+  wildlifeRecoverySeconds: 6,
   maximumAnimalsByTurret: [2, 3, 4, 5],
   bearHealth: 8,
   bearHealthPerTurretLevel: 2,
@@ -36,8 +38,9 @@ export const FOREST = {
   butcherPlankCosts: [0, 18, 40],
   butcherMeatRequirements: [0, 8, 24],
   butcherPriceBonuses: [0, 2, 4],
-  butcherWorkerSpeedBonuses: [0, 0.12, 0.25],
-  butcherWorkerCapacityBonuses: [0, 1, 2],
+  rationCosts: [6, 14],
+  rationWorkerSpeedBonuses: [0, 0.12, 0.25],
+  rationWorkerCapacityBonuses: [0, 1, 2],
   turretCosts: [30, 70, 140],
   turretPlankCosts: [12, 28, 55],
   turretMeatRequirements: [6, 18, 36],
@@ -54,9 +57,10 @@ export const ZONES: Record<ZoneKind, Vector2> = {
   worker: { x: 5.5, z: 6.5 },
   automation: { x: 7.25, z: 0.55 },
   sawmill: { x: 5.2, z: 0.75 },
-  monument: { x: 0, z: -5.8 },
+  monument: { x: 0, z: -4.35 },
   departure: { x: -0.35, z: 8.5 },
   butcher: { x: -5.2, z: 7.4 },
+  canteen: { x: -3.7, z: 6.35 },
   turret: { x: -7, z: 6.4 },
 };
 
@@ -69,7 +73,10 @@ export const SAWMILL_OUTPUT_FOOTPRINT = {
   halfWidth: 0.8,
   halfDepth: 0.6,
 } as const;
-export const MONUMENT_BUILDING: Vector2 = { x: 1.8, z: -5.8 };
+export const MONUMENT_BUILDING: Vector2 = { x: 0, z: -7.1 };
+export const MONUMENT_CONVEYOR_INPUT: Vector2 = { x: 1.15, z: -4.55 };
+export const MONUMENT_PLANK_OUTPUT: Vector2 = { x: 2.7, z: -4.55 };
+export const MONUMENT_COLLIDER_RADIUS = 2.25;
 export const BUTCHER_BUILDING: Vector2 = { x: -6.5, z: 8.1 };
 export const BUTCHER_OUTPUT: Vector2 = { x: -3.8, z: 8.4 };
 export const TURRET_BUILDING: Vector2 = { x: -7.2, z: 6.3 };
@@ -110,9 +117,10 @@ export const WORKER_CONVEYOR_PATH: readonly Vector2[] = [
 
 export const MONUMENT_CONVEYOR_PATH: readonly Vector2[] = [
   SAWMILL_BUILDING,
-  { x: 2.1, z: -2.8 },
-  { x: 2.1, z: -4.8 },
-  MONUMENT_BUILDING,
+  { x: 4.2, z: -3.2 },
+  { x: 2, z: -3.2 },
+  { x: 2, z: -4.55 },
+  MONUMENT_CONVEYOR_INPUT,
 ];
 
 export function pathLength(points: readonly Vector2[]): number {

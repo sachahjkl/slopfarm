@@ -1870,6 +1870,1561 @@
       "sha256": "836b31d0f255a670d2c905d0aab8bdad708023ccb648d2cb6fda0bf96da60d5a",
       "family": "monument",
       "stage": 3
+    },
+    {
+      "id": "camp-gate",
+      "file": "camp-gate.glb",
+      "name": "camp-gate",
+      "kind": "prop",
+      "dimensionsMeters": [
+        4.4,
+        3.94446,
+        1.13
+      ],
+      "boundsMeters": {
+        "min": [
+          -2.2,
+          0,
+          -0.565
+        ],
+        "max": [
+          2.2,
+          3.94446,
+          0.565
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1372,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "fence-left": [
+          -1.75,
+          0,
+          -0.055
+        ],
+        "fence-right": [
+          1.75,
+          0,
+          -0.055
+        ],
+        "passage": [
+          0,
+          0,
+          -0.055
+        ],
+        "banner": [
+          0,
+          3.08,
+          -0.415
+        ]
+      },
+      "bytes": 593276,
+      "sha256": "8a66d63e2386f30cd740d2d1bcc9bca1a7fea9c8a72a9a336714023125c744f5",
+      "family": "camp",
+      "placement": "entrance",
+      "passageWidthMeters": 3.22
+    },
+    {
+      "id": "camp-lamp",
+      "file": "camp-lamp.glb",
+      "name": "camp-lamp",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.21846,
+        2.96762,
+        0.62
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.60923,
+          0,
+          -0.31
+        ],
+        "max": [
+          0.60923,
+          2.96762,
+          0.31
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 488,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "light": [
+          0.34077,
+          2.18,
+          0
+        ]
+      },
+      "bytes": 532852,
+      "sha256": "c77573e204a8f9411808b8d1e107d17af2ced833b2555bc0e28692282f841cb6",
+      "family": "camp",
+      "placement": "path"
+    },
+    {
+      "id": "camp-arch",
+      "file": "camp-arch.glb",
+      "name": "camp-arch",
+      "kind": "prop",
+      "dimensionsMeters": [
+        3.08,
+        3.23248,
+        0.43276
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.54,
+          0,
+          -0.21638
+        ],
+        "max": [
+          1.54,
+          3.23248,
+          0.21638
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 896,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "passage": [
+          0,
+          0,
+          -0.03638
+        ],
+        "banner": [
+          0,
+          2.94,
+          0.14363
+        ]
+      },
+      "bytes": 562700,
+      "sha256": "fd0f86ab5c3335c6f8c2fc7d2050d9042325710b08ae4c8e631b13e60a99cfb6",
+      "family": "camp",
+      "placement": "district",
+      "passageWidthMeters": 2.32
+    },
+    {
+      "id": "camp-log-pile",
+      "file": "camp-log-pile.glb",
+      "name": "camp-log-pile",
+      "kind": "prop",
+      "dimensionsMeters": [
+        2.076,
+        1.29,
+        1.46
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.038,
+          0,
+          -0.73
+        ],
+        "max": [
+          1.038,
+          1.29,
+          0.73
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1392,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "cargo": [
+          0,
+          1.28,
+          0
+        ]
+      },
+      "bytes": 583972,
+      "sha256": "b577c5e6b27a113f832c4ddea5e496fe076efd0978a9ba85acab363c8717c659",
+      "family": "camp",
+      "placement": "storage"
+    },
+    {
+      "id": "camp-plank-pile",
+      "file": "camp-plank-pile.glb",
+      "name": "camp-plank-pile",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.97,
+        0.8225,
+        1
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.985,
+          0,
+          -0.5
+        ],
+        "max": [
+          0.985,
+          0.8225,
+          0.5
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1584,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "cargo": [
+          0,
+          0.84,
+          0
+        ]
+      },
+      "bytes": 611984,
+      "sha256": "4fc7071729da0236951c10d6d91d1bea129f73c62491e053e298905fa896e847",
+      "family": "camp",
+      "placement": "storage"
+    },
+    {
+      "id": "camp-cart",
+      "file": "camp-cart.glb",
+      "name": "camp-cart",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.63,
+        1.365,
+        2.8102
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.815,
+          0,
+          -1.4051
+        ],
+        "max": [
+          0.815,
+          1.365,
+          1.4051
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 2104,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "cargo": [
+          0,
+          0.73,
+          -0.6251
+        ],
+        "handle": [
+          0,
+          0.45,
+          1.3449
+        ]
+      },
+      "bytes": 639808,
+      "sha256": "57da5e578f05e3f86f18359d6492401b84af9d9c63be882aca063178ad7ad997",
+      "family": "camp",
+      "placement": "courtyard"
+    },
+    {
+      "id": "camp-crate",
+      "file": "camp-crate.glb",
+      "name": "camp-crate",
+      "kind": "prop",
+      "dimensionsMeters": [
+        0.93,
+        0.955,
+        0.964
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.465,
+          0,
+          -0.482
+        ],
+        "max": [
+          0.465,
+          0.955,
+          0.482
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1232,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "stack": [
+          0,
+          0.955,
+          -0.032
+        ]
+      },
+      "bytes": 587120,
+      "sha256": "8f0635f6bf4d06035b8e0aacf7f6695dd3855e6d6707ea75d25e056f03d4475c",
+      "family": "camp",
+      "placement": "storage"
+    },
+    {
+      "id": "camp-barrel",
+      "file": "camp-barrel.glb",
+      "name": "camp-barrel",
+      "kind": "prop",
+      "dimensionsMeters": [
+        0.83,
+        0.945,
+        0.83
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.415,
+          0,
+          -0.415
+        ],
+        "max": [
+          0.415,
+          0.945,
+          0.415
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 316,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "stack": [
+          0,
+          0.945,
+          0
+        ]
+      },
+      "bytes": 516452,
+      "sha256": "749ffa344fa9dc7c066150249f1c1eac9bc167119a72c74f37d006acd34e8a04",
+      "family": "camp",
+      "placement": "storage"
+    },
+    {
+      "id": "camp-banner",
+      "file": "camp-banner.glb",
+      "name": "camp-banner",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.44,
+        1.71,
+        0.19624
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.72,
+          0,
+          -0.09812
+        ],
+        "max": [
+          0.72,
+          1.71,
+          0.09812
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 340,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "mount-left": [
+          -0.6,
+          1.65,
+          -0.02312
+        ],
+        "mount-right": [
+          0.6,
+          1.65,
+          -0.02312
+        ]
+      },
+      "bytes": 524120,
+      "sha256": "57752a1afbaef60cdd23850e7621cc11a6c6d93584d4562ab13bd518710ae27b",
+      "family": "camp",
+      "placement": "suspended"
+    },
+    {
+      "id": "camp-planter",
+      "file": "camp-planter.glb",
+      "name": "camp-planter",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.52,
+        1.34,
+        0.78
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.76,
+          0,
+          -0.39
+        ],
+        "max": [
+          0.76,
+          1.34,
+          0.39
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 1380,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "plant": [
+          0,
+          0.55,
+          0
+        ]
+      },
+      "bytes": 583708,
+      "sha256": "642f9a164bd7fd06b7cfe9a11c9c708cad13b9fd2f0becfba6274894eb99b16f",
+      "family": "camp",
+      "placement": "path"
+    },
+    {
+      "id": "camp-signpost",
+      "file": "camp-signpost.glb",
+      "name": "camp-signpost",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.44172,
+        2.35,
+        0.4625
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.72086,
+          0,
+          -0.23125
+        ],
+        "max": [
+          0.72086,
+          2.35,
+          0.23125
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 676,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "label": [
+          0,
+          2.48,
+          -0.05125
+        ]
+      },
+      "bytes": 546356,
+      "sha256": "3ebab6a3979440fbd440cc9dd2d89ef34db8f1723d70e120f838923f09b0d593",
+      "family": "camp",
+      "placement": "junction"
+    },
+    {
+      "id": "camp-awning",
+      "file": "camp-awning.glb",
+      "name": "camp-awning",
+      "kind": "prop",
+      "dimensionsMeters": [
+        2.805,
+        2.99611,
+        1.88838
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.4025,
+          0,
+          -0.94419
+        ],
+        "max": [
+          1.4025,
+          2.99611,
+          0.94419
+        ]
+      },
+      "origin": "base-center",
+      "forward": "+Z",
+      "triangles": 2420,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "station": [
+          0,
+          0,
+          -0.01331
+        ],
+        "sign": [
+          0,
+          2.35,
+          0.76669
+        ]
+      },
+      "bytes": 669644,
+      "sha256": "a98b48e14e9e70e8f4fa5b30ea50815057fe76bc0ab989ee5e88cb95af47a918",
+      "family": "camp",
+      "placement": "station"
+    },
+    {
+      "id": "industry-conveyor-straight",
+      "file": "industry-conveyor-straight.glb",
+      "name": "industry-conveyor-straight",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.4,
+        0.92,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.68,
+          0,
+          -1
+        ],
+        "max": [
+          0.72,
+          0.92,
+          1
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 956,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "output": [
+          0,
+          0.8,
+          1
+        ]
+      },
+      "bytes": 566892,
+      "sha256": "d82005a4d03953de6eb934bb2977ea4aeeb26897410da2668b8c640f03b83a28",
+      "family": "industry",
+      "module": "conveyor-straight",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-conveyor-corner",
+      "file": "industry-conveyor-corner.glb",
+      "name": "industry-conveyor-corner",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.76,
+        0.92,
+        1.77
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.68,
+          0,
+          -1.08
+        ],
+        "max": [
+          1.08,
+          0.92,
+          0.69
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 888,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "output": [
+          1,
+          0.8,
+          0
+        ]
+      },
+      "bytes": 554772,
+      "sha256": "deceaa3761487075f5964d521b15ea870ec0a919c9673c43040464b6ef64a3c0",
+      "family": "industry",
+      "module": "conveyor-corner",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            1,
+            0,
+            0
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-diverter",
+      "file": "industry-diverter.glb",
+      "name": "industry-diverter",
+      "kind": "prop",
+      "dimensionsMeters": [
+        2,
+        1.74,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -1,
+          0,
+          -1
+        ],
+        "max": [
+          1,
+          1.74,
+          1
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1440,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "output": [
+          0,
+          0.8,
+          1
+        ],
+        "output-right": [
+          1,
+          0.8,
+          0
+        ],
+        "switch": [
+          -0.2,
+          0.98,
+          -0.18
+        ]
+      },
+      "bytes": 599016,
+      "sha256": "21a9a9d8fcee14b4bf4f784c409b532c58a7adf8c5afc1ca29dff1e3b4629119",
+      "family": "industry",
+      "module": "diverter",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        },
+        "output-right": {
+          "direction": [
+            1,
+            0,
+            0
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-lift",
+      "file": "industry-lift.glb",
+      "name": "industry-lift",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.85,
+        4.11,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.84,
+          0,
+          -1
+        ],
+        "max": [
+          1.01,
+          4.11,
+          1
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1588,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "output": [
+          0,
+          2.6,
+          1
+        ],
+        "platform": [
+          0,
+          1.6,
+          0
+        ]
+      },
+      "bytes": 602388,
+      "sha256": "60eb6ee2fdac8ac53b06bf81c5cd23974594c4f5e5106b0e5fb3e43b07a0a32e",
+      "family": "industry",
+      "module": "lift",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-bridge",
+      "file": "industry-bridge.glb",
+      "name": "industry-bridge",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.56,
+        2.89,
+        4
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.78,
+          0,
+          -2
+        ],
+        "max": [
+          0.78,
+          2.89,
+          2
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1196,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          2.6,
+          -2
+        ],
+        "output": [
+          0,
+          2.6,
+          2
+        ],
+        "passage": [
+          0,
+          0,
+          0
+        ]
+      },
+      "bytes": 583684,
+      "sha256": "436a1753d75d2fa7bd2b5cb9d677f0e77c0582c26749e90c3d81b6a16797a8eb",
+      "family": "industry",
+      "module": "bridge",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-roller-buffer",
+      "file": "industry-roller-buffer.glb",
+      "name": "industry-roller-buffer",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.5765,
+        1.355,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.8565,
+          0,
+          -1
+        ],
+        "max": [
+          0.72,
+          1.355,
+          1
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1528,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "output": [
+          0,
+          0.8,
+          1
+        ],
+        "storage": [
+          0,
+          0.8,
+          0
+        ]
+      },
+      "bytes": 602052,
+      "sha256": "34f737076a0b30dcfddf5df9bf8a0b2f8e11d480d29335b3d485fb58042fc845",
+      "family": "industry",
+      "module": "roller-buffer",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-storage-rack",
+      "file": "industry-storage-rack.glb",
+      "name": "industry-storage-rack",
+      "kind": "prop",
+      "dimensionsMeters": [
+        2.26,
+        2.7,
+        1.3545
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.13,
+          0,
+          -0.67
+        ],
+        "max": [
+          1.13,
+          2.7,
+          0.6845
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1080,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "storage-1": [
+          0,
+          0.25,
+          0
+        ],
+        "storage-2": [
+          0,
+          1.1,
+          0
+        ],
+        "storage-3": [
+          0,
+          1.95,
+          0
+        ]
+      },
+      "bytes": 576860,
+      "sha256": "f729087acc5c7f90386f4a65fbe7c1c649f2df52eb7719e4579f13c1084facd6",
+      "family": "industry",
+      "module": "storage-rack",
+      "ports": {}
+    },
+    {
+      "id": "industry-gantry-crane",
+      "file": "industry-gantry-crane.glb",
+      "name": "industry-gantry-crane",
+      "kind": "prop",
+      "dimensionsMeters": [
+        3.03,
+        3.3,
+        1.18
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.515,
+          0,
+          -0.59
+        ],
+        "max": [
+          1.515,
+          3.3,
+          0.59
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1096,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "hook": [
+          0.55,
+          1.28,
+          0
+        ],
+        "load": [
+          0.55,
+          0,
+          0
+        ]
+      },
+      "bytes": 574356,
+      "sha256": "d85303d63b89e1b80532bca7b48c1f49ea652aa78d67617689999e58b274c478",
+      "family": "industry",
+      "module": "gantry-crane",
+      "ports": {}
+    },
+    {
+      "id": "industry-sorter",
+      "file": "industry-sorter.glb",
+      "name": "industry-sorter",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.975,
+        2.14,
+        2
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.095,
+          0,
+          -1
+        ],
+        "max": [
+          0.88,
+          2.14,
+          1
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1604,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "output": [
+          0,
+          0.8,
+          1
+        ],
+        "scanner": [
+          0,
+          1.5,
+          0
+        ]
+      },
+      "bytes": 610348,
+      "sha256": "30c6e6f950bdac3f93ce8ff09c4d167b7be7be8b43359ce11b58e8657657b975",
+      "family": "industry",
+      "module": "sorter",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-loading-dock",
+      "file": "industry-loading-dock.glb",
+      "name": "industry-loading-dock",
+      "kind": "prop",
+      "dimensionsMeters": [
+        2.88,
+        0.91,
+        3.055
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.44,
+          0,
+          -1.055
+        ],
+        "max": [
+          1.44,
+          0.91,
+          2
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1024,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1
+        ],
+        "cargo": [
+          0,
+          0.8,
+          0
+        ],
+        "approach": [
+          0,
+          0,
+          2.2
+        ]
+      },
+      "bytes": 572672,
+      "sha256": "dcc94655980554fb708223d7a3ea690f3ad3d9b19d8943cb5b0451762dd59eb0",
+      "family": "industry",
+      "module": "loading-dock",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-delivery-hatch",
+      "file": "industry-delivery-hatch.glb",
+      "name": "industry-delivery-hatch",
+      "kind": "prop",
+      "dimensionsMeters": [
+        1.68,
+        2.36,
+        1.2
+      ],
+      "boundsMeters": {
+        "min": [
+          -0.84,
+          0,
+          -0.6
+        ],
+        "max": [
+          0.84,
+          2.36,
+          0.6
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 548,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -0.6
+        ],
+        "output": [
+          0,
+          0.8,
+          0.6
+        ],
+        "mount": [
+          0,
+          0,
+          0
+        ]
+      },
+      "bytes": 536424,
+      "sha256": "ae96705f8f592127761fc112217069e4598e1f57699d2d67375252f240bb0548",
+      "family": "industry",
+      "module": "delivery-hatch",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        },
+        "output": {
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "widthMeters": 1
+        }
+      }
+    },
+    {
+      "id": "industry-market-stall",
+      "file": "industry-market-stall.glb",
+      "name": "industry-market-stall",
+      "kind": "prop",
+      "dimensionsMeters": [
+        2.7,
+        3.085,
+        2.825
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.35,
+          0,
+          -1.54
+        ],
+        "max": [
+          1.35,
+          3.085,
+          1.285
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1376,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "input": [
+          0,
+          0.8,
+          -1.54
+        ],
+        "delivery": [
+          0,
+          0.8,
+          -0.34
+        ],
+        "sale": [
+          -0.51,
+          1.14,
+          0.65
+        ],
+        "worker": [
+          0,
+          0,
+          0
+        ],
+        "customer": [
+          0,
+          0,
+          1.65
+        ]
+      },
+      "bytes": 594536,
+      "sha256": "83cbc4aca37b69dfc0f99ab9e77c4ddc8da58920fb5105c4a2815cf3527306d4",
+      "family": "industry",
+      "module": "market-stall",
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        }
+      }
     }
   ]
 }

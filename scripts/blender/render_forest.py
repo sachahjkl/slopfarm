@@ -1,6 +1,7 @@
 """Produit une planche de contrôle depuis les GLB réimportés."""
 
 import argparse
+import itertools
 import json
 import math
 import sys
@@ -49,6 +50,8 @@ def render_model(directory, entry, size):
     root.location.x -= (low[0] + high[0]) / 2
     root.location.y -= (low[1] + high[1]) / 2
     height = high[2]
+    bpy.context.view_layer.update()
+    low, high = mesh_bounds()
 
     bpy.ops.mesh.primitive_plane_add(size=200, location=(0, 0, -0.012))
     bpy.context.object.data.materials.append(
@@ -76,19 +79,30 @@ def render_model(directory, entry, size):
         (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     )
     data.type = "ORTHO"
-    data.ortho_scale = 3.55
+    rotation = camera.rotation_euler.to_quaternion()
+    projected = [
+        rotation.inverted() @ (Vector(point) - target)
+        for point in itertools.product(*zip(low, high))
+    ]
+    left, right = min(p.x for p in projected), max(p.x for p in projected)
+    bottom, top = min(p.y for p in projected), max(p.y for p in projected)
+    # Réserve une bande pour la légende, même sous les modules larges.
+    data.ortho_scale = max(3.55, (right - left) / 0.84, (top - bottom) / 0.74)
+    camera.location += rotation @ Vector(
+        ((left + right) / 2, (bottom + top) / 2 - data.ortho_scale * 0.06, 0)
+    )
     scene.camera = camera
 
     font = bpy.data.curves.new("preview-caption", "FONT")
     font.body = entry["id"]
     font.align_x = "CENTER"
     font.align_y = "CENTER"
-    font.size = 0.13
+    font.size = data.ortho_scale * 0.0366
     caption = bpy.data.objects.new("preview-caption", font)
     bpy.context.collection.objects.link(caption)
     caption.rotation_euler = camera.rotation_euler
     caption.location = camera.location + camera.rotation_euler.to_quaternion() @ Vector(
-        (0, -1.52, -5)
+        (0, -data.ortho_scale * 0.428, -5)
     )
     caption.data.materials.append(surface("caption-ink", (0.015, 0.035, 0.028), True))
 
@@ -108,20 +122,35 @@ def render_model(directory, entry, size):
     scene.render.filepath = str(preview)
     bpy.ops.render.render(write_still=True)
     # La lecture du PNG conserve les couleurs de sortie dans la planche.
-    image = bpy.data.images.load(str(preview), check_existing=False)
+    return preview_pixels(preview, size)
+
+
+def preview_pixels(path, size):
+    image = bpy.data.images.load(str(path), check_existing=False)
+    if tuple(image.size) != (size, size):
+        image.scale(size, size)
     pixels = np.empty(size * size * 4, dtype=np.float32)
     image.pixels.foreach_get(pixels)
+    bpy.data.images.remove(image)
     return pixels.reshape((size, size, 4))
 
 
-def render(directory, size):
+def render(directory, size, family=None, sheet_only=False):
     entries = json.loads((directory / "manifest.json").read_text())["assets"]
+    if family:
+        entries = [entry for entry in entries if entry.get("family") == family]
+    if not entries:
+        raise ValueError("Aucun modèle à afficher.")
     (directory / "previews").mkdir(exist_ok=True)
-    columns = 5
+    columns = 4 if family else 5
     rows = math.ceil(len(entries) / columns)
     sheet = np.ones((rows * size, columns * size, 4), dtype=np.float32)
     for index, entry in enumerate(entries):
-        pixels = render_model(directory, entry, size)
+        pixels = (
+            preview_pixels(directory / "previews" / f"{entry['id']}.png", size)
+            if sheet_only
+            else render_model(directory, entry, size)
+        )
         row, column = divmod(index, columns)
         start = (rows - row - 1) * size
         sheet[start : start + size, column * size : (column + 1) * size] = pixels
@@ -129,7 +158,8 @@ def render(directory, size):
         "forest-contact-sheet", columns * size, rows * size, alpha=True
     )
     image.pixels.foreach_set(sheet.ravel())
-    image.filepath_raw = str(directory / "contact-sheet.png")
+    filename = f"contact-sheet-{family}.png" if family else "contact-sheet.png"
+    image.filepath_raw = str(directory / filename)
     image.file_format = "PNG"
     image.save()
     print(f"Planche de contrôle : {image.filepath_raw}")
@@ -139,7 +169,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, default=OUTPUT)
     parser.add_argument("--size", type=int, default=320)
+    parser.add_argument(
+        "--family", help="Limite la planche à une famille du manifeste."
+    )
+    parser.add_argument(
+        "--sheet-only", action="store_true", help="Assemble les aperçus PNG existants."
+    )
     args = parser.parse_args(
         sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     )
-    render(args.input.resolve(), args.size)
+    render(args.input.resolve(), args.size, args.family, args.sheet_only)

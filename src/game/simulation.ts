@@ -5,6 +5,7 @@ import {
   MARKET_TABLE,
   MONUMENT_BUILDING,
   MONUMENT_CONVEYOR_PATH,
+  MONUMENT_PLANK_OUTPUT,
   SALE_OUTPUT,
   SAWMILL_BUILDING,
   SAWMILL_OUTPUT,
@@ -73,15 +74,14 @@ interface PickupBody extends PickupState {
 
 interface WorkerBody extends WorkerState {
   targetTreeId?: number;
+  targetPickupId?: number;
   actionRemaining: number;
   path: Vector2[];
   pathIndex: number;
   pathRetryRemaining: number;
 }
 
-interface ConveyorBody extends ConveyorItemState {
-  destination: "sawmill" | "monument";
-}
+type ConveyorBody = ConveyorItemState;
 
 interface CustomerBody extends CustomerState {
   serviceRemaining: number;
@@ -102,6 +102,7 @@ type DepositZone =
   | "monument"
   | "automation"
   | "butcher"
+  | "canteen"
   | "turret";
 
 const FIXED_STEP = 1 / 60;
@@ -138,7 +139,7 @@ export class GameSimulation {
   #depositZone: DepositZone | undefined;
   #sawmillRemaining = 0;
   #customerSpawnRemaining = 0;
-  #animalSpawnRemaining: number = FOREST.animalSpawnSeconds;
+  #monumentActivationArmed = false;
   readonly #turretRemaining = [0, 0, 0];
 
   constructor(seed = DEFAULT_SEED) {
@@ -160,6 +161,14 @@ export class GameSimulation {
       conveyorItems: this.#conveyorItems,
       customers: this.#customers,
       animals: this.#animals,
+      wildlife: {
+        phase: "dormant",
+        lane: 0,
+        wave: 0,
+        remaining: 0,
+        spawned: 0,
+        target: 0,
+      },
       campaign: {
         step: CAMPAIGN_STEPS.camp,
         completed: false,
@@ -178,7 +187,13 @@ export class GameSimulation {
       payments: { toolCoins: 0, workerCoins: 0 },
       sawmill: { wood: 0, planks: 0 },
       monument: { stage: 0, progress: 0 },
-      butcher: { level: 0, planks: 0 },
+      butcher: {
+        level: 0,
+        planks: 0,
+        rationLevel: 0,
+        rations: 0,
+        stock: 0,
+      },
       turret: { level: 0, coins: 0, planks: 0 },
     };
     this.#updateTools();
@@ -507,30 +522,47 @@ export class GameSimulation {
     count: number,
     settled = false,
   ): void {
-    for (let index = 0; index < count; index += 1) {
-      const settledIndex = settled
-        ? this.#pickups.filter(
-            (pickup) =>
-              pickup.kind === kind && distance(pickup.position, position) < 2,
-          ).length
-        : 0;
-      const stacked = settledPickupPosition(kind, position, settledIndex);
+    if (settled) {
+      const pile = this.#pickups.find(
+        (pickup) =>
+          pickup.fixed &&
+          pickup.kind === kind &&
+          distance(pickup.position, position) < 2,
+      );
+      if (pile) {
+        pile.amount += count;
+        return;
+      }
       this.#pickups.push({
         id: this.#nextEntityId++,
         kind,
-        fixed: settled,
-        position: settled ? stacked : { x: position.x, y: 0.8, z: position.z },
-        velocity: settled
-          ? { x: 0, y: 0, z: 0 }
-          : {
-              x: (this.#random.next() - 0.5) * 4,
-              y: 3.5 + this.#random.next() * 2,
-              z: (this.#random.next() - 0.5) * 4,
-            },
-        rotation: settled
-          ? stackItemOffset(settledIndex).rotation
-          : this.#random.next() * Math.PI,
-        age: settled ? 0.8 : 0,
+        amount: count,
+        fixed: true,
+        position: {
+          x: position.x,
+          y: kind === "coin" ? 0.99 : 0.22,
+          z: position.z,
+        },
+        velocity: { x: 0, y: 0, z: 0 },
+        rotation: stackItemOffset(0).rotation,
+        age: 0.8,
+      });
+      return;
+    }
+    for (let index = 0; index < count; index += 1) {
+      this.#pickups.push({
+        id: this.#nextEntityId++,
+        kind,
+        amount: 1,
+        fixed: false,
+        position: { x: position.x, y: 0.8, z: position.z },
+        velocity: {
+          x: (this.#random.next() - 0.5) * 4,
+          y: 3.5 + this.#random.next() * 2,
+          z: (this.#random.next() - 0.5) * 4,
+        },
+        rotation: this.#random.next() * Math.PI,
+        age: 0,
       });
     }
   }
@@ -551,6 +583,22 @@ export class GameSimulation {
         }
         continue;
       }
+      if (!pickup.fixed) {
+        const pile = this.#pickups.find(
+          (candidate) =>
+            candidate !== pickup &&
+            candidate.age >= 0.38 &&
+            candidate.kind === pickup.kind &&
+            distance(candidate.position, pickup.position) < 2.4,
+        );
+        if (pile) {
+          pile.amount += pickup.amount;
+          this.#pickups.splice(index, 1);
+          continue;
+        }
+        pickup.velocity = { x: 0, y: 0, z: 0 };
+        pickup.position.y = pickup.kind === "coin" ? 0.99 : 0.22;
+      }
       const distanceToPlayer = distance(pickup.position, player);
       const pickupRadius = pickup.fixed ? 1.4 : FOREST.pickupRadius;
       if (distanceToPlayer >= pickupRadius) continue;
@@ -566,10 +614,10 @@ export class GameSimulation {
   #collectPickup(index: number, pickup: PickupBody): void {
     this.#pickups.splice(index, 1);
     const inventory = this.#state.inventory;
-    if (pickup.kind === "coin") inventory.coins += 1;
-    else if (pickup.kind === "wood") inventory.wood += 1;
-    else if (pickup.kind === "plank") inventory.planks += 1;
-    else inventory.meat += 1;
+    if (pickup.kind === "coin") inventory.coins += pickup.amount;
+    else if (pickup.kind === "wood") inventory.wood += pickup.amount;
+    else if (pickup.kind === "plank") inventory.planks += pickup.amount;
+    else inventory.meat += pickup.amount;
     const total =
       pickup.kind === "coin"
         ? inventory.coins
@@ -680,10 +728,8 @@ export class GameSimulation {
         }
       } else if (depositZone === "monument") {
         this.#state.inventory.planks -= 1;
-        campaign.exitPlanks += 1;
-        this.#depositMonumentPlank();
-        if (campaign.exitPlanks >= costs.exitPlanks)
-          this.#advanceCampaign(CAMPAIGN_STEPS.departure);
+        if (campaign.step === CAMPAIGN_STEPS.convoy) this.#depositConvoyPlank();
+        else this.#depositMonumentPlank();
       } else if (depositZone === "butcher") {
         if (campaign.step === CAMPAIGN_STEPS.wildlife) {
           this.#state.inventory.wood -= 1;
@@ -720,10 +766,9 @@ export class GameSimulation {
           ) {
             this.#state.butcher.planks = 0;
             this.#state.butcher.level += 1;
-            this.#completeCampaignIfReady();
           }
         } else {
-          this.#state.inventory.meat -= 1;
+          this.#consumeMeat();
           campaign.meatSold += 1;
           this.#events.add({
             type: "resource.deposited",
@@ -738,6 +783,22 @@ export class GameSimulation {
               FOREST.butcherPriceBonuses[this.#state.butcher.level - 1]!,
             true,
           );
+        }
+      } else if (depositZone === "canteen") {
+        this.#consumeMeat();
+        this.#state.butcher.rations += 1;
+        this.#events.add({
+          type: "resource.deposited",
+          kind: "meat",
+          target: "canteen",
+          position: ZONES.canteen,
+        });
+        const cost =
+          FOREST.rationCosts[this.#state.butcher.rationLevel] ??
+          Number.POSITIVE_INFINITY;
+        if (this.#state.butcher.rations >= cost) {
+          this.#state.butcher.rations = 0;
+          this.#state.butcher.rationLevel += 1;
         }
       } else if (depositZone === "turret") {
         const level = this.#state.turret.level;
@@ -773,7 +834,6 @@ export class GameSimulation {
             type: "turret.upgraded",
             level: this.#state.turret.level,
           });
-          this.#completeCampaignIfReady();
         }
       } else {
         this.#state.inventory.planks -= 1;
@@ -805,6 +865,7 @@ export class GameSimulation {
           Math.exp(-FOREST.depositAcceleration * this.#depositDuration),
       );
     }
+    this.#updateMonumentActivation();
     if (
       this.#state.campaign.step === CAMPAIGN_STEPS.departure &&
       near(this.#state.player.position, ZONES.departure)
@@ -854,7 +915,8 @@ export class GameSimulation {
     if (
       step >= CAMPAIGN_STEPS.convoy &&
       near(position, ZONES.monument) &&
-      this.#state.inventory.planks > 0
+      this.#state.inventory.planks > 0 &&
+      (step === CAMPAIGN_STEPS.convoy || this.#state.monument.stage < 3)
     )
       return "monument";
     if (
@@ -873,13 +935,20 @@ export class GameSimulation {
     if (
       step >= CAMPAIGN_STEPS.defense &&
       near(position, ZONES.butcher) &&
-      (this.#state.inventory.meat > 0 ||
+      (this.#availableMeat() > 0 ||
         (this.#state.inventory.planks > 0 &&
           this.#state.butcher.level < 3 &&
           this.#state.campaign.meatSold >=
             FOREST.butcherMeatRequirements[this.#state.butcher.level]!))
     )
       return "butcher";
+    if (
+      step >= CAMPAIGN_STEPS.defense &&
+      near(position, ZONES.canteen) &&
+      this.#availableMeat() > 0 &&
+      this.#state.butcher.rationLevel < Math.min(2, this.#state.butcher.level)
+    )
+      return "canteen";
     if (
       step >= CAMPAIGN_STEPS.defense &&
       near(position, ZONES.turret) &&
@@ -914,8 +983,23 @@ export class GameSimulation {
         type: "monument.advanced",
         stage: this.#state.monument.stage,
       });
-      this.#completeCampaignIfReady();
     }
+  }
+
+  #depositConvoyPlank(): boolean {
+    const campaign = this.#state.campaign;
+    const cost = campaignCosts().exitPlanks;
+    if (campaign.exitPlanks >= cost) return false;
+    campaign.exitPlanks += 1;
+    this.#events.add({
+      type: "resource.deposited",
+      kind: "plank",
+      target: "monument",
+      position: ZONES.monument,
+    });
+    if (campaign.exitPlanks >= cost)
+      this.#advanceCampaign(CAMPAIGN_STEPS.departure);
+    return true;
   }
 
   #hireWorker(): void {
@@ -925,6 +1009,7 @@ export class GameSimulation {
       position: { x: ZONES.worker.x, z: ZONES.worker.z },
       heading: 0,
       carriedWood: 0,
+      carriedMeat: 0,
       phase: "seeking",
       actionRemaining: 0,
       path: [],
@@ -937,9 +1022,16 @@ export class GameSimulation {
   #updateCustomers(delta: number): void {
     const campaign = this.#state.campaign;
     if (campaign.step < CAMPAIGN_STEPS.trade) return;
+    const boothCount =
+      1 +
+      (this.#state.automationLevel >= 2 ? 1 : 0) +
+      (this.#state.automationLevel >= 3 ? 1 : 0);
     const queued = this.#customers.filter(({ phase }) => phase === "queueing");
     this.#customerSpawnRemaining -= delta;
-    if (queued.length < 5 && this.#customerSpawnRemaining <= 0) {
+    if (
+      queued.length < 5 + boothCount * 2 &&
+      this.#customerSpawnRemaining <= 0
+    ) {
       this.#customers.push({
         id: this.#nextEntityId++,
         position: { x: MARKET_TABLE.x - 7, z: MARKET_TABLE.z },
@@ -947,33 +1039,36 @@ export class GameSimulation {
         phase: "queueing",
         serviceRemaining: 0.7,
       });
-      this.#customerSpawnRemaining = 1.8;
+      this.#customerSpawnRemaining = 1.8 / Math.sqrt(boothCount);
     }
     const activeQueue = this.#customers.filter(
       ({ phase }) => phase === "queueing",
     );
     activeQueue.forEach((customer, index) => {
+      const lane = index % boothCount;
+      const row = Math.floor(index / boothCount);
       const target = {
-        x: MARKET_TABLE.x - 1.5 - index * 1.15,
-        z: MARKET_TABLE.z,
+        x: MARKET_TABLE.x - 1.5 - row * 1.15,
+        z: MARKET_TABLE.z + (lane - (boothCount - 1) / 2) * 1.35,
       };
       moveTowards(customer, target, 2.4 * delta);
       customer.heading = Math.PI / 2;
     });
-    const first = activeQueue[0];
-    if (
-      first &&
-      !this.#routeThreatened(0) &&
-      distance(first.position, {
+    for (const [lane, customer] of activeQueue.slice(0, boothCount).entries()) {
+      const servicePosition = {
         x: MARKET_TABLE.x - 1.5,
-        z: MARKET_TABLE.z,
-      }) < 0.15
-    ) {
-      first.serviceRemaining -= delta;
-      if (first.serviceRemaining <= 0 && campaign.marketStock > 0) {
+        z: MARKET_TABLE.z + (lane - (boothCount - 1) / 2) * 1.35,
+      };
+      if (
+        this.#routeThreatened(0) ||
+        distance(customer.position, servicePosition) >= 0.15
+      )
+        continue;
+      customer.serviceRemaining -= delta;
+      if (customer.serviceRemaining <= 0 && campaign.marketStock > 0) {
         campaign.marketStock -= 1;
         campaign.customersServed += 1;
-        first.phase = "leaving";
+        customer.phase = "leaving";
         this.#spawnPickups("coin", SALE_OUTPUT, FOREST.salePrice, true);
         this.#events.add({ type: "customer.served", position: SALE_OUTPUT });
         this.#events.add({ type: "coin.produced", position: SALE_OUTPUT });
@@ -1026,17 +1121,7 @@ export class GameSimulation {
 
   #updateAnimals(delta: number): void {
     if (this.#state.campaign.step < CAMPAIGN_STEPS.wildlife) return;
-    this.#animalSpawnRemaining -= delta;
-    const maximumAnimals =
-      FOREST.maximumAnimalsByTurret[this.#state.turret.level]!;
-    if (
-      this.#animalSpawnRemaining <= 0 &&
-      this.#animals.length < maximumAnimals
-    ) {
-      this.#spawnAnimal();
-      this.#animalSpawnRemaining =
-        FOREST.animalSpawnSecondsByTurret[this.#state.turret.level]!;
-    }
+    this.#updateWildlifeDirector(delta);
     for (const animal of this.#animals) {
       if (animal.phase === "attacking") {
         const anchor =
@@ -1067,6 +1152,59 @@ export class GameSimulation {
       );
       if (moveTowards(animal, target, FOREST.bearSpeed * delta) < 0.08)
         animal.waypoint += 1;
+    }
+  }
+
+  #updateWildlifeDirector(delta: number): void {
+    const wildlife = this.#state.wildlife;
+    if (wildlife.phase === "dormant") {
+      wildlife.phase = "calm";
+      wildlife.remaining = FOREST.wildlifeCalmSeconds;
+      return;
+    }
+    wildlife.remaining = Math.max(0, wildlife.remaining - delta);
+    if (wildlife.phase === "calm" && wildlife.remaining <= 0) {
+      wildlife.phase = "warning";
+      wildlife.lane = Math.floor(this.#random.next() * BEAR_PATHS.length);
+      wildlife.wave += 1;
+      wildlife.spawned = 0;
+      wildlife.target = Math.min(
+        7,
+        2 + Math.floor((wildlife.wave - 1) / 2) + this.#state.turret.level,
+      );
+      wildlife.remaining = FOREST.wildlifeWarningSeconds;
+      return;
+    }
+    if (wildlife.phase === "warning" && wildlife.remaining <= 0) {
+      wildlife.phase = "active";
+      wildlife.remaining = 0;
+    }
+    if (wildlife.phase === "active") {
+      const maximumAnimals =
+        FOREST.maximumAnimalsByTurret[this.#state.turret.level]!;
+      if (
+        wildlife.spawned < wildlife.target &&
+        wildlife.remaining <= 0 &&
+        this.#animals.length < maximumAnimals
+      ) {
+        this.#spawnAnimal(undefined, wildlife.lane);
+        wildlife.spawned += 1;
+        wildlife.remaining = FOREST.wildlifeSpawnInterval;
+      }
+      if (
+        wildlife.spawned >= wildlife.target &&
+        !this.#animals.some(({ route }) => route === wildlife.lane)
+      ) {
+        wildlife.phase = "recovery";
+        wildlife.remaining = FOREST.wildlifeRecoverySeconds;
+      }
+      return;
+    }
+    if (wildlife.phase === "recovery" && wildlife.remaining <= 0) {
+      wildlife.phase = "calm";
+      wildlife.remaining = FOREST.wildlifeCalmSeconds;
+      wildlife.spawned = 0;
+      wildlife.target = 0;
     }
   }
 
@@ -1140,32 +1278,62 @@ export class GameSimulation {
   }
 
   #completeCampaign(): void {
+    if (this.#state.campaign.completed) return;
     this.#state.campaign.completed = true;
+    this.#events.add({
+      type: "monument.activated",
+      position: MONUMENT_BUILDING,
+    });
     this.#events.add({ type: "campaign.completed" });
   }
 
-  #completeCampaignIfReady(): void {
-    if (
-      this.#state.monument.stage < 3 ||
-      this.#state.butcher.level < 3 ||
-      this.#state.turret.level < 3
-    )
+  #campaignReady(): boolean {
+    return (
+      !this.#state.campaign.completed &&
+      this.#state.monument.stage >= 3 &&
+      this.#state.butcher.level >= 3 &&
+      this.#state.butcher.rationLevel >= 2 &&
+      this.#state.turret.level >= 3
+    );
+  }
+
+  #updateMonumentActivation(): void {
+    if (!this.#campaignReady()) {
+      this.#monumentActivationArmed = false;
       return;
-    this.#completeCampaign();
+    }
+    if (!near(this.#state.player.position, ZONES.monument)) {
+      this.#monumentActivationArmed = true;
+      return;
+    }
+    if (this.#monumentActivationArmed) this.#completeCampaign();
+  }
+
+  #availableMeat(): number {
+    return this.#state.inventory.meat + this.#state.butcher.stock;
+  }
+
+  #consumeMeat(): void {
+    if (this.#state.inventory.meat > 0) {
+      this.#state.inventory.meat -= 1;
+      return;
+    }
+    this.#state.butcher.stock -= 1;
   }
 
   #updateWorkers(delta: number): void {
     if (this.#routeThreatened(2)) return;
-    const butcherLevel = Math.max(1, this.#state.butcher.level);
+    const rationLevel = this.#state.butcher.rationLevel;
     const workerSpeed =
-      FOREST.workerSpeed *
-      (1 + FOREST.butcherWorkerSpeedBonuses[butcherLevel - 1]!);
-    for (const worker of this.#workers) {
+      FOREST.workerSpeed * (1 + FOREST.rationWorkerSpeedBonuses[rationLevel]!);
+    for (const [workerIndex, worker] of this.#workers.entries()) {
       worker.pathRetryRemaining = Math.max(
         0,
         worker.pathRetryRemaining - delta,
       );
       if (worker.phase === "seeking") {
+        if (workerIndex < rationLevel && this.#assignWorkerMeatPickup(worker))
+          continue;
         let tree: TreeState | undefined;
         if (worker.targetTreeId === undefined) {
           if (worker.pathRetryRemaining > 0) continue;
@@ -1195,7 +1363,7 @@ export class GameSimulation {
           this.#damageTree(tree, FOREST.treeHealth, "worker");
           worker.carriedWood =
             FOREST.workerCapacity +
-            FOREST.butcherWorkerCapacityBonuses[butcherLevel - 1]!;
+            FOREST.rationWorkerCapacityBonuses[rationLevel]!;
           worker.phase = "delivering";
           worker.path =
             this.#workerPath(worker.position, WORKER_DEPOT, 0.35) ?? [];
@@ -1205,6 +1373,48 @@ export class GameSimulation {
           worker.phase = "seeking";
           worker.targetTreeId = undefined;
         }
+      } else if (worker.phase === "collecting-meat") {
+        const pickup = this.#pickups.find(
+          ({ id }) => id === worker.targetPickupId,
+        );
+        if (!pickup || pickup.kind !== "meat") {
+          worker.phase = "seeking";
+          worker.targetPickupId = undefined;
+          worker.path = [];
+          continue;
+        }
+        if (
+          this.#followWorkerPathTo(
+            worker,
+            pickup.position,
+            0.35,
+            workerSpeed * delta,
+          ) >= 0.35
+        )
+          continue;
+        const pickupIndex = this.#pickups.indexOf(pickup);
+        if (pickup.amount > 1) pickup.amount -= 1;
+        else if (pickupIndex >= 0) this.#pickups.splice(pickupIndex, 1);
+        worker.carriedMeat = 1;
+        worker.targetPickupId = undefined;
+        worker.phase = "delivering-meat";
+        worker.path =
+          this.#workerPath(worker.position, ZONES.butcher, 0.45) ?? [];
+        worker.pathIndex = 0;
+        worker.pathRetryRemaining = WORKER_PATH_RETRY_SECONDS;
+      } else if (worker.phase === "delivering-meat") {
+        if (
+          this.#followWorkerPathTo(
+            worker,
+            ZONES.butcher,
+            0.45,
+            workerSpeed * delta,
+          ) >= 0.45
+        )
+          continue;
+        this.#state.butcher.stock += worker.carriedMeat;
+        worker.carriedMeat = 0;
+        worker.phase = "seeking";
       } else {
         const depot = WORKER_DEPOT;
         if (this.#followWorkerPath(worker, workerSpeed * delta) >= 0.35)
@@ -1243,6 +1453,56 @@ export class GameSimulation {
     if (waypoint && moveTowards(worker, waypoint, movement) < 0.08)
       worker.pathIndex += 1;
     return destination ? distance(worker.position, destination) : Infinity;
+  }
+
+  #followWorkerPathTo(
+    worker: WorkerBody,
+    destination: Vector2,
+    goalRadius: number,
+    movement: number,
+  ): number {
+    if (
+      !worker.path[worker.pathIndex] &&
+      distance(worker.position, destination) >= goalRadius &&
+      worker.pathRetryRemaining <= 0
+    ) {
+      worker.path =
+        this.#workerPath(worker.position, destination, goalRadius) ?? [];
+      worker.pathIndex = 0;
+      worker.pathRetryRemaining = WORKER_PATH_RETRY_SECONDS;
+    }
+    const waypoint = worker.path[worker.pathIndex];
+    if (waypoint && moveTowards(worker, waypoint, movement) < 0.08)
+      worker.pathIndex += 1;
+    return distance(worker.position, destination);
+  }
+
+  #assignWorkerMeatPickup(worker: WorkerBody): boolean {
+    const reserved = new Set(
+      this.#workers
+        .filter((candidate) => candidate.id !== worker.id)
+        .map(({ targetPickupId }) => targetPickupId)
+        .filter((id): id is number => id !== undefined),
+    );
+    const pickups = this.#pickups
+      .filter(({ id, kind }) => kind === "meat" && !reserved.has(id))
+      .sort(
+        (left, right) =>
+          distance(worker.position, left.position) -
+          distance(worker.position, right.position),
+      );
+    for (const pickup of pickups.slice(0, 12)) {
+      const path = this.#workerPath(worker.position, pickup.position, 0.35);
+      if (!path) continue;
+      worker.targetPickupId = pickup.id;
+      worker.targetTreeId = undefined;
+      worker.phase = "collecting-meat";
+      worker.path = path;
+      worker.pathIndex = 0;
+      worker.pathRetryRemaining = 0;
+      return true;
+    }
+    return false;
   }
 
   #workerPath(
@@ -1315,7 +1575,11 @@ export class GameSimulation {
       if (item.progress < 1) continue;
       this.#conveyorItems.splice(index, 1);
       if (item.destination === "sawmill") this.#state.sawmill.wood += 1;
-      else this.#depositMonumentPlank();
+      else if (item.destination === "convoy") {
+        if (!this.#depositConvoyPlank())
+          this.#spawnPickups("plank", MONUMENT_PLANK_OUTPUT, 1, true);
+      } else if (this.#state.monument.stage < 3) this.#depositMonumentPlank();
+      else this.#spawnPickups("plank", MONUMENT_PLANK_OUTPUT, 1, true);
     }
   }
 
@@ -1326,12 +1590,17 @@ export class GameSimulation {
     this.#sawmillRemaining =
       FOREST.sawmillSecondsPerPlank / (this.#state.monument.stage >= 3 ? 4 : 1);
     this.#events.add({ type: "sawmill.produced", position: SAWMILL_BUILDING });
-    if (this.#state.automationLevel >= 3) {
+    if (
+      this.#state.automationLevel >= 3 &&
+      this.#state.campaign.step >= CAMPAIGN_STEPS.convoy
+    ) {
       this.#addConveyorItem(
         "plank",
         SAWMILL_BUILDING,
         MONUMENT_BUILDING,
-        "monument",
+        this.#state.campaign.step === CAMPAIGN_STEPS.convoy
+          ? "convoy"
+          : "monument",
       );
     } else {
       this.#spawnPickups("plank", SAWMILL_OUTPUT, 1, true);
@@ -1356,6 +1625,7 @@ export class GameSimulation {
     Object.assign(this.#state.monument, state.monument);
     Object.assign(this.#state.butcher, state.butcher);
     Object.assign(this.#state.turret, state.turret);
+    Object.assign(this.#state.wildlife, state.wildlife);
     Object.assign(this.#state.campaign, state.campaign);
     Object.assign(this.#state.payments, state.payments);
     this.#state.elapsed = state.elapsed;
@@ -1385,6 +1655,10 @@ export class GameSimulation {
       this.#workers,
       state.workers.map((worker) => ({
         ...worker,
+        phase:
+          worker.phase === "collecting-meat" || worker.phase === "harvesting"
+            ? ("seeking" as const)
+            : worker.phase,
         actionRemaining: 0,
         path: [],
         pathIndex: 0,
@@ -1393,10 +1667,7 @@ export class GameSimulation {
     );
     replace(
       this.#conveyorItems,
-      state.conveyorItems.map((item) => ({
-        ...item,
-        destination: item.kind === "wood" ? "sawmill" : "monument",
-      })),
+      state.conveyorItems.map((item) => ({ ...item })),
     );
     replace(
       this.#customers,
@@ -1429,8 +1700,8 @@ export class GameSimulation {
     this.#depositRemaining = 0;
     this.#depositDuration = 0;
     this.#depositZone = undefined;
-    this.#animalSpawnRemaining = FOREST.animalSpawnSeconds;
     this.#turretRemaining.fill(0);
+    this.#monumentActivationArmed = false;
     this.#stepIndex = 0;
     this.#replayCommands.length = 0;
     this.#replayStart = structuredClone(save);
@@ -1459,26 +1730,6 @@ const AXE_BLADE_RADIUS = 0.16;
 const WORKER_TREE_START_ID = Math.floor(FOREST_TREE_POSITIONS.length / 2);
 const TREE_CELL_SIZE = 3;
 const TREE_CELLS = createTreeCells();
-
-function settledPickupPosition(
-  kind: PickupKind,
-  origin: Vector2,
-  index: number,
-): Vector2 & { y: number } {
-  const offset = stackItemOffset(index);
-  if (kind === "coin") {
-    return {
-      x: origin.x + offset.x,
-      y: 0.99 + index * 0.115,
-      z: origin.z + offset.z,
-    };
-  }
-  return {
-    x: origin.x + offset.x,
-    y: 0.22 + index * 0.38,
-    z: origin.z + offset.z,
-  };
-}
 
 function distanceToSegment(point: Vector2, from: Vector2, to: Vector2): number {
   const dx = to.x - from.x;

@@ -64,6 +64,7 @@ export function createDebugTools(
             monument: state.monument,
             butcher: state.butcher,
             turret: state.turret,
+            wildlife: state.wildlife,
             animals: state.animals.length,
             pickups: state.pickups.length,
           },

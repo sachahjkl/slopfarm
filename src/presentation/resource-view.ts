@@ -11,7 +11,7 @@ import {
   WORKER_CONVEYOR_PATH,
   pointAlongPath,
 } from "../game/content";
-import { stackItemOffset } from "../game/stack-layout";
+import { stackedResourcePosition, stackItemOffset } from "../game/stack-layout";
 import {
   createToonMaterial,
   getOutlineMaterial,
@@ -116,18 +116,25 @@ export class ResourceView {
       meat: 0,
     };
     for (const item of pickups) {
-      const position =
-        item.kind === "coin" && item.fixed && isSaleCoin(item.position)
-          ? marketCoinPosition(item.position)
-          : item.position;
-      this.#set(
-        item.kind,
-        counts,
-        position.x,
-        position.y,
-        position.z,
-        item.rotation,
-      );
+      const visibleAmount = Math.min(item.amount, this.#maximum);
+      for (let index = 0; index < visibleAmount; index += 1) {
+        const stacked =
+          item.fixed || item.amount > 1
+            ? stackedResourcePosition(item.kind, item.position, index)
+            : item.position;
+        const position =
+          item.kind === "coin" && item.fixed && isSaleCoin(item.position)
+            ? marketCoinPosition(stacked)
+            : stacked;
+        this.#set(
+          item.kind,
+          counts,
+          position.x,
+          position.y,
+          position.z,
+          item.rotation + stackItemOffset(index).rotation,
+        );
+      }
     }
     for (const item of conveyorItems) {
       const position = pointAlongPath(

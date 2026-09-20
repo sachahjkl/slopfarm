@@ -44,6 +44,14 @@ Le joueur choisit physiquement entre vente et transformation. Chaque destination
 
 Une zone aspire uniquement les ressources compatibles, objet par objet. Les ressources forment une pile visible sur l’établi de réception.
 
+Les ressources proches au sol s’agrègent dans une pile logique unique. La pile conserve sa quantité exacte et limite le nombre d’entités simulées.
+
+Une destination pleine ne consomme jamais sa livraison. Le convoyeur dépose le surplus dans une pile physique adjacente et récupérable.
+
+La campagne ne se termine jamais à distance. Quand tous les prérequis sont prêts, le joueur retourne au monument pour l’activer.
+
+L’activation déclenche une seule célébration de six secondes. Elle combine faisceau, onde au sol, salves hautes et feedback sonore.
+
 La vente produit une pile de pièces sur le comptoir. Le joueur collecte ensuite cette pile.
 
 Les pièces améliorent le personnage et les travailleurs. Les produits transformés construisent les infrastructures et le monument.
@@ -95,7 +103,17 @@ Les zones d’embauche utilisent des pièces. Les zones de construction aspirent
 
 ## Base et monument
 
-Les ateliers gagnent taille, animation, stockage et personnel à chaque palier. Routes, lampes, végétation et habitants densifient aussi la base.
+Les ateliers gagnent taille, animation, stockage et personnel à chaque palier. Quais, lampes, machines et ouvriers densifient aussi la base.
+
+La base devient une industrie forestière lumineuse. Elle ne prend jamais la forme d’un village sombre ou médiéval.
+
+Chaque palier repousse visiblement la forêt. Le sol passe de la clairière brute à des cours organisées, puis à un complexe automatisé.
+
+Les ressources entrent par des portes forestières contrôlées. Une épine logistique relie collecte, tri, stockage, transformation et vente.
+
+La façade commerciale ajoute progressivement des échoppes spécialisées. Les convoyeurs et trappes arrière les réapprovisionnent automatiquement.
+
+Les ouvriers restent nombreux et visibles. Ils collectent, chargent, trient, transfèrent, entretiennent et réapprovisionnent les postes de vente.
 
 La base peut déplacer, remplacer ou supprimer un ancien poste pendant une transformation. La disposition ne doit pas figer les premières étapes.
 
@@ -105,30 +123,39 @@ Des ours attaquent trois voies depuis la forêt. Le joueur les repousse avec ses
 
 Les attaques ne détruisent aucun bâtiment. Elles interrompent temporairement le marché, la scierie ou le travail forestier selon la voie.
 
+Chaque vague suit cinq phases : calme, alerte de voie, attaque bornée, résolution et récupération.
+
+L’alerte désigne la voie avant l’arrivée des ours. La vague suivante commence uniquement après la résolution de la vague active.
+
 Chaque palier de défense construit une tourelle sur une nouvelle voie. Chaque tourelle exige des ventes de viande, des planches et des pièces.
 
 La progression alterne les seuils de boucherie et de défense. Elle utilise successivement 6, 8, 18, 24 et 36 viandes vendues.
 
 La boucherie possède trois paliers. La viande vendue débloque un palier, puis les planches construisent son équipement.
 
-Chaque palier de boucherie augmente le prix de la viande. Il augmente aussi la vitesse et la capacité des travailleurs.
+Chaque palier de boucherie augmente le prix de la viande.
+
+Le joueur choisit entre vendre la viande et préparer des rations. Les ventes financent la défense. Les rations améliorent les travailleurs.
+
+Chaque palier de ration exige un palier de boucherie. Les rations augmentent la vitesse et la capacité des travailleurs.
 
 Chaque palier de défense augmente la fréquence des attaques, leur résistance et leur rendement en viande.
 
 La boucle animale suit cet ordre :
 
-1. Un animal arrive depuis la forêt distante.
-2. L’animal avance vers la base et joue une animation d’attaque.
-3. Les haches et les tourelles réduisent sa santé.
-4. L’animal éliminé laisse tomber de la viande physique.
-5. Le joueur dépose la viande dans une boutique spécialisée.
-6. La boutique produit des pièces et améliore les travailleurs.
-7. Les planches et les pièces construisent une nouvelle tourelle.
-8. La nouvelle tourelle protège une voie supplémentaire et attire une attaque plus rentable.
+1. Une alerte désigne une voie.
+2. Une vague bornée arrive depuis la forêt distante.
+3. Les animaux avancent vers la base et jouent une animation d’attaque.
+4. Les haches et les tourelles réduisent leur santé.
+5. Chaque animal éliminé laisse tomber de la viande physique.
+6. Le joueur vend la viande ou prépare des rations.
+7. Les ventes, les planches et les pièces construisent une nouvelle tourelle.
+8. Les rations améliorent les travailleurs.
+9. La nouvelle tourelle protège une voie supplémentaire et attire une vague plus rentable.
 
 Le monument final est une machine géante construite par étapes. Chaque étape fournit un bonus global visible.
 
-L’activation finale déclenche une production extrême. Le mode libre permet ensuite de terminer toutes les améliorations.
+L’activation finale exige le monument, la boucherie, les rations et la défense au niveau maximal. Elle ouvre ensuite le mode libre.
 
 ## Présentation
 

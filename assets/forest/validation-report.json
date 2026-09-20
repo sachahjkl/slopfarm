@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "blenderVersion": "5.1.1",
   "status": "passed",
-  "assetCount": 30,
-  "totalTriangles": 77460,
-  "totalBytes": 20048964,
+  "assetCount": 54,
+  "totalTriangles": 105984,
+  "totalBytes": 33974956,
   "checks": [
     "glb-structure",
     "embedded-atlas",
@@ -23,10 +23,16 @@
     "animation-content",
     "animation-loops",
     "blender-reimport",
-    "visual-progression"
+    "visual-progression",
+    "camp-static-mesh",
+    "camp-sockets",
+    "industry-static-mesh",
+    "industry-fixed-anchors",
+    "industry-ports",
+    "industry-assembly"
   ],
   "reproducibility": {
-    "files": 32,
+    "files": 56,
     "identical": true,
     "different": []
   },
@@ -240,6 +246,174 @@
       "triangles": 7124,
       "meshCount": 2,
       "animationCount": 1
+    },
+    {
+      "id": "camp-gate",
+      "status": "passed",
+      "triangles": 1372,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-lamp",
+      "status": "passed",
+      "triangles": 488,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-arch",
+      "status": "passed",
+      "triangles": 896,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-log-pile",
+      "status": "passed",
+      "triangles": 1392,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-plank-pile",
+      "status": "passed",
+      "triangles": 1584,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-cart",
+      "status": "passed",
+      "triangles": 2104,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-crate",
+      "status": "passed",
+      "triangles": 1232,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-barrel",
+      "status": "passed",
+      "triangles": 316,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-banner",
+      "status": "passed",
+      "triangles": 340,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-planter",
+      "status": "passed",
+      "triangles": 1380,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-signpost",
+      "status": "passed",
+      "triangles": 676,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "camp-awning",
+      "status": "passed",
+      "triangles": 2420,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-conveyor-straight",
+      "status": "passed",
+      "triangles": 956,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-conveyor-corner",
+      "status": "passed",
+      "triangles": 888,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-diverter",
+      "status": "passed",
+      "triangles": 1440,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-lift",
+      "status": "passed",
+      "triangles": 1588,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-bridge",
+      "status": "passed",
+      "triangles": 1196,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-roller-buffer",
+      "status": "passed",
+      "triangles": 1528,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-storage-rack",
+      "status": "passed",
+      "triangles": 1080,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-gantry-crane",
+      "status": "passed",
+      "triangles": 1096,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-sorter",
+      "status": "passed",
+      "triangles": 1604,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-loading-dock",
+      "status": "passed",
+      "triangles": 1024,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-delivery-hatch",
+      "status": "passed",
+      "triangles": 548,
+      "meshCount": 1,
+      "animationCount": 0
+    },
+    {
+      "id": "industry-market-stall",
+      "status": "passed",
+      "triangles": 1376,
+      "meshCount": 1,
+      "animationCount": 0
     }
   ],
   "failures": []

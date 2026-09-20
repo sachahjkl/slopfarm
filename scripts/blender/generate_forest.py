@@ -25,6 +25,8 @@ from asset_common import (  # noqa: E402
     triangles,
     write_json,
 )
+from camp_props import camp_catalog  # noqa: E402
+from industry_props import industry_catalog  # noqa: E402
 
 
 def build_character(model, worker=False, color="teal"):
@@ -953,6 +955,8 @@ def catalog():
             {"family": "monument", "stage": stage},
             lambda m, stage=stage: build_monument(m, stage),
         )
+    yield from camp_catalog()
+    yield from industry_catalog()
 
 
 def generate(directory):

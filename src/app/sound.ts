@@ -32,7 +32,9 @@ export class SoundFeedback {
 
   consume(events: readonly GameEvent[]): void {
     this.#resumeContext();
-    const sounds = new Set<"hit" | "pickup" | "sale" | "upgrade" | "worker">();
+    const sounds = new Set<
+      "hit" | "pickup" | "sale" | "upgrade" | "worker" | "finale"
+    >();
     let pickupFrequency = 520;
     for (const event of events) {
       if (event.type === "tree.hit" || event.type === "animal.hit")
@@ -51,6 +53,8 @@ export class SoundFeedback {
         sounds.add("upgrade");
       } else if (event.type === "worker.hired") {
         sounds.add("worker");
+      } else if (event.type === "monument.activated") {
+        sounds.add("finale");
       }
     }
     if (sounds.has("hit") && this.#canPlay("hit", 0.055))
@@ -65,6 +69,12 @@ export class SoundFeedback {
     }
     if (sounds.has("worker") && this.#canPlay("worker", 0.12))
       this.#tone(620, 0.1, "triangle", 0.045);
+    if (sounds.has("finale") && this.#canPlay("finale", 1)) {
+      this.#tone(330, 0.5, "triangle", 0.07);
+      this.#tone(495, 0.7, "sine", 0.055);
+      this.#tone(660, 0.9, "triangle", 0.04);
+      this.#vibrate([60, 40, 90, 40, 140]);
+    }
   }
 
   update(state: GameState, delta: number): void {

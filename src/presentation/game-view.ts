@@ -178,6 +178,7 @@ export class GameView {
   readonly #carryStack: CarryStackView;
   readonly #monument = createMonument();
   readonly #conveyors = new THREE.Group();
+  readonly #industryProps = new THREE.Group();
   readonly #sawmillPallet = createSawmillPallet();
   readonly #workerDock = createWorkerDock();
   readonly #customerQueue = createCustomerQueue();
@@ -188,14 +189,20 @@ export class GameView {
     createTurretBuilding(),
   );
   readonly #lanePauseIndicators = [
-    createLanePauseIndicator(MARKET_TABLE),
-    createLanePauseIndicator(SAWMILL_BUILDING),
-    createLanePauseIndicator(WORKER_DEPOT),
+    createLaneIndicator(MARKET_TABLE, "!  EN PAUSE", 0xffb347),
+    createLaneIndicator(SAWMILL_BUILDING, "!  EN PAUSE", 0xffb347),
+    createLaneIndicator(WORKER_DEPOT, "!  EN PAUSE", 0xffb347),
+  ];
+  readonly #laneWarningIndicators = [
+    createLaneIndicator(MARKET_TABLE, "!  ATTAQUE IMMINENTE", 0xf06a52),
+    createLaneIndicator(SAWMILL_BUILDING, "!  ATTAQUE IMMINENTE", 0xf06a52),
+    createLaneIndicator(WORKER_DEPOT, "!  ATTAQUE IMMINENTE", 0xf06a52),
   ];
   readonly #saleBuilding = createBuilding(0x59b6d9, 1.4, 1.15);
   readonly #sawmillBuilding = createBuilding(0xd98442, 1.8, 1.35);
   readonly #sawmillMotion = createSawmillMotion();
   readonly #monumentMotion = createMonumentMotion();
+  readonly #monumentBeacon = createMonumentBeacon();
   readonly #geometries = {
     wood: createCarriedWoodGeometry(),
     plank: createCarriedPlankGeometry(),
@@ -227,8 +234,10 @@ export class GameView {
   #objectiveShownAt = 0;
   #quality: "low" | "high";
   readonly #settings: VisualSettings;
-  #celebrationRemaining = 0;
+  #celebrationDurationRemaining = 0;
+  #celebrationBurstRemaining = 0;
   #assets: ForestAssets | undefined;
+  #monumentMixer: THREE.AnimationMixer | undefined;
   #lastPlayerPosition = { x: 0, z: 0 };
   #playerMotion = 0;
 
@@ -347,6 +356,66 @@ export class GameView {
     }
     replaceContents(this.#saleBuilding, assets.sale);
     this.#saleBuilding.position.y = 0;
+    this.#industryProps.clear();
+    const industryLayout = [
+      {
+        asset: assets.industry.rack,
+        position: { x: 7.15, z: 1.35 },
+        rotation: 0,
+        automation: 1,
+        step: CAMPAIGN_STEPS.automation,
+      },
+      {
+        asset: assets.industry.buffer,
+        position: { x: 7.25, z: -0.75 },
+        rotation: 0,
+        automation: 2,
+        step: CAMPAIGN_STEPS.worker,
+      },
+      {
+        asset: assets.industry.sorter,
+        position: { x: 4.75, z: -2.45 },
+        rotation: Math.PI / 2,
+        automation: 3,
+        step: CAMPAIGN_STEPS.convoy,
+      },
+      {
+        asset: assets.industry.crane,
+        position: { x: 6.65, z: -3.15 },
+        rotation: 0,
+        automation: 3,
+        step: CAMPAIGN_STEPS.convoy,
+      },
+      {
+        asset: assets.industry.dock,
+        position: { x: -2.8, z: -8.65 },
+        rotation: Math.PI,
+        automation: 3,
+        step: CAMPAIGN_STEPS.convoy,
+      },
+      {
+        asset: assets.sale,
+        position: { x: -6.2, z: 0.85 },
+        rotation: 0,
+        automation: 2,
+        step: CAMPAIGN_STEPS.worker,
+      },
+      {
+        asset: assets.sale,
+        position: { x: -6.2, z: 4.05 },
+        rotation: Math.PI,
+        automation: 3,
+        step: CAMPAIGN_STEPS.convoy,
+      },
+    ] as const;
+    for (const definition of industryLayout) {
+      const view = cloneAsset(definition.asset);
+      view.position.set(definition.position.x, 0, definition.position.z);
+      view.rotation.y = definition.rotation;
+      view.userData.minimumAutomation = definition.automation;
+      view.userData.minimumStep = definition.step;
+      this.#industryProps.add(view);
+    }
     this.#treeField.useAssets(assets.regrowth, assets.stump);
     this.#resourceView.useAssets(assets.resources);
     this.#shownAutomation = -1;
@@ -396,20 +465,27 @@ export class GameView {
     this.#syncHud(state);
     this.#consumeEvents(events);
     this.#effects.update(delta);
-    this.#celebrationRemaining -= delta;
-    if (state.monument.stage >= 3 && this.#celebrationRemaining <= 0) {
+    this.#celebrationDurationRemaining = Math.max(
+      0,
+      this.#celebrationDurationRemaining - delta,
+    );
+    this.#celebrationBurstRemaining -= delta;
+    if (
+      this.#celebrationDurationRemaining > 0 &&
+      this.#celebrationBurstRemaining <= 0
+    ) {
       const position = new THREE.Vector3(
-        ZONES.monument.x + (Math.random() - 0.5) * 3,
-        1 + Math.random() * 3,
-        ZONES.monument.z + (Math.random() - 0.5) * 3,
+        MONUMENT_BUILDING.x + (Math.random() - 0.5) * 5,
+        3 + Math.random() * 5,
+        MONUMENT_BUILDING.z + (Math.random() - 0.5) * 4,
       );
       const colors = [0xffdc55, 0x66e0ff, 0xff7d9e, 0x8cff8c];
       this.#effects.burst(
         position,
         colors[Math.floor(Math.random() * colors.length)]!,
-        16,
+        24,
       );
-      this.#celebrationRemaining = 0.14;
+      this.#celebrationBurstRemaining = 0.32;
     }
     this.#carryStack.sync(
       state.inventory.wood,
@@ -494,16 +570,24 @@ export class GameView {
       1.4,
       MONUMENT_BUILDING.z,
     );
+    this.#monumentBeacon.position.set(
+      MONUMENT_BUILDING.x,
+      0,
+      MONUMENT_BUILDING.z,
+    );
     this.#scene.add(
       this.#saleBuilding,
       this.#sawmillBuilding,
       this.#sawmillMotion,
       this.#monument,
       this.#monumentMotion,
+      this.#monumentBeacon,
       this.#conveyors,
+      this.#industryProps,
       this.#butcherBuilding,
       ...this.#turretBuildings,
       ...this.#lanePauseIndicators,
+      ...this.#laneWarningIndicators,
     );
     this.#sawmillPallet.position.set(SAWMILL_OUTPUT.x, 0, SAWMILL_OUTPUT.z);
     this.#workerDock.position.set(WORKER_DEPOT.x, 0, WORKER_DEPOT.z);
@@ -652,8 +736,10 @@ export class GameView {
             ? Math.sin(state.elapsed * 14) * 0.16
             : Math.sin(phase) * 0.025;
       }
-      const load = view.getObjectByName("worker-load");
-      if (load) load.visible = worker.carriedWood > 0;
+      const woodLoad = view.getObjectByName("worker-wood-load");
+      if (woodLoad) woodLoad.visible = worker.carriedWood > 0;
+      const meatLoad = view.getObjectByName("worker-meat-load");
+      if (meatLoad) meatLoad.visible = worker.carriedMeat > 0;
     }
   }
 
@@ -767,6 +853,20 @@ export class GameView {
         );
     });
     const pausedRoutes = pausedProductionRoutes(state.animals);
+    this.#laneWarningIndicators.forEach((indicator, route) => {
+      indicator.visible =
+        state.wildlife.phase === "warning" && state.wildlife.lane === route;
+      if (!indicator.visible) return;
+      const motion = this.#settings.reducedMotion
+        ? 0
+        : Math.sin(state.elapsed * 4 + route) * 0.08;
+      indicator.position.y = motion;
+      indicator.scale.setScalar(
+        this.#settings.reducedMotion
+          ? 1
+          : 0.96 + Math.sin(state.elapsed * 4 + route) * 0.04,
+      );
+    });
     this.#lanePauseIndicators.forEach((indicator, route) => {
       indicator.visible = pausedRoutes[route] ?? false;
       if (!indicator.visible) return;
@@ -888,6 +988,10 @@ export class GameView {
       step === CAMPAIGN_STEPS.automation ? buildProgress : 1,
     );
     this.#sawmillPallet.visible = step >= CAMPAIGN_STEPS.automation;
+    for (const prop of this.#industryProps.children)
+      prop.visible =
+        state.automationLevel >= Number(prop.userData.minimumAutomation) &&
+        step >= Number(prop.userData.minimumStep);
     this.#workerDock.visible = step >= CAMPAIGN_STEPS.convoy;
     this.#monument.visible = step >= CAMPAIGN_STEPS.convoy;
     this.#butcherBuilding.visible = step >= CAMPAIGN_STEPS.wildlife;
@@ -968,9 +1072,17 @@ export class GameView {
       monumentConveyor.visible = step >= CAMPAIGN_STEPS.convoy;
     if (state.monument.stage !== this.#shownMonument) {
       this.#shownMonument = state.monument.stage;
+      this.#monumentMixer = undefined;
       const monumentAsset = this.#assets?.monuments[state.monument.stage - 1];
-      if (monumentAsset) replaceContents(this.#monument, monumentAsset);
-      else
+      if (monumentAsset) {
+        this.#monument.clear();
+        this.#monument.scale.setScalar(1);
+        const monumentView = cloneAsset(monumentAsset.object);
+        this.#monument.add(monumentView);
+        this.#monumentMixer = new THREE.AnimationMixer(monumentView);
+        for (const animation of monumentAsset.animations)
+          this.#monumentMixer.clipAction(animation).play();
+      } else
         this.#monument.children.forEach((child, index) => {
           child.visible = index <= state.monument.stage;
         });
@@ -991,8 +1103,15 @@ export class GameView {
         delta *
         sawmillAngularSpeed(state.automationLevel, state.sawmill.wood > 0);
     this.#monumentMotion.visible = state.monument.stage > 0;
+    this.#monumentMixer?.update(delta);
     this.#monumentMotion.rotation.y +=
       delta * (0.35 + state.monument.stage * 0.25);
+    this.#monumentBeacon.visible = this.#celebrationDurationRemaining > 0;
+    if (this.#monumentBeacon.visible) {
+      this.#monumentBeacon.rotation.y += delta * 0.8;
+      const pulse = 1 + Math.sin(state.elapsed * 8) * 0.08;
+      this.#monumentBeacon.scale.set(pulse, 1, pulse);
+    }
   }
 
   #syncHud(state: GameState): void {
@@ -1065,14 +1184,25 @@ export class GameView {
 
   #consumeEvents(events: readonly GameEvent[]): void {
     for (const event of events) {
+      if (event.type === "monument.activated") {
+        this.#celebrationDurationRemaining = 6;
+        this.#celebrationBurstRemaining = 0;
+        const position = new THREE.Vector3(
+          event.position.x,
+          0.08,
+          event.position.z,
+        );
+        this.#effects.pulse(position, 0xffdc55, 4.5);
+        this.#effects.burst(position.clone().setY(3), 0x66e0ff, 48);
+        continue;
+      }
       if (
         event.type === "tool.upgraded" ||
         event.type === "worker.hired" ||
         event.type === "automation.upgraded" ||
         event.type === "monument.advanced" ||
         event.type === "turret.upgraded" ||
-        event.type === "campaign.advanced" ||
-        event.type === "campaign.completed"
+        event.type === "campaign.advanced"
       ) {
         this.#effects.burst(
           this.#player.position.clone().add(new THREE.Vector3(0, 1, 0)),
@@ -1086,6 +1216,7 @@ export class GameView {
         );
         continue;
       }
+      if (event.type === "campaign.completed") continue;
       const position = new THREE.Vector3(
         event.position.x,
         1.2,
@@ -1875,14 +2006,24 @@ function createWorker(asset?: THREE.Object3D): THREE.Group {
     createToonMaterial({ color: 0xffbe82, roughness: 0.9 }),
   );
   head.position.y = 1.35;
-  const load = new THREE.Mesh(
+  const woodLoad = new THREE.Mesh(
     new THREE.BoxGeometry(0.8, 0.55, 0.35),
     createToonMaterial({ color: 0x9b592f, roughness: 1 }),
   );
-  load.position.set(0, 0.85, -0.38);
+  woodLoad.position.set(0, 0.85, -0.38);
   body.visible = head.visible = !asset;
-  load.name = "worker-load";
-  visual.add(body, head, load);
+  woodLoad.name = "worker-wood-load";
+  const meatLoad = new THREE.Group();
+  meatLoad.name = "worker-meat-load";
+  for (const x of [-0.2, 0, 0.2]) {
+    const meat = new THREE.Mesh(
+      new THREE.SphereGeometry(0.19, 7, 5),
+      createToonMaterial({ color: 0xbd4f43, roughness: 0.9 }),
+    );
+    meat.position.set(x, 0.88 + Math.abs(x) * 0.45, -0.42);
+    meatLoad.add(meat);
+  }
+  visual.add(body, head, woodLoad, meatLoad);
   worker.add(visual);
   return worker;
 }
@@ -2040,6 +2181,37 @@ function createMonumentMotion(): THREE.Group {
   return motion;
 }
 
+function createMonumentBeacon(): THREE.Group {
+  const beacon = new THREE.Group();
+  const beam = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.18, 0.55, 16, 16, 1, true),
+    new THREE.MeshBasicMaterial({
+      color: 0x66e0ff,
+      transparent: true,
+      opacity: 0.42,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+    }),
+  );
+  beam.position.y = 8;
+  const crown = new THREE.Mesh(
+    new THREE.TorusGeometry(1.15, 0.1, 8, 32),
+    new THREE.MeshBasicMaterial({
+      color: 0xffdc55,
+      transparent: true,
+      opacity: 0.82,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    }),
+  );
+  crown.rotation.x = Math.PI / 2;
+  crown.position.y = 3.8;
+  beacon.add(beam, crown);
+  beacon.visible = false;
+  return beacon;
+}
+
 function replaceContents(target: THREE.Group, asset: THREE.Object3D): void {
   target.clear();
   target.scale.setScalar(1);
@@ -2056,6 +2228,7 @@ const ZONE_LABELS: Record<ZoneKind, string> = {
   monument: "CHANTIER",
   departure: "DÉPART",
   butcher: "BOUCHERIE",
+  canteen: "RATIONS",
   turret: "DÉFENSE",
 };
 
@@ -2260,6 +2433,7 @@ function serviceSignData(kind: ZoneKind, state: GameState): ServiceSignData {
       FOREST.butcherMeatRequirements[state.butcher.level] ?? 0;
     const plankCost = FOREST.butcherPlankCosts[state.butcher.level] ?? 0;
     const meatReady = campaign.meatSold >= meatRequirement;
+    const stock = ` · STOCK ${String(state.butcher.stock)}`;
     return {
       title: "BOUCHERIE",
       level: building
@@ -2269,8 +2443,8 @@ function serviceSignData(kind: ZoneKind, state: GameState): ServiceSignData {
       detail: building
         ? `${String(campaign.butcherWood)} / ${String(costs.butcherWood)} BOIS`
         : complete
-          ? "NIVEAU MAXIMUM"
-          : `${String(campaign.meatSold)} / ${String(meatRequirement)} VIANDES · ${String(state.butcher.planks)} / ${String(plankCost)} PLANCHES`,
+          ? `NIVEAU MAXIMUM${stock}`
+          : `${String(campaign.meatSold)} / ${String(meatRequirement)} VIANDES · ${String(state.butcher.planks)} / ${String(plankCost)} PLANCHES${stock}`,
       progress: building
         ? campaign.butcherWood / costs.butcherWood
         : complete
@@ -2278,6 +2452,26 @@ function serviceSignData(kind: ZoneKind, state: GameState): ServiceSignData {
           : meatReady
             ? 0.5 + (state.butcher.planks / plankCost) * 0.5
             : (campaign.meatSold / meatRequirement) * 0.5,
+    };
+  }
+  if (kind === "canteen") {
+    const complete = state.butcher.rationLevel >= 2;
+    const locked = state.butcher.rationLevel >= state.butcher.level;
+    const cost = complete ? 0 : FOREST.rationCosts[state.butcher.rationLevel]!;
+    return {
+      title: "RATIONS",
+      level: `NIV. ${String(state.butcher.rationLevel)} / 2`,
+      current: "meat",
+      detail: complete
+        ? `RATIONS MAXIMALES · STOCK ${String(state.butcher.stock)}`
+        : locked
+          ? `BOUCHERIE NIV. ${String(state.butcher.rationLevel + 1)} REQUISE`
+          : `${String(Math.max(0, cost - state.butcher.rations))} VIANDES RESTANTES · STOCK ${String(state.butcher.stock)}`,
+      progress: complete
+        ? 1
+        : locked
+          ? state.butcher.rationLevel / 2
+          : state.butcher.rations / cost,
     };
   }
   if (kind === "turret") {
@@ -2308,7 +2502,7 @@ function serviceSignData(kind: ZoneKind, state: GameState): ServiceSignData {
     };
   }
   if (kind === "departure") return departureSignData(state);
-  return convoySignData(state);
+  return monumentSignData(state);
 }
 
 function saleSignData(state: GameState): ServiceSignData {
@@ -2363,14 +2557,35 @@ function departureSignData(state: GameState): ServiceSignData {
   };
 }
 
-function convoySignData(state: GameState): ServiceSignData {
-  const cost = campaignCosts().exitPlanks;
+function monumentSignData(state: GameState): ServiceSignData {
+  if (state.campaign.step === CAMPAIGN_STEPS.convoy) {
+    const cost = campaignCosts().exitPlanks;
+    return {
+      title: "CHARGER",
+      level: "CONVOI",
+      current: "plank",
+      detail: `${String(Math.max(0, cost - state.campaign.exitPlanks))} PLANCHES RESTANTES`,
+      progress: Math.min(1, state.campaign.exitPlanks / cost),
+    };
+  }
+  if (state.monument.stage < 3) {
+    const cost = FOREST.monumentCosts[state.monument.stage]!;
+    return {
+      title: "CONSTRUIRE",
+      level: `PALIER ${String(state.monument.stage + 1)} / 3`,
+      current: "plank",
+      detail: `${String(Math.max(0, cost - state.monument.progress))} PLANCHES RESTANTES`,
+      progress: state.monument.progress / cost,
+    };
+  }
   return {
-    title: "CONVOI",
-    level: "CHARGEMENT",
+    title: state.campaign.completed ? "ACTIF" : "ACTIVER",
+    level: "MONUMENT FINAL",
     current: "monument",
-    detail: `${String(Math.max(0, cost - state.campaign.exitPlanks))} PLANCHES RESTANTES`,
-    progress: Math.min(1, state.campaign.exitPlanks / cost),
+    detail: state.campaign.completed
+      ? "BASE INDUSTRIELLE EN MARCHE"
+      : "REVIENS SUR LA PLATEFORME",
+    progress: state.campaign.completed ? 1 : 0.98,
   };
 }
 
@@ -2671,14 +2886,15 @@ function createTurretBuilding(): THREE.Group {
   return turret;
 }
 
-function createLanePauseIndicator(position: {
-  x: number;
-  z: number;
-}): THREE.Group {
+function createLaneIndicator(
+  position: { x: number; z: number },
+  text: string,
+  color: number,
+): THREE.Group {
   const indicator = new THREE.Group();
   indicator.position.set(position.x, 0, position.z);
   const material = new THREE.MeshBasicMaterial({
-    color: 0xffb347,
+    color,
     transparent: true,
     opacity: 0.8,
     depthTest: false,
@@ -2690,13 +2906,13 @@ function createLanePauseIndicator(position: {
   ring.renderOrder = RENDER_LAYER.serviceZone - 1;
 
   const canvas = document.createElement("canvas");
-  canvas.width = 256;
+  canvas.width = 512;
   canvas.height = 96;
   const context = canvas.getContext("2d")!;
   drawOutlinedText(
     context,
-    "!  EN PAUSE",
-    128,
+    text,
+    256,
     48,
     "900 34px Figtree, sans-serif",
     "#ffd37a",
@@ -2712,7 +2928,7 @@ function createLanePauseIndicator(position: {
     }),
   );
   label.position.y = 2.45;
-  label.scale.set(2.4, 0.9, 1);
+  label.scale.set(3.4, 0.72, 1);
   label.renderOrder = RENDER_LAYER.serviceZone - 1;
   indicator.add(ring, label);
   indicator.visible = false;
@@ -2852,6 +3068,7 @@ function zoneColor(kind: ZoneKind): number {
     monument: 0x65d68b,
     departure: 0xf6cc55,
     butcher: 0xd65a55,
+    canteen: 0xe2a15a,
     turret: 0x78a8bd,
   }[kind];
 }
@@ -2866,6 +3083,7 @@ function serviceVisible(kind: ZoneKind, state: GameState): boolean {
   if (kind === "worker") return step >= CAMPAIGN_STEPS.worker;
   if (kind === "monument") return step >= CAMPAIGN_STEPS.convoy;
   if (kind === "butcher") return step >= CAMPAIGN_STEPS.wildlife;
+  if (kind === "canteen") return step >= CAMPAIGN_STEPS.defense;
   if (kind === "turret") return step >= CAMPAIGN_STEPS.defense;
   return step === CAMPAIGN_STEPS.departure;
 }
@@ -2877,6 +3095,7 @@ function zoneAction(kind: ZoneKind): string {
   if (kind === "tool" || kind === "worker" || kind === "turret")
     return "ACHETER";
   if (kind === "butcher") return "DÉPOSER";
+  if (kind === "canteen") return "PRÉPARER";
   return "CONSTRUIRE";
 }
 
@@ -2939,6 +3158,16 @@ function selectObjective(state: GameState): { icon: string; detail: string } {
       detail: `${String(campaign.butcherWood)} / ${String(costs.butcherWood)} bois`,
     };
   if (campaign.step === CAMPAIGN_STEPS.defense) {
+    const availableRationLevel = Math.min(2, state.butcher.level);
+    if (
+      state.butcher.rationLevel < availableRationLevel &&
+      state.turret.level < state.butcher.level &&
+      campaign.meatSold < FOREST.turretMeatRequirements[state.turret.level]!
+    )
+      return {
+        icon: "CHOISIS L’USAGE DE LA VIANDE",
+        detail: "Vends-la pour la défense ou prépare des rations",
+      };
     if (
       state.turret.level < state.butcher.level &&
       campaign.meatSold < FOREST.turretMeatRequirements[state.turret.level]!
@@ -2970,10 +3199,20 @@ function selectObjective(state: GameState): { icon: string; detail: string } {
         icon: "RENFORCE LA DÉFENSE",
         detail: "Améliore les tourelles jusqu’au niveau 3",
       };
+    if (state.butcher.rationLevel < 2)
+      return {
+        icon: "PRÉPARE DES RATIONS",
+        detail: "Consacre de la viande aux ouvriers",
+      };
     if (state.monument.stage < 3)
       return {
-        icon: "ACTIVE LE MONUMENT",
+        icon: "CONSTRUIS LE MONUMENT",
         detail: `${String(state.monument.progress)} / ${String(FOREST.monumentCosts[state.monument.stage])} planches`,
+      };
+    if (!campaign.completed)
+      return {
+        icon: "REJOINS LE MONUMENT",
+        detail: "Entre sur la plateforme pour activer la base",
       };
   }
   return campaign.completed

@@ -3,6 +3,7 @@ import {
   BUTCHER_BUILDING,
   MARKET_TABLE,
   MONUMENT_BUILDING,
+  MONUMENT_COLLIDER_RADIUS,
   SAWMILL_BUILDING,
   TURRET_BUILDING,
 } from "./content";
@@ -246,10 +247,10 @@ export const FOREST_YARDS: readonly MapYard[] = [
     color: 0xb99a65,
     unlockStep: 6,
     points: [
-      { x: -3, z: -8 },
-      { x: 3, z: -8 },
-      { x: 3, z: -3.6 },
-      { x: -3, z: -3.6 },
+      { x: -4.5, z: -10.2 },
+      { x: 4.5, z: -10.2 },
+      { x: 4.5, z: -3.6 },
+      { x: -4.5, z: -3.6 },
     ],
   },
   {
@@ -309,7 +310,7 @@ export const FOREST_PATHS: readonly MapPath[] = [
     width: 3.2,
     unlockStep: 6,
     points: [
-      { x: 0, z: -8 },
+      { x: 0, z: -10.2 },
       { x: -8, z: -13 },
       { x: -17, z: -22 },
       { x: -25, z: -32 },
@@ -553,14 +554,29 @@ export const FOREST_FENCES: readonly MapSegment[] = [
 
   // Quai du convoi.
   {
-    from: { x: -3, z: -8 },
-    to: { x: -0.9, z: -8 },
+    from: { x: -4.5, z: -10.2 },
+    to: { x: -0.9, z: -10.2 },
     width: 0.35,
     minimumStep: 6,
   },
-  { from: { x: 0.9, z: -8 }, to: { x: 3, z: -8 }, width: 0.35, minimumStep: 6 },
-  { from: { x: -3, z: -8 }, to: { x: -3, z: -4 }, width: 0.35, minimumStep: 6 },
-  { from: { x: 3, z: -8 }, to: { x: 3, z: -4 }, width: 0.35, minimumStep: 6 },
+  {
+    from: { x: 0.9, z: -10.2 },
+    to: { x: 4.5, z: -10.2 },
+    width: 0.35,
+    minimumStep: 6,
+  },
+  {
+    from: { x: -4.5, z: -10.2 },
+    to: { x: -4.5, z: -4 },
+    width: 0.35,
+    minimumStep: 6,
+  },
+  {
+    from: { x: 4.5, z: -10.2 },
+    to: { x: 4.5, z: -4 },
+    width: 0.35,
+    minimumStep: 6,
+  },
 
   // Aile de sortie.
   {
@@ -632,8 +648,8 @@ export const PROGRESSION_GATES: readonly ProgressionGate[] = [
     unlockStep: 5,
   },
   {
-    from: { x: -0.9, z: -8 },
-    to: { x: 0.9, z: -8 },
+    from: { x: -0.9, z: -10.2 },
+    to: { x: 0.9, z: -10.2 },
     width: 0.35,
     minimumStep: 6,
     unlockStep: 6,
@@ -672,7 +688,7 @@ export const FOREST_COLLIDERS: readonly MapCollider[] = [
   {
     shape: "circle",
     center: MONUMENT_BUILDING,
-    radius: 0.75,
+    radius: MONUMENT_COLLIDER_RADIUS,
     minimumStep: 6,
   },
   {

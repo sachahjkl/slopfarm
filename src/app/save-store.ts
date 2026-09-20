@@ -57,6 +57,7 @@ export function isSaveData(value: unknown): value is SaveData {
   const monument = state.monument;
   const butcher = state.butcher;
   const turret = state.turret;
+  const wildlife = state.wildlife;
   return (
     isNonNegativeNumber(state.elapsed) &&
     isRecord(player) &&
@@ -99,10 +100,24 @@ export function isSaveData(value: unknown): value is SaveData {
     isRecord(butcher) &&
     isIntegerBetween(butcher.level, 0, 3) &&
     isNonNegativeInteger(butcher.planks) &&
+    isIntegerBetween(butcher.rationLevel, 0, 2) &&
+    isNonNegativeInteger(butcher.rations) &&
+    isNonNegativeInteger(butcher.stock) &&
     isRecord(turret) &&
     isIntegerBetween(turret.level, 0, 3) &&
     isNonNegativeInteger(turret.coins) &&
     isNonNegativeInteger(turret.planks) &&
+    isRecord(wildlife) &&
+    (wildlife.phase === "dormant" ||
+      wildlife.phase === "calm" ||
+      wildlife.phase === "warning" ||
+      wildlife.phase === "active" ||
+      wildlife.phase === "recovery") &&
+    isIntegerBetween(wildlife.lane, 0, 2) &&
+    isNonNegativeInteger(wildlife.wave) &&
+    isNonNegativeNumber(wildlife.remaining) &&
+    isNonNegativeInteger(wildlife.spawned) &&
+    isNonNegativeInteger(wildlife.target) &&
     Array.isArray(state.trees) &&
     state.trees.every(
       (tree) =>
@@ -122,6 +137,8 @@ export function isSaveData(value: unknown): value is SaveData {
           pickup.kind === "wood" ||
           pickup.kind === "plank" ||
           pickup.kind === "meat") &&
+        isNonNegativeInteger(pickup.amount) &&
+        pickup.amount > 0 &&
         typeof pickup.fixed === "boolean" &&
         isVector3(pickup.position) &&
         isNumber(pickup.rotation),
@@ -133,10 +150,13 @@ export function isSaveData(value: unknown): value is SaveData {
         isNumber(worker.id) &&
         isVector2(worker.position) &&
         isNumber(worker.heading) &&
-        isNumber(worker.carriedWood) &&
+        isNonNegativeInteger(worker.carriedWood) &&
+        isNonNegativeInteger(worker.carriedMeat) &&
         (worker.phase === "seeking" ||
           worker.phase === "harvesting" ||
-          worker.phase === "delivering"),
+          worker.phase === "delivering" ||
+          worker.phase === "collecting-meat" ||
+          worker.phase === "delivering-meat"),
     ) &&
     Array.isArray(state.conveyorItems) &&
     state.conveyorItems.every(
@@ -146,7 +166,10 @@ export function isSaveData(value: unknown): value is SaveData {
         (item.kind === "wood" || item.kind === "plank") &&
         isVector2(item.from) &&
         isVector2(item.to) &&
-        isNumber(item.progress),
+        isNumber(item.progress) &&
+        (item.destination === "sawmill" ||
+          item.destination === "convoy" ||
+          item.destination === "monument"),
     ) &&
     Array.isArray(state.customers) &&
     state.customers.every(

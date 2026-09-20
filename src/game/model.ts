@@ -53,6 +53,7 @@ export type GameEvent =
   | { type: "animal.hit"; position: Vector2; source: "player" | "turret" }
   | { type: "animal.destroyed"; position: Vector2 }
   | { type: "turret.upgraded"; level: number }
+  | { type: "monument.activated"; position: Vector2 }
   | { type: "campaign.completed" };
 
 export type ZoneKind =
@@ -65,6 +66,7 @@ export type ZoneKind =
   | "monument"
   | "departure"
   | "butcher"
+  | "canteen"
   | "turret";
 
 export interface AnimalState {
@@ -77,6 +79,15 @@ export interface AnimalState {
   phase: "approaching" | "attacking";
   route: number;
   waypoint: number;
+}
+
+export interface WildlifeState {
+  phase: "dormant" | "calm" | "warning" | "active" | "recovery";
+  lane: number;
+  wave: number;
+  remaining: number;
+  spawned: number;
+  target: number;
 }
 
 export interface CustomerState {
@@ -97,6 +108,7 @@ export interface TreeState {
 export interface PickupState {
   id: number;
   kind: PickupKind;
+  amount: number;
   fixed: boolean;
   position: Vector2 & { y: number };
   rotation: number;
@@ -107,7 +119,13 @@ export interface WorkerState {
   position: Vector2;
   heading: number;
   carriedWood: number;
-  phase: "seeking" | "harvesting" | "delivering";
+  carriedMeat: number;
+  phase:
+    | "seeking"
+    | "harvesting"
+    | "delivering"
+    | "collecting-meat"
+    | "delivering-meat";
 }
 
 export interface ConveyorItemState {
@@ -116,6 +134,7 @@ export interface ConveyorItemState {
   from: Vector2;
   to: Vector2;
   progress: number;
+  destination: "sawmill" | "convoy" | "monument";
 }
 
 export interface GameState {
@@ -129,6 +148,7 @@ export interface GameState {
   conveyorItems: readonly ConveyorItemState[];
   customers: readonly CustomerState[];
   animals: readonly AnimalState[];
+  wildlife: WildlifeState;
   campaign: {
     step: number;
     completed: boolean;
@@ -147,7 +167,13 @@ export interface GameState {
   payments: { toolCoins: number; workerCoins: number };
   sawmill: { wood: number; planks: number };
   monument: { stage: number; progress: number };
-  butcher: { level: number; planks: number };
+  butcher: {
+    level: number;
+    planks: number;
+    rationLevel: number;
+    rations: number;
+    stock: number;
+  };
   turret: { level: number; coins: number; planks: number };
 }
 

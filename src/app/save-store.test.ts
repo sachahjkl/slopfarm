@@ -22,6 +22,7 @@ describe("isSaveData", () => {
       "pickups",
       "conveyorItems",
       "animals",
+      "wildlife",
       "butcher",
       "turret",
     ]) {
@@ -49,6 +50,11 @@ describe("isSaveData", () => {
       () => {
         const save = new GameSimulation(12).createSave();
         save.state.butcher.level = 4;
+        return save;
+      },
+      () => {
+        const save = new GameSimulation(12).createSave();
+        save.state.butcher.rationLevel = 3;
         return save;
       },
       () => {
