@@ -134,7 +134,7 @@ export interface ConveyorItemState {
   from: Vector2;
   to: Vector2;
   progress: number;
-  destination: "sawmill" | "convoy" | "monument";
+  destination: "sawmill" | "market" | "convoy" | "monument";
 }
 
 export interface GameState {

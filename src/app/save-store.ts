@@ -168,6 +168,7 @@ export function isSaveData(value: unknown): value is SaveData {
         isVector2(item.to) &&
         isNumber(item.progress) &&
         (item.destination === "sawmill" ||
+          item.destination === "market" ||
           item.destination === "convoy" ||
           item.destination === "monument"),
     ) &&

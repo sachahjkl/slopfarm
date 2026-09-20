@@ -123,6 +123,10 @@ export function createDebugTools(
         { label: "Ouvriers", value: String(state.workers.length) },
         { label: "Clients", value: String(state.customers.length) },
         {
+          label: "Buffer marché",
+          value: `${String(state.campaign.marketStock)} / ${String(FOREST.marketBufferTarget)}`,
+        },
+        {
           label: "Ressources au sol",
           value: `${String(state.pickups.length)} piles · ${String(pickupAmount)} objets`,
         },

@@ -580,6 +580,44 @@ describe("GameSimulation", () => {
     ).toBeGreaterThan(0);
   });
 
+  it("alimente le buffer du marché par la branche automatisée", () => {
+    const game = gameAtZone("worker", {
+      automationLevel: 3,
+      campaignStep: CAMPAIGN_STEPS.convoy,
+    });
+    game.enqueue({ type: "debug.progress", worker: true });
+    game.advance(1 / 60);
+    advance(game, 18);
+    expect(
+      game.state.campaign.marketStock +
+        game.state.conveyorItems.filter(
+          ({ destination }) => destination === "market",
+        ).length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("envoie le bois à la scierie quand le buffer du marché est rempli", () => {
+    const game = gameAtZone("worker", {
+      automationLevel: 3,
+      campaignStep: CAMPAIGN_STEPS.convoy,
+      marketStock: FOREST.marketBufferTarget + 100,
+    });
+    game.enqueue({ type: "debug.progress", worker: true });
+    game.advance(1 / 60);
+    advance(game, 18);
+    expect(
+      game.state.conveyorItems.some(
+        ({ destination }) => destination === "market",
+      ),
+    ).toBe(false);
+    expect(
+      game.state.sawmill.wood +
+        game.state.conveyorItems.filter(
+          ({ destination }) => destination === "sawmill",
+        ).length,
+    ).toBeGreaterThan(0);
+  });
+
   it("fait passer les travailleurs par les ouvertures des murs", () => {
     const game = gameAtZone("worker", {
       automationLevel: 2,
@@ -1231,6 +1269,7 @@ function gameAtZone(
     butcherStock?: number;
     meatSold?: number;
     monumentStage?: number;
+    marketStock?: number;
   },
 ): GameSimulation {
   const game = new GameSimulation(22);
@@ -1244,6 +1283,7 @@ function gameAtZone(
   save.state.automationLevel = options.automationLevel ?? 0;
   save.state.campaign.step = campaignStep;
   save.state.campaign.meatSold = options.meatSold ?? 0;
+  save.state.campaign.marketStock = options.marketStock ?? 0;
   save.state.butcher.level = options.butcherLevel ?? 0;
   save.state.butcher.rationLevel = options.rationLevel ?? 0;
   save.state.butcher.stock = options.butcherStock ?? 0;

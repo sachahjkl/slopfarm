@@ -7,6 +7,22 @@ describe("isSaveData", () => {
     expect(isSaveData(new GameSimulation(12).createSave())).toBe(true);
   });
 
+  it("accepte une ressource en route vers le marché", () => {
+    const save = new GameSimulation(12).createSave();
+    save.state.conveyorItems = [
+      {
+        id: 1,
+        kind: "wood",
+        from: { x: 6.5, z: 7 },
+        to: { x: -8.1, z: 2.5 },
+        progress: 0.5,
+        destination: "market",
+      },
+    ];
+
+    expect(isSaveData(save)).toBe(true);
+  });
+
   it("refuse un état incomplet", () => {
     expect(isSaveData({ seed: 12, randomState: 12, state: {} })).toBe(false);
   });

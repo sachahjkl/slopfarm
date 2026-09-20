@@ -5,6 +5,8 @@ import { renderPixelRatio } from "../app/render-quality";
 import {
   BUTCHER_BUILDING,
   FOREST,
+  MARKET_CONVEYOR_PATH,
+  MARKET_CONVEYOR_ELEVATION,
   MARKET_TABLE,
   MONUMENT_BUILDING,
   MONUMENT_CONVEYOR_PATH,
@@ -385,7 +387,7 @@ export class GameView {
       },
       {
         asset: assets.industry.sorter,
-        position: { x: 4.75, z: -2.45 },
+        position: { x: 8.8, z: 5 },
         rotation: Math.PI / 2,
         automation: 3,
         step: CAMPAIGN_STEPS.convoy,
@@ -1071,6 +1073,13 @@ export class GameView {
         this.#conveyors.add(workerConveyor);
       }
       if (state.automationLevel >= 3) {
+        const marketConveyor = createConveyor(
+          MARKET_CONVEYOR_PATH,
+          this.#assets?.conveyorStraight,
+          MARKET_CONVEYOR_ELEVATION,
+        );
+        marketConveyor.name = "market-conveyor";
+        this.#conveyors.add(marketConveyor);
         const monumentConveyor = createConveyor(
           MONUMENT_CONVEYOR_PATH,
           this.#assets?.conveyorStraight,
@@ -1083,6 +1092,8 @@ export class GameView {
     if (workerConveyor) workerConveyor.visible = step >= CAMPAIGN_STEPS.worker;
     const monumentConveyor =
       this.#conveyors.getObjectByName("monument-conveyor");
+    const marketConveyor = this.#conveyors.getObjectByName("market-conveyor");
+    if (marketConveyor) marketConveyor.visible = step >= CAMPAIGN_STEPS.convoy;
     if (monumentConveyor)
       monumentConveyor.visible = step >= CAMPAIGN_STEPS.convoy;
     if (state.monument.stage !== this.#shownMonument) {
@@ -3228,10 +3239,24 @@ function createMonument(): THREE.Group {
 function createConveyor(
   points: readonly { x: number; z: number }[],
   asset?: THREE.Object3D,
+  elevation = 0,
 ): THREE.Group {
   const group = new THREE.Group();
   for (let index = 1; index < points.length; index += 1)
     group.add(createConveyorSegment(points[index - 1]!, points[index]!, asset));
+  if (elevation > 0) {
+    const supports = createToonMaterial({ color: 0xd99a35, roughness: 0.78 });
+    for (const point of points.slice(1, -1)) {
+      const support = new THREE.Mesh(
+        new THREE.BoxGeometry(0.2, elevation + 0.3, 0.2),
+        supports,
+      );
+      support.position.set(point.x, -(elevation + 0.3) / 2 + 0.12, point.z);
+      support.castShadow = true;
+      group.add(support);
+    }
+    group.position.y = elevation;
+  }
   return group;
 }
 

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  MARKET_CONVEYOR_PATH,
+  MARKET_TABLE,
   MONUMENT_BUILDING,
   MONUMENT_COLLIDER_RADIUS,
   MONUMENT_CONVEYOR_PATH,
@@ -7,6 +9,8 @@ import {
   SAWMILL_BUILDING,
   SAWMILL_OUTPUT,
   SAWMILL_OUTPUT_FOOTPRINT,
+  WORKER_CONVEYOR_PATH,
+  WORKER_DEPOT,
   ZONES,
 } from "./content";
 import { FOREST_FENCES, FOREST_YARDS, PROGRESSION_GATES } from "./forest-map";
@@ -16,6 +20,17 @@ const PALLET = {
   center: SAWMILL_OUTPUT,
   ...SAWMILL_OUTPUT_FOOTPRINT,
 };
+
+describe("graphe des convoyeurs", () => {
+  it("partage un tronc puis sépare le marché et la scierie", () => {
+    expect(MARKET_CONVEYOR_PATH.slice(0, 3)).toEqual(
+      WORKER_CONVEYOR_PATH.slice(0, 3),
+    );
+    expect(MARKET_CONVEYOR_PATH[0]).toEqual(WORKER_DEPOT);
+    expect(MARKET_CONVEYOR_PATH.at(-1)).toEqual(MARKET_TABLE);
+    expect(WORKER_CONVEYOR_PATH.at(-1)).toEqual(SAWMILL_BUILDING);
+  });
+});
 
 describe("implantation du dépôt de planches", () => {
   it("reste séparé de la scierie et de l’établi", () => {

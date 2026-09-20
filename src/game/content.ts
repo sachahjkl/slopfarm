@@ -19,6 +19,7 @@ export const FOREST = {
   workerSpeed: 2.8,
   workerCapacity: 5,
   conveyorSpeed: 2.5,
+  marketBufferTarget: 24,
   maxWorkers: 10,
   toolCosts: [0, 24, 55, 110, 200, 350],
   workerCosts: [15, 24, 36, 52, 72, 96, 124, 156, 192, 232],
@@ -66,6 +67,7 @@ export const ZONES: Record<ZoneKind, Vector2> = {
 
 export const WORKER_DEPOT: Vector2 = { x: 6.5, z: 7 };
 export const MARKET_TABLE: Vector2 = { x: -8.1, z: 2.5 };
+export const MARKET_CONVEYOR_ELEVATION = 1.1;
 export const SALE_OUTPUT: Vector2 = { x: -7.65, z: 3 };
 export const SAWMILL_BUILDING: Vector2 = { x: 6, z: -2.45 };
 export const SAWMILL_OUTPUT: Vector2 = { x: 5.9, z: -1 };
@@ -110,9 +112,21 @@ export const BEAR_PATHS: readonly (readonly Vector2[])[] = [
 export const WORKER_CONVEYOR_PATH: readonly Vector2[] = [
   WORKER_DEPOT,
   { x: 9.4, z: 6.5 },
+  { x: 9.4, z: 5 },
   { x: 9.4, z: -0.8 },
   { x: 8, z: -0.8 },
   SAWMILL_BUILDING,
+];
+
+export const MARKET_CONVEYOR_PATH: readonly Vector2[] = [
+  WORKER_DEPOT,
+  { x: 9.4, z: 6.5 },
+  { x: 9.4, z: 5 },
+  { x: 5.5, z: 5 },
+  { x: 2.4, z: 5 },
+  { x: -2.8, z: 5 },
+  { x: -5.8, z: 5 },
+  MARKET_TABLE,
 ];
 
 export const MONUMENT_CONVEYOR_PATH: readonly Vector2[] = [
@@ -122,6 +136,14 @@ export const MONUMENT_CONVEYOR_PATH: readonly Vector2[] = [
   { x: 2, z: -4.55 },
   MONUMENT_CONVEYOR_INPUT,
 ];
+
+export function conveyorPath(
+  destination: "sawmill" | "market" | "convoy" | "monument",
+): readonly Vector2[] {
+  if (destination === "sawmill") return WORKER_CONVEYOR_PATH;
+  if (destination === "market") return MARKET_CONVEYOR_PATH;
+  return MONUMENT_CONVEYOR_PATH;
+}
 
 export function pathLength(points: readonly Vector2[]): number {
   return points

@@ -4,15 +4,14 @@ import {
   FOREST,
   MARKET_TABLE,
   MONUMENT_BUILDING,
-  MONUMENT_CONVEYOR_PATH,
   MONUMENT_PLANK_OUTPUT,
   SALE_OUTPUT,
   SAWMILL_BUILDING,
   SAWMILL_OUTPUT,
   TURRET_BUILDINGS,
   WORKER_DEPOT,
-  WORKER_CONVEYOR_PATH,
   ZONES,
+  conveyorPath,
   toolCount,
   toolDamage,
   toolOrbitRadius,
@@ -1420,8 +1419,25 @@ export class GameSimulation {
         if (this.#followWorkerPath(worker, workerSpeed * delta) >= 0.35)
           continue;
         if (this.#state.automationLevel >= 2) {
-          for (let count = 0; count < worker.carriedWood; count += 1)
-            this.#addConveyorItem("wood", depot, SAWMILL_BUILDING, "sawmill");
+          let marketSupply =
+            this.#state.campaign.marketStock +
+            this.#conveyorItems.filter(
+              ({ destination }) => destination === "market",
+            ).length;
+          for (let count = 0; count < worker.carriedWood; count += 1) {
+            const destination =
+              this.#state.automationLevel >= 3 &&
+              marketSupply < FOREST.marketBufferTarget
+                ? "market"
+                : "sawmill";
+            this.#addConveyorItem(
+              "wood",
+              depot,
+              destination === "market" ? MARKET_TABLE : SAWMILL_BUILDING,
+              destination,
+            );
+            if (destination === "market") marketSupply += 1;
+          }
         } else {
           this.#spawnPickups("wood", depot, worker.carriedWood, true);
         }
@@ -1567,14 +1583,13 @@ export class GameSimulation {
   #updateConveyors(delta: number): void {
     for (let index = this.#conveyorItems.length - 1; index >= 0; index -= 1) {
       const item = this.#conveyorItems[index]!;
-      const route =
-        item.destination === "sawmill"
-          ? WORKER_CONVEYOR_PATH
-          : MONUMENT_CONVEYOR_PATH;
+      const route = conveyorPath(item.destination);
       item.progress += (delta * FOREST.conveyorSpeed) / pathLength(route);
       if (item.progress < 1) continue;
       this.#conveyorItems.splice(index, 1);
       if (item.destination === "sawmill") this.#state.sawmill.wood += 1;
+      else if (item.destination === "market")
+        this.#state.campaign.marketStock += 1;
       else if (item.destination === "convoy") {
         if (!this.#depositConvoyPlank())
           this.#spawnPickups("plank", MONUMENT_PLANK_OUTPUT, 1, true);

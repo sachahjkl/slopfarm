@@ -7,8 +7,8 @@ import type {
   PickupState,
 } from "../game/simulation";
 import {
-  MONUMENT_CONVEYOR_PATH,
-  WORKER_CONVEYOR_PATH,
+  MARKET_CONVEYOR_ELEVATION,
+  conveyorPath,
   pointAlongPath,
 } from "../game/content";
 import { stackedResourcePosition, stackItemOffset } from "../game/stack-layout";
@@ -138,14 +138,14 @@ export class ResourceView {
     }
     for (const item of conveyorItems) {
       const position = pointAlongPath(
-        item.kind === "wood" ? WORKER_CONVEYOR_PATH : MONUMENT_CONVEYOR_PATH,
+        conveyorPath(item.destination),
         item.progress,
       );
       this.#set(
         item.kind,
         counts,
         position.x,
-        0.42,
+        0.42 + (item.destination === "market" ? MARKET_CONVEYOR_ELEVATION : 0),
         position.z,
         item.progress * 8,
       );
