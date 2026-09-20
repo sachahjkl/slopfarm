@@ -438,11 +438,14 @@ body {
   display: block;
 }
 #objective-journal {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  display: none;
+  position: fixed;
+  z-index: 10;
+  top: max(86px, calc(env(safe-area-inset-top) + 86px));
+  right: 18px;
+  bottom: auto;
+  left: auto;
   width: min(420px, calc(100vw - 36px));
+  margin: 0;
   padding: 14px 16px;
   border: 2px solid #f4d978;
   border-radius: 16px;
@@ -451,9 +454,26 @@ body {
     0 8px 0 #102a1f,
     0 18px 42px #10251b88;
 }
-#instructions.journal-open #objective-journal {
+#objective-journal:not([open]) {
+  display: none;
+}
+#objective-journal[open] {
   display: block;
   animation: objective-compact 220ms ease-out both;
+}
+.objective-journal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#objective-journal-close {
+  display: block;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
 }
 #objective-journal b {
   color: #f6cc55;
@@ -646,26 +666,87 @@ body {
 }
 #debug-panel {
   position: fixed;
-  z-index: 5;
+  z-index: 20;
   left: 10px;
   bottom: 10px;
-  width: min(360px, 90vw);
-  padding: 8px;
-  color: #caffb6;
-  border-radius: 8px;
-  background: #07130eef;
-  font: 12px monospace;
+  width: min(440px, calc(100vw - 20px));
+  max-height: min(760px, calc(100vh - 20px));
+  overflow: auto;
+  padding: 10px 12px 12px;
+  color: #f5f1d8;
+  border: 2px solid #6d9e75;
+  border-radius: 14px;
+  background: #10231df2;
+  box-shadow: 0 12px 34px #001b13aa;
+  font:
+    12px/1.35 system-ui,
+    sans-serif;
+}
+#debug-panel summary {
+  cursor: pointer;
+  color: #b9f3c5;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+#debug-panel section {
+  padding-top: 8px;
+  border-top: 1px solid #ffffff1c;
+}
+#debug-panel h3 {
+  margin: 0 0 6px;
+  color: #ffd978;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .debug-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin: 8px 0;
+  gap: 6px;
+  margin: 0 0 8px;
 }
 .debug-actions button {
-  color: white;
-  border: 1px solid #ffffff44;
-  background: #274735;
+  min-height: 30px;
+  padding: 5px 9px;
+  color: #fff8df;
+  border: 1px solid #8ac59a66;
+  border-radius: 7px;
+  background: #29543d;
+  font: inherit;
+  font-weight: 700;
+}
+.debug-actions button:hover {
+  background: #397352;
+}
+.debug-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.debug-metric {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 7px 8px;
+  border-radius: 8px;
+  background: #ffffff0c;
+}
+.debug-metric span {
+  color: #a9bdb2;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.debug-metric strong {
+  overflow: hidden;
+  color: #f8f4df;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.debug-metric.is-good strong {
+  color: #86ef9c;
+}
+.debug-metric.is-warn strong {
+  color: #ffad77;
 }
 .reduced-motion *,
 .reduced-motion *::before,

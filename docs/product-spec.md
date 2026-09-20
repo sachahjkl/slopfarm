@@ -46,6 +46,8 @@ Une zone aspire uniquement les ressources compatibles, objet par objet. Les ress
 
 Les ressources proches au sol s’agrègent dans une pile logique unique. La pile conserve sa quantité exacte et limite le nombre d’entités simulées.
 
+Les piles peuvent monter très haut et restent entièrement visibles. Les bâtiments et échoppes ne placent aucun toit ou panneau devant leur colonne.
+
 Une destination pleine ne consomme jamais sa livraison. Le convoyeur dépose le surplus dans une pile physique adjacente et récupérable.
 
 La campagne ne se termine jamais à distance. Quand tous les prérequis sont prêts, le joueur retourne au monument pour l’activer.

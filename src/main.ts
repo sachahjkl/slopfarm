@@ -47,6 +47,31 @@ const objectiveJournalToggle = requireElement(
   "#objective-journal-toggle",
   HTMLButtonElement,
 );
+const objectiveJournal = requireElement(
+  "#objective-journal",
+  HTMLDialogElement,
+);
+const objectiveJournalClose = requireElement(
+  "#objective-journal-close",
+  HTMLButtonElement,
+);
+const mobileJournal = matchMedia(
+  "(max-width: 540px), (max-height: 540px) and (pointer: coarse)",
+);
+
+function closeObjectiveJournal(): void {
+  if (objectiveJournal.open) objectiveJournal.close();
+  objectivePanel.classList.remove("journal-open");
+  objectiveJournalToggle.setAttribute("aria-expanded", "false");
+}
+
+function openObjectiveJournal(): void {
+  if (mobileJournal.matches) objectiveJournal.showModal();
+  else objectiveJournal.show();
+  objectivePanel.classList.add("journal-open");
+  objectiveJournalToggle.setAttribute("aria-expanded", "true");
+}
+
 brandToggle.addEventListener("click", () => {
   const retracted = hud.classList.toggle("is-brand-retracted");
   brandToggle.setAttribute("aria-expanded", String(!retracted));
@@ -58,9 +83,24 @@ brandToggle.addEventListener("click", () => {
   );
 });
 objectiveJournalToggle.addEventListener("click", () => {
-  const open = objectivePanel.classList.toggle("journal-open");
-  objectiveJournalToggle.setAttribute("aria-expanded", String(open));
+  if (objectiveJournal.open) closeObjectiveJournal();
+  else openObjectiveJournal();
 });
+objectiveJournalClose.addEventListener("click", closeObjectiveJournal);
+objectiveJournal.addEventListener("close", closeObjectiveJournal);
+objectiveJournal.addEventListener("click", (event) => {
+  if (event.target === objectiveJournal) closeObjectiveJournal();
+});
+mobileJournal.addEventListener("change", closeObjectiveJournal);
+requireElement("#settings-button", HTMLButtonElement).addEventListener(
+  "click",
+  closeObjectiveJournal,
+);
+if (
+  import.meta.env.DEV &&
+  new URLSearchParams(location.search).get("debugJournal") === "open"
+)
+  openObjectiveJournal();
 const saves = new SaveStore();
 const saved = saves.load();
 const game = new GameSimulation(saved?.seed);
@@ -122,7 +162,8 @@ try {
     debugTools?.update(delta);
     saveRemaining -= delta;
     if (saveRemaining <= 0) {
-      saves.save(game.createSave());
+      if (!document.documentElement.dataset.debugPreset)
+        saves.save(game.createSave());
       saveRemaining = 5;
     }
     requestAnimationFrame(frame);

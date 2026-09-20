@@ -3346,30 +3346,30 @@
       }
     },
     {
-      "id": "industry-market-stall",
-      "file": "industry-market-stall.glb",
-      "name": "industry-market-stall",
+      "id": "industry-market-stall-tier-1",
+      "file": "industry-market-stall-tier-1.glb",
+      "name": "industry-market-stall-tier-1",
       "kind": "prop",
       "dimensionsMeters": [
-        2.7,
-        3.085,
-        2.825
+        3.42,
+        1.25,
+        2.41
       ],
       "boundsMeters": {
         "min": [
-          -1.35,
+          -1.32,
           0,
-          -1.54
+          -1.7
         ],
         "max": [
-          1.35,
-          3.085,
-          1.285
+          2.1,
+          1.25,
+          0.71
         ]
       },
       "origin": "module-anchor",
       "forward": "+Z",
-      "triangles": 1376,
+      "triangles": 1128,
       "triangleBudget": 2500,
       "textureSize": [
         1024,
@@ -3386,35 +3386,46 @@
       "skeleton": null,
       "sockets": {
         "input": [
-          0,
+          1.55,
           0.8,
-          -1.54
+          -1.7
         ],
         "delivery": [
-          0,
+          1.55,
           0.8,
-          -0.34
+          -0.8
+        ],
+        "stock": [
+          0.42,
+          0.99,
+          0.35
+        ],
+        "coins": [
+          0.57,
+          1.25,
+          0
         ],
         "sale": [
-          -0.51,
-          1.14,
-          0.65
+          -0.55,
+          0.99,
+          -0.45
         ],
         "worker": [
+          -1.05,
           0,
-          0,
-          0
+          1.1
         ],
         "customer": [
           0,
           0,
-          1.65
+          -1.65
         ]
       },
-      "bytes": 594536,
-      "sha256": "83cbc4aca37b69dfc0f99ab9e77c4ddc8da58920fb5105c4a2815cf3527306d4",
+      "bytes": 580628,
+      "sha256": "c26984a89aa26848925f808580f122576becf42ebcd51cb59eaabe5eb4258b39",
       "family": "industry",
       "module": "market-stall",
+      "tier": 1,
       "ports": {
         "input": {
           "direction": [
@@ -3424,6 +3435,292 @@
           ],
           "widthMeters": 1
         }
+      },
+      "stockClearance": {
+        "min": [
+          0.21,
+          0.99,
+          0.14
+        ],
+        "max": [
+          0.63,
+          null,
+          0.56
+        ],
+        "coins": {
+          "center": [
+            0.57,
+            1.25,
+            0
+          ],
+          "radiusMeters": 0.28
+        }
+      },
+      "gamePlacement": {
+        "yawDegrees": 90,
+        "scale": 1
+      }
+    },
+    {
+      "id": "industry-market-stall-tier-2",
+      "file": "industry-market-stall-tier-2.glb",
+      "name": "industry-market-stall-tier-2",
+      "kind": "prop",
+      "dimensionsMeters": [
+        4.08,
+        1.25,
+        2.41
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.97,
+          0,
+          -1.7
+        ],
+        "max": [
+          2.11,
+          1.25,
+          0.71
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 1816,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "service-2": [
+          -1.64,
+          1.04,
+          -0.24
+        ],
+        "customer-2": [
+          -1.1,
+          0,
+          -1.65
+        ],
+        "input": [
+          1.55,
+          0.8,
+          -1.7
+        ],
+        "delivery": [
+          1.55,
+          0.8,
+          -0.8
+        ],
+        "stock": [
+          0.42,
+          0.99,
+          0.35
+        ],
+        "coins": [
+          0.57,
+          1.25,
+          0
+        ],
+        "sale": [
+          -0.55,
+          0.99,
+          -0.45
+        ],
+        "worker": [
+          -1.05,
+          0,
+          1.1
+        ],
+        "customer": [
+          0,
+          0,
+          -1.65
+        ]
+      },
+      "bytes": 626412,
+      "sha256": "f1423188ac4017cc95f14948b5a458a3ec452246be209c1519a4c43edb9219cb",
+      "family": "industry",
+      "module": "market-stall",
+      "tier": 2,
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        }
+      },
+      "stockClearance": {
+        "min": [
+          0.21,
+          0.99,
+          0.14
+        ],
+        "max": [
+          0.63,
+          null,
+          0.56
+        ],
+        "coins": {
+          "center": [
+            0.57,
+            1.25,
+            0
+          ],
+          "radiusMeters": 0.28
+        }
+      },
+      "gamePlacement": {
+        "yawDegrees": 90,
+        "scale": 1
+      }
+    },
+    {
+      "id": "industry-market-stall-tier-3",
+      "file": "industry-market-stall-tier-3.glb",
+      "name": "industry-market-stall-tier-3",
+      "kind": "prop",
+      "dimensionsMeters": [
+        4.34,
+        1.325,
+        2.619
+      ],
+      "boundsMeters": {
+        "min": [
+          -1.97,
+          0,
+          -1.7
+        ],
+        "max": [
+          2.37,
+          1.325,
+          0.919
+        ]
+      },
+      "origin": "module-anchor",
+      "forward": "+Z",
+      "triangles": 2464,
+      "triangleBudget": 2500,
+      "textureSize": [
+        1024,
+        1024
+      ],
+      "textureBudget": [
+        1024,
+        1024
+      ],
+      "materials": [
+        "forest-painted-matte"
+      ],
+      "animations": [],
+      "skeleton": null,
+      "sockets": {
+        "service-2": [
+          -1.64,
+          1.04,
+          -0.24
+        ],
+        "customer-2": [
+          -1.1,
+          0,
+          -1.65
+        ],
+        "distribution": [
+          1.75,
+          1.01,
+          0.4
+        ],
+        "register": [
+          1.77,
+          1.31,
+          0.73
+        ],
+        "input": [
+          1.55,
+          0.8,
+          -1.7
+        ],
+        "delivery": [
+          1.55,
+          0.8,
+          -0.8
+        ],
+        "stock": [
+          0.42,
+          0.99,
+          0.35
+        ],
+        "coins": [
+          0.57,
+          1.25,
+          0
+        ],
+        "sale": [
+          -0.55,
+          0.99,
+          -0.45
+        ],
+        "worker": [
+          -1.05,
+          0,
+          1.1
+        ],
+        "customer": [
+          0,
+          0,
+          -1.65
+        ]
+      },
+      "bytes": 665440,
+      "sha256": "84ace3bf284d5c96ffa7bd33e0265bc02f411dc6e9b85dbccb8ecc759909f407",
+      "family": "industry",
+      "module": "market-stall",
+      "tier": 3,
+      "ports": {
+        "input": {
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "widthMeters": 1
+        }
+      },
+      "stockClearance": {
+        "min": [
+          0.21,
+          0.99,
+          0.14
+        ],
+        "max": [
+          0.63,
+          null,
+          0.56
+        ],
+        "coins": {
+          "center": [
+            0.57,
+            1.25,
+            0
+          ],
+          "radiusMeters": 0.28
+        }
+      },
+      "gamePlacement": {
+        "yawDegrees": 90,
+        "scale": 1
       }
     }
   ]

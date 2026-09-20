@@ -28,3 +28,6 @@ case "${1:-}" in
       --python "$scripts/validate_forest.py" -- --input "$output"
     ;;
 esac
+
+blender --background --factory-startup --threads 1 --python-exit-code 1 \
+  --python "$scripts/test_market_visibility.py"

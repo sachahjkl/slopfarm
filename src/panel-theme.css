@@ -163,7 +163,7 @@
 
 /* The journal uses a dark ledger surface, distinct from the objective sign. */
 #objective-journal {
-  top: calc(100% + 12px);
+  top: max(86px, calc(env(safe-area-inset-top) + 86px));
   padding: 16px 17px 17px;
   color: var(--panel-cream);
   border: 3px solid #4b3021;
@@ -179,6 +179,11 @@
     inset 4px 0 #9a5834;
 }
 
+.objective-journal-header {
+  margin: 0;
+  padding: 0;
+}
+
 #objective-journal b {
   display: block;
   padding-bottom: 9px;
@@ -186,6 +191,16 @@
   border-bottom: 1px dashed #e6c97980;
   font-size: 13px;
   text-shadow: 0 2px #102a1f;
+}
+
+#objective-journal-close {
+  color: var(--panel-cream);
+  border: 2px solid #9c7449;
+  background: #183c2c;
+  font:
+    900 25px/1 Figtree,
+    sans-serif;
+  cursor: pointer;
 }
 
 #objective-history {
@@ -392,15 +407,57 @@
   text-shadow: 0 1px #401d20;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 540px), (max-height: 540px) and (pointer: coarse) {
   #instructions {
-    width: calc(100vw - 20px);
-    padding: 10px 58px 11px 11px;
+    top: max(68px, calc(env(safe-area-inset-top) + 60px));
+    right: 10px;
+    bottom: auto;
+    left: auto;
+    gap: 8px;
+    width: min(330px, calc(100vw - 20px));
+    min-height: 54px;
+    padding: 5px 58px 5px 7px;
+    transform: none;
+    animation: none;
   }
 
   #instructions.is-compact {
     width: min(330px, calc(100vw - 20px));
-    padding-right: 62px;
+    padding: 5px 58px 5px 7px;
+  }
+
+  #instructions:hover,
+  #instructions:focus-within,
+  #instructions.is-compact:hover,
+  #instructions.is-compact:focus-within {
+    width: min(330px, calc(100vw - 20px));
+  }
+
+  #instructions img,
+  #instructions.is-compact img {
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+  }
+
+  #instructions strong,
+  #instructions.is-compact strong,
+  #instructions span,
+  #instructions.is-compact span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #instructions strong,
+  #instructions.is-compact strong {
+    font-size: 13px;
+  }
+
+  #instructions span,
+  #instructions.is-compact span {
+    margin-top: 1px;
+    font-size: 11px;
   }
 
   #instructions::before {
@@ -412,15 +469,53 @@
   }
 
   #objective-journal-toggle {
+    display: block;
     right: 6px;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
   }
 
   #objective-journal {
-    right: 0;
-    width: min(360px, calc(100vw - 20px));
-    max-height: min(58dvh, 390px);
+    position: fixed;
+    z-index: 10;
+    inset: auto 10px max(10px, env(safe-area-inset-bottom));
+    width: auto;
+    max-height: min(62dvh, 420px);
+    margin: 0;
+    padding: 13px 14px 15px;
+    overflow: hidden;
+  }
+
+  #objective-journal::backdrop {
+    background: #10251b99;
+    backdrop-filter: blur(3px);
+  }
+
+  .objective-journal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+  }
+
+  #objective-journal b {
+    flex: 1;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  #objective-journal-close {
+    display: block;
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  #objective-history {
+    max-height: calc(min(62dvh, 420px) - 72px);
+    overscroll-behavior: contain;
   }
 
   #settings-button {

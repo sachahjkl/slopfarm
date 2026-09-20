@@ -4,7 +4,7 @@
   "baseUrl": "/art/",
   "preview": "preview.html",
   "direction": "docs/ui-art-direction.md",
-  "provenance": "SVG originaux dessinés pour Slopfarm. Aucune image de référence incorporée.",
+  "provenance": "Textures raster générées pour Slopfarm. Icônes et decals SVG originaux.",
   "palette": {
     "ink": "#30271e",
     "cream": "#fff4d6",
@@ -41,7 +41,7 @@
     "sha256": "c8d9e77bb970c18f7b55fd2d8c91f86c9e9cc42696da9c3e7bc4fffba1d3ef5a"
   },
   "textureDefaults": {
-    "size": [256, 256],
+    "size": [512, 512],
     "tileable": true,
     "wrapS": "RepeatWrapping",
     "wrapT": "RepeatWrapping",
@@ -78,32 +78,38 @@
     {
       "id": "grass",
       "kind": "texture",
-      "file": "textures/grass.svg",
+      "file": "textures/grass.png",
       "label": "Herbe"
     },
     {
       "id": "grove",
       "kind": "texture",
-      "file": "textures/grove.svg",
+      "file": "textures/grove.png",
       "label": "Humus forestier"
     },
     {
       "id": "yard",
       "kind": "texture",
-      "file": "textures/yard.svg",
+      "file": "textures/yard.png",
       "label": "Terre battue"
     },
     {
       "id": "path",
       "kind": "texture",
-      "file": "textures/path.svg",
+      "file": "textures/path.png",
       "label": "Sentier"
     },
     {
       "id": "path-edge",
       "kind": "texture",
-      "file": "textures/path-edge.svg",
+      "file": "textures/path-edge.png",
       "label": "Bordure du sentier"
+    },
+    {
+      "id": "industrial-yard",
+      "kind": "texture",
+      "file": "textures/industrial-yard.png",
+      "label": "Sol industriel"
     },
     {
       "id": "wood",

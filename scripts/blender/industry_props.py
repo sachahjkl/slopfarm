@@ -423,49 +423,6 @@ def build_hatch(m):
     finish(m)
 
 
-def build_shop(m):
-    hatch_parts(m, 0.94)
-    for x in (-1.19, 1.19):
-        m.box("shop-post", (x, -0.72, 1.31), (0.22, 0.22, 2.62), "wood", 0.035)
-        m.box("shop-foot", (x, -0.72, 0.09), (0.32, 0.32, 0.18), "teal", 0)
-        m.box("shop-side", (x, 0.02, 0.49), (0.14, 1.64, 0.98), "wood", 0)
-    m.box("sale-counter", (0, -0.67, 1.01), (2.60, 0.61, 0.14), "cut", 0.035)
-    m.box("counter-front", (0, -0.77, 0.49), (2.34, 0.12, 0.92), "wood", 0)
-    for x in (-0.97, 0.97):
-        m.box("counter-strap", (x, -0.847, 0.53), (0.12, 0.05, 0.78), "teal", 0)
-    for index in range(6):
-        x = (index - 2.5) * 0.45
-        color = "coral" if index % 2 else "cream"
-        m.box(
-            "market-canopy",
-            (x, -0.15, 2.65),
-            (0.45, 2.22, 0.11),
-            color,
-            0,
-            rotation=(0.12, 0, 0),
-        )
-        m.box("canopy-valance", (x, -1.25, 2.46), (0.45, 0.07, 0.20), color, 0)
-    m.box("product-sign", (0, -0.87, 2.82), (1.46, 0.16, 0.53), "gold", 0.035)
-    m.box("sign-inset", (0, -0.96, 2.82), (1.20, 0.035, 0.34), "cream", 0)
-    for index in range(2):
-        m.box(
-            "plank-emblem",
-            (0, -0.99 - index * 0.03, 2.77 + index * 0.10),
-            (0.65, 0.045, 0.075),
-            "wood",
-            0,
-        )
-    m.box("cash-register", (0.72, -0.64, 1.24), (0.44, 0.33, 0.32), "gold", 0.025)
-    m.box("register-display", (0.72, -0.81, 1.29), (0.28, 0.025, 0.10), "teal", 0)
-    m.box("sale-tray", (-0.51, -0.65, 1.105), (0.88, 0.43, 0.05), "teal", 0)
-    m.socket("input", (0, 1.54, 0.8))
-    m.socket("delivery", (0, 0.34, 0.8))
-    m.socket("sale", (-0.51, -0.65, 1.14))
-    m.socket("worker", (0, 0, 0))
-    m.socket("customer", (0, -1.65, 0))
-    finish(m)
-
-
 def industry_catalog():
     models = (
         (
@@ -487,7 +444,6 @@ def industry_catalog():
         ("sorter", build_sorter, {"input": [0, 0, -1], "output": [0, 0, 1]}),
         ("loading-dock", build_dock, {"input": [0, 0, -1]}),
         ("delivery-hatch", build_hatch, {"input": [0, 0, -1], "output": [0, 0, 1]}),
-        ("market-stall", build_shop, {"input": [0, 0, -1]}),
     )
     for module, build, ports in models:
         yield (

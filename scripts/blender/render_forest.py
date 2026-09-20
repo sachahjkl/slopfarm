@@ -41,10 +41,18 @@ def area_light(name, position, energy, size):
     )
 
 
-def render_model(directory, entry, size):
+def render_model(directory, entry, size, stock_counts=None, suffix=""):
     import_model(directory / entry["file"])
     root = bpy.data.objects[entry["id"]]
-    root.scale = (2.3 / max(entry["dimensionsMeters"]),) * 3
+    camera_offset = Vector((4.5, -7.5, 5.0))
+    dimensions = entry["dimensionsMeters"]
+    if stock_counts is not None:
+        from market_preview import add_market_scene
+
+        root, camera_offset = add_market_scene(directory, entry, *stock_counts)
+        low, high = mesh_bounds()
+        dimensions = [b - a for a, b in zip(low, high)]
+    root.scale = (2.3 / max(dimensions),) * 3
     bpy.context.view_layer.update()
     low, high = mesh_bounds()
     root.location.x -= (low[0] + high[0]) / 2
@@ -74,7 +82,7 @@ def render_model(directory, entry, size):
     camera = bpy.data.objects.new("preview-camera", data)
     bpy.context.collection.objects.link(camera)
     target = Vector((0, 0, height * 0.48))
-    camera.location = target + Vector((4.5, -7.5, 5.0))
+    camera.location = target + camera_offset
     camera.rotation_euler = (
         (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     )
@@ -95,6 +103,10 @@ def render_model(directory, entry, size):
 
     font = bpy.data.curves.new("preview-caption", "FONT")
     font.body = entry["id"]
+    if stock_counts is not None:
+        font.body = (
+            f"Tier {entry['tier']} / bois {stock_counts[0]} / pieces {stock_counts[1]}"
+        )
     font.align_x = "CENTER"
     font.align_y = "CENTER"
     font.size = data.ortho_scale * 0.0366
@@ -118,7 +130,7 @@ def render_model(directory, entry, size):
     scene.render.image_settings.file_format = "PNG"
     scene.render.image_settings.color_mode = "RGBA"
     scene.view_settings.view_transform = "AgX"
-    preview = directory / "previews" / f"{entry['id']}.png"
+    preview = directory / "previews" / f"{entry['id']}{suffix}.png"
     scene.render.filepath = str(preview)
     bpy.ops.render.render(write_still=True)
     # La lecture du PNG conserve les couleurs de sortie dans la planche.
@@ -135,14 +147,16 @@ def preview_pixels(path, size):
     return pixels.reshape((size, size, 4))
 
 
-def render(directory, size, family=None, sheet_only=False):
+def render(directory, size, family=None, sheet_only=False, module=None):
     entries = json.loads((directory / "manifest.json").read_text())["assets"]
     if family:
         entries = [entry for entry in entries if entry.get("family") == family]
+    if module:
+        entries = [entry for entry in entries if entry.get("module") == module]
     if not entries:
         raise ValueError("Aucun modèle à afficher.")
     (directory / "previews").mkdir(exist_ok=True)
-    columns = 4 if family else 5
+    columns = 3 if module else 4 if family else 5
     rows = math.ceil(len(entries) / columns)
     sheet = np.ones((rows * size, columns * size, 4), dtype=np.float32)
     for index, entry in enumerate(entries):
@@ -158,7 +172,8 @@ def render(directory, size, family=None, sheet_only=False):
         "forest-contact-sheet", columns * size, rows * size, alpha=True
     )
     image.pixels.foreach_set(sheet.ravel())
-    filename = f"contact-sheet-{family}.png" if family else "contact-sheet.png"
+    selection = module or family
+    filename = f"contact-sheet-{selection}.png" if selection else "contact-sheet.png"
     image.filepath_raw = str(directory / filename)
     image.file_format = "PNG"
     image.save()
@@ -172,10 +187,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--family", help="Limite la planche à une famille du manifeste."
     )
+    parser.add_argument("--module", help="Limite la planche à un module du manifeste.")
     parser.add_argument(
         "--sheet-only", action="store_true", help="Assemble les aperçus PNG existants."
     )
     args = parser.parse_args(
         sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     )
-    render(args.input.resolve(), args.size, args.family, args.sheet_only)
+    render(args.input.resolve(), args.size, args.family, args.sheet_only, args.module)

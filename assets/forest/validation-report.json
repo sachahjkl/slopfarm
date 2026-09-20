@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "blenderVersion": "5.1.1",
   "status": "passed",
-  "assetCount": 54,
-  "totalTriangles": 105984,
-  "totalBytes": 33974956,
+  "assetCount": 56,
+  "totalTriangles": 110016,
+  "totalBytes": 35252900,
   "checks": [
     "glb-structure",
     "embedded-atlas",
@@ -29,13 +29,12 @@
     "industry-static-mesh",
     "industry-fixed-anchors",
     "industry-ports",
-    "industry-assembly"
+    "industry-assembly",
+    "market-open-columns",
+    "market-camera-visibility",
+    "market-worker-customer-clearance"
   ],
-  "reproducibility": {
-    "files": 56,
-    "identical": true,
-    "different": []
-  },
+  "reproducibility": null,
   "assets": [
     {
       "id": "adventurer",
@@ -409,11 +408,78 @@
       "animationCount": 0
     },
     {
-      "id": "industry-market-stall",
+      "id": "industry-market-stall-tier-1",
       "status": "passed",
-      "triangles": 1376,
+      "triangles": 1128,
       "meshCount": 1,
-      "animationCount": 0
+      "animationCount": 0,
+      "marketVisibility": {
+        "cameraOffset": [
+          3.2,
+          20,
+          14
+        ],
+        "yawDegrees": 90,
+        "woodItems": 128,
+        "coinItems": 512,
+        "unobstructedRays": 3203,
+        "clearColumns": [
+          "stock",
+          "coins",
+          "worker",
+          "customer"
+        ]
+      }
+    },
+    {
+      "id": "industry-market-stall-tier-2",
+      "status": "passed",
+      "triangles": 1816,
+      "meshCount": 1,
+      "animationCount": 0,
+      "marketVisibility": {
+        "cameraOffset": [
+          3.2,
+          20,
+          14
+        ],
+        "yawDegrees": 90,
+        "woodItems": 128,
+        "coinItems": 512,
+        "unobstructedRays": 3203,
+        "clearColumns": [
+          "stock",
+          "coins",
+          "worker",
+          "customer",
+          "customer-2"
+        ]
+      }
+    },
+    {
+      "id": "industry-market-stall-tier-3",
+      "status": "passed",
+      "triangles": 2464,
+      "meshCount": 1,
+      "animationCount": 0,
+      "marketVisibility": {
+        "cameraOffset": [
+          3.2,
+          20,
+          14
+        ],
+        "yawDegrees": 90,
+        "woodItems": 128,
+        "coinItems": 512,
+        "unobstructedRays": 3203,
+        "clearColumns": [
+          "stock",
+          "coins",
+          "worker",
+          "customer",
+          "customer-2"
+        ]
+      }
     }
   ],
   "failures": []

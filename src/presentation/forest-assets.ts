@@ -21,7 +21,9 @@ import monument1Url from "../../assets/forest/monument-stage-1.glb?url";
 import monument2Url from "../../assets/forest/monument-stage-2.glb?url";
 import monument3Url from "../../assets/forest/monument-stage-3.glb?url";
 import plankUrl from "../../assets/forest/plank.glb?url";
-import saleUrl from "../../assets/forest/industry-market-stall.glb?url";
+import sale1Url from "../../assets/forest/industry-market-stall-tier-1.glb?url";
+import sale2Url from "../../assets/forest/industry-market-stall-tier-2.glb?url";
+import sale3Url from "../../assets/forest/industry-market-stall-tier-3.glb?url";
 import sawmill1Url from "../../assets/forest/sawmill-tier-1.glb?url";
 import sawmill2Url from "../../assets/forest/sawmill-tier-2.glb?url";
 import sawmill3Url from "../../assets/forest/sawmill-tier-3.glb?url";
@@ -47,7 +49,7 @@ export interface ForestAssets {
   axeSimple: THREE.Object3D;
   axeDouble: THREE.Object3D;
   conveyorStraight: THREE.Object3D;
-  sale: THREE.Object3D;
+  sales: THREE.Object3D[];
   sawmills: THREE.Object3D[];
   monuments: AnimatedAsset[];
   industry: {
@@ -98,7 +100,9 @@ export async function loadForestAssets(): Promise<ForestAssets> {
     axeSimpleUrl,
     axeDoubleUrl,
     conveyorStraightUrl,
-    saleUrl,
+    sale1Url,
+    sale2Url,
+    sale3Url,
     sawmill1Url,
     sawmill2Url,
     sawmill3Url,
@@ -124,29 +128,29 @@ export async function loadForestAssets(): Promise<ForestAssets> {
   return {
     adventurer: flattenAsset(scenes[0]!),
     worker: flattenAsset(scenes[1]!),
-    customers: scenes.slice(18, 20).map(flattenAsset),
+    customers: scenes.slice(20, 22).map(flattenAsset),
     axeSimple: flattenAsset(scenes[2]!),
     axeDouble: flattenAsset(scenes[3]!),
     conveyorStraight: flattenAsset(scenes[4]!),
-    sale: flattenAsset(scenes[5]!),
-    sawmills: scenes.slice(6, 10).map(flattenAsset),
-    monuments: scenes.slice(10, 13).map((scene, index) => ({
+    sales: scenes.slice(5, 8).map(flattenAsset),
+    sawmills: scenes.slice(8, 12).map(flattenAsset),
+    monuments: scenes.slice(12, 15).map((scene, index) => ({
       object: prepareAsset(scene),
-      animations: models[index + 10]!.animations,
+      animations: models[index + 12]!.animations,
     })),
     industry: {
-      buffer: flattenAsset(scenes[20]!),
-      rack: flattenAsset(scenes[21]!),
-      crane: flattenAsset(scenes[22]!),
-      sorter: flattenAsset(scenes[23]!),
-      dock: flattenAsset(scenes[24]!),
+      buffer: flattenAsset(scenes[22]!),
+      rack: flattenAsset(scenes[23]!),
+      crane: flattenAsset(scenes[24]!),
+      sorter: flattenAsset(scenes[25]!),
+      dock: flattenAsset(scenes[26]!),
     },
-    regrowth: extractMesh(scenes[13]!),
-    stump: extractMesh(scenes[14]!),
+    regrowth: extractMesh(scenes[15]!),
+    stump: extractMesh(scenes[16]!),
     resources: {
-      wood: extractMesh(scenes[15]!),
-      plank: extractMesh(scenes[16]!),
-      coin: extractMesh(scenes[17]!),
+      wood: extractMesh(scenes[17]!),
+      plank: extractMesh(scenes[18]!),
+      coin: extractMesh(scenes[19]!),
     },
   };
 }

@@ -23,6 +23,7 @@ from asset_common import (  # noqa: E402
     triangles,
     write_json,
 )
+from market_visibility import validate_market  # noqa: E402
 
 
 LIMITS = {
@@ -92,14 +93,27 @@ INDUSTRY_SOCKETS = {
         "output": [0, 0.8, 0.6],
         "mount": [0, 0, 0],
     },
-    "industry-market-stall": {
-        "input": [0, 0.8, -1.54],
-        "delivery": [0, 0.8, -0.34],
-        "sale": [-0.51, 1.14, 0.65],
-        "worker": [0, 0, 0],
-        "customer": [0, 0, 1.65],
-    },
 }
+for tier in range(1, 4):
+    INDUSTRY_SOCKETS[f"industry-market-stall-tier-{tier}"] = {
+        "input": [1.55, 0.8, -1.70],
+        "delivery": [1.55, 0.8, -0.80],
+        "stock": [0.42, 0.99, 0.35],
+        "coins": [0.57, 1.25, 0],
+        "sale": [-0.55, 0.99, -0.45],
+        "worker": [-1.05, 0, 1.10],
+        "customer": [0, 0, -1.65],
+        **(
+            {"service-2": [-1.64, 1.04, -0.24], "customer-2": [-1.1, 0, -1.65]}
+            if tier >= 2
+            else {}
+        ),
+        **(
+            {"distribution": [1.75, 1.01, 0.40], "register": [1.77, 1.31, 0.73]}
+            if tier == 3
+            else {}
+        ),
+    }
 REQUIRED = {
     *CAMP_SOCKETS,
     *INDUSTRY_SOCKETS,
@@ -492,6 +506,9 @@ def validate_import(path, entry):
                     all(math.isfinite(value) for value in vertex.co),
                     "Réimportation : sommet non fini",
                 )
+    if entry.get("module") == "market-stall":
+        return {"marketVisibility": validate_market(entry)}
+    return {}
 
 
 def validate_industry_assembly(entries):
@@ -504,7 +521,7 @@ def validate_industry_assembly(entries):
         (("roller-buffer", "output", (0, 0, 2), 0), ("sorter", "input", (0, 0, 4), 0)),
         (
             ("sorter", "output", (0, 0, 4), 0),
-            ("market-stall", "input", (0, 0, 6.54), 0),
+            ("market-stall-tier-1", "input", (-1.55, 0, 6.70), 0),
         ),
         (
             ("conveyor-corner", "output", (0, 0, 0), 0),
@@ -570,7 +587,7 @@ def validate(directory, compare=None):
                 "Empreinte ou taille incorrecte",
             )
             result = validate_glb(path, entry, atlas_hash)
-            validate_import(path, entry)
+            result.update(validate_import(path, entry))
             results.append({"id": name, "status": "passed", **result})
             print(f"PASS {name}")
         except Exception as error:
@@ -590,6 +607,15 @@ def validate(directory, compare=None):
             f"Progression visuelle incorrecte : {family}",
         )
     comparison = None
+    markets = [entry for entry in entries if entry.get("module") == "market-stall"]
+    require(
+        [entry["tier"] for entry in markets] == [1, 2, 3],
+        "Niveaux du marché incomplets",
+    )
+    require(
+        all(a["triangles"] < b["triangles"] for a, b in zip(markets, markets[1:])),
+        "Progression des échoppes incorrecte",
+    )
     validate_industry_assembly(entries)
     if compare:
         compared_files = sorted(
@@ -639,6 +665,9 @@ def validate(directory, compare=None):
             "industry-fixed-anchors",
             "industry-ports",
             "industry-assembly",
+            "market-open-columns",
+            "market-camera-visibility",
+            "market-worker-customer-clearance",
         ],
         "reproducibility": comparison,
         "assets": results,

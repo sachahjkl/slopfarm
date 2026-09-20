@@ -27,6 +27,7 @@ from asset_common import (  # noqa: E402
 )
 from camp_props import camp_catalog  # noqa: E402
 from industry_props import industry_catalog  # noqa: E402
+from market_stalls import market_catalog  # noqa: E402
 
 
 def build_character(model, worker=False, color="teal"):
@@ -957,6 +958,7 @@ def catalog():
         )
     yield from camp_catalog()
     yield from industry_catalog()
+    yield from market_catalog()
 
 
 def generate(directory):

@@ -198,7 +198,7 @@ export class GameView {
     createLaneIndicator(SAWMILL_BUILDING, "!  ATTAQUE IMMINENTE", 0xf06a52),
     createLaneIndicator(WORKER_DEPOT, "!  ATTAQUE IMMINENTE", 0xf06a52),
   ];
-  readonly #saleBuilding = createBuilding(0x59b6d9, 1.4, 1.15);
+  readonly #saleBuilding = new THREE.Group();
   readonly #sawmillBuilding = createBuilding(0xd98442, 1.8, 1.35);
   readonly #sawmillMotion = createSawmillMotion();
   readonly #monumentMotion = createMonumentMotion();
@@ -240,6 +240,7 @@ export class GameView {
   #monumentMixer: THREE.AnimationMixer | undefined;
   #lastPlayerPosition = { x: 0, z: 0 };
   #playerMotion = 0;
+  #debugZoom = 1;
 
   constructor(
     canvas: HTMLCanvasElement,
@@ -306,6 +307,11 @@ export class GameView {
     return this.#canvas;
   }
 
+  setDebugZoom(multiplier: number): void {
+    this.#debugZoom = THREE.MathUtils.clamp(multiplier, 1, 2.5);
+    this.resize();
+  }
+
   async initialize(): Promise<void> {
     await this.#initializeRenderer();
     const [, assets] = await Promise.all([loadUiArt(), loadForestAssets()]);
@@ -354,7 +360,12 @@ export class GameView {
         child.renderOrder = RENDER_LAYER.player;
       });
     }
-    replaceContents(this.#saleBuilding, assets.sale);
+    this.#saleBuilding.clear();
+    for (const sale of assets.sales) {
+      const tier = cloneAsset(sale);
+      tier.visible = false;
+      this.#saleBuilding.add(tier);
+    }
     this.#saleBuilding.position.y = 0;
     this.#industryProps.clear();
     const industryLayout = [
@@ -394,14 +405,14 @@ export class GameView {
         step: CAMPAIGN_STEPS.convoy,
       },
       {
-        asset: assets.sale,
+        asset: assets.sales[1]!,
         position: { x: -6.2, z: 0.85 },
         rotation: 0,
         automation: 2,
         step: CAMPAIGN_STEPS.worker,
       },
       {
-        asset: assets.sale,
+        asset: assets.sales[2]!,
         position: { x: -6.2, z: 4.05 },
         rotation: Math.PI,
         automation: 3,
@@ -433,7 +444,7 @@ export class GameView {
   resize(): void {
     const aspect = innerWidth / innerHeight;
     const portrait = aspect < 0.8;
-    const view = portrait ? 7.8 : 5.8;
+    const view = (portrait ? 7.8 : 5.8) * this.#debugZoom;
     this.#camera.left = -view * aspect;
     this.#camera.right = view * aspect;
     this.#camera.top = view;
@@ -974,6 +985,10 @@ export class GameView {
         Number(child.userData.minimumStep ?? 1) === step ? buildProgress : 1;
     }
     this.#saleBuilding.visible = step >= CAMPAIGN_STEPS.trade;
+    this.#saleBuilding.children.forEach((tier, index) => {
+      const shownTier = Math.max(0, state.automationLevel - 1);
+      tier.visible = index === shownTier;
+    });
     this.#saleBuilding.scale.setScalar(
       step === CAMPAIGN_STEPS.trade ? buildProgress : 1,
     );
@@ -1418,11 +1433,15 @@ const AXE_ORIENTATION = new THREE.Matrix4();
 
 function createGround(): THREE.Group {
   const world = new THREE.Group();
-  const grassTexture = createArtTexture("textures/grass.svg", 0.25);
-  const groveTexture = createArtTexture("textures/grove.svg", 0.25);
-  const yardTexture = createArtTexture("textures/yard.svg", 0.25);
-  const pathTexture = createArtTexture("textures/path.svg", 0.25);
-  const pathEdgeTexture = createArtTexture("textures/path-edge.svg", 0.25);
+  const grassTexture = createArtTexture("textures/grass.png", 0.25);
+  const groveTexture = createArtTexture("textures/grove.png", 0.25);
+  const yardTexture = createArtTexture("textures/yard.png", 0.25);
+  const industrialYardTexture = createArtTexture(
+    "textures/industrial-yard.png",
+    0.22,
+  );
+  const pathTexture = createArtTexture("textures/path.png", 0.25);
+  const pathEdgeTexture = createArtTexture("textures/path-edge.png", 0.25);
   const outerGround = new THREE.Mesh(
     new THREE.BoxGeometry(90, 1.4, 90),
     createToonMaterial({ color: 0x35563a, roughness: 1 }),
@@ -1466,73 +1485,33 @@ function createGround(): THREE.Group {
   for (const area of FOREST_AREAS) {
     world.add(
       createArea(
-        expandArea(area.points, 1.8),
-        createToonMaterial({
-          map: groveTexture,
-          roughness: 1,
-          transparent: true,
-          opacity: 0.18,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-        }),
-        0.002,
-      ),
-      createArea(
-        expandArea(area.points, 0.9),
-        createToonMaterial({
-          map: groveTexture,
-          roughness: 1,
-          transparent: true,
-          opacity: 0.34,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-        }),
-        0.006,
-      ),
-    );
-    world.add(
-      createArea(
         area.points,
         createToonMaterial({
           map: groveTexture,
           roughness: 1,
           side: THREE.DoubleSide,
-          polygonOffset: true,
-          polygonOffsetFactor: -1,
         }),
-        0.01,
+        0,
       ),
     );
   }
 
   for (const yard of FOREST_YARDS) {
+    const surfaceTexture =
+      yard.unlockStep >= CAMPAIGN_STEPS.automation
+        ? industrialYardTexture
+        : yardTexture;
     const yardView = new THREE.Group();
     yardView.userData.unlockStep = yard.unlockStep;
     yardView.add(
       createArea(
-        expandArea(yard.points, 1.1),
-        createToonMaterial({
-          map: yardTexture,
-          roughness: 1,
-          transparent: true,
-          opacity: 0.3,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-        }),
-        0.02,
-      ),
-    );
-    yardView.add(
-      createArea(
         yard.points,
         createToonMaterial({
-          map: yardTexture,
+          map: surfaceTexture,
           roughness: 1,
           side: THREE.DoubleSide,
-          polygonOffset: true,
-          polygonOffsetFactor: -2,
         }),
-        0.03,
+        0.024,
       ),
     );
     world.add(yardView);
@@ -1542,35 +1521,17 @@ function createGround(): THREE.Group {
     map: pathTexture,
     roughness: 1,
     side: THREE.DoubleSide,
-    polygonOffset: true,
-    polygonOffsetFactor: -3,
   });
   const pathEdgeMaterial = createToonMaterial({
     map: pathEdgeTexture,
     roughness: 1,
-    side: THREE.DoubleSide,
-    polygonOffset: true,
-    polygonOffsetFactor: -2.5,
-  });
-  const pathFadeMaterial = createToonMaterial({
-    map: pathEdgeTexture,
-    roughness: 1,
-    transparent: true,
-    opacity: 0.24,
-    depthWrite: false,
     side: THREE.DoubleSide,
   });
   for (const { points, width, unlockStep, surface } of FOREST_PATHS) {
     const market = surface === "market";
     const path = market
       ? createCustomerTrail(points)
-      : createPath(
-          points,
-          width,
-          pathMaterial,
-          pathEdgeMaterial,
-          pathFadeMaterial,
-        );
+      : createPath(points, width, pathMaterial, pathEdgeMaterial);
     path.userData.unlockStep = unlockStep;
     world.add(path);
   }
@@ -1614,40 +1575,16 @@ function createArea(
   return area;
 }
 
-function expandArea(
-  points: readonly { x: number; z: number }[],
-  amount: number,
-): { x: number; z: number }[] {
-  const center = points.reduce(
-    (result, point) => ({
-      x: result.x + point.x / points.length,
-      z: result.z + point.z / points.length,
-    }),
-    { x: 0, z: 0 },
-  );
-  return points.map((point) => {
-    const dx = point.x - center.x;
-    const dz = point.z - center.z;
-    const length = Math.hypot(dx, dz) || 1;
-    return {
-      x: point.x + (dx / length) * amount,
-      z: point.z + (dz / length) * amount,
-    };
-  });
-}
-
 function createPath(
   points: readonly { x: number; z: number }[],
   width: number,
   material: THREE.Material,
   edgeMaterial: THREE.Material,
-  fadeMaterial: THREE.Material,
 ): THREE.Group {
   const path = new THREE.Group();
   path.add(
-    createPathRibbon(points, width + 1.5, fadeMaterial, 0.035),
-    createPathRibbon(points, width + 0.55, edgeMaterial, 0.04),
-    createPathRibbon(points, width, material, 0.05),
+    createPathRibbon(points, width + 0.55, edgeMaterial, 0.012),
+    createPathRibbon(points, width, material, 0.016),
   );
   return path;
 }

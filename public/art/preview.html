@@ -65,7 +65,7 @@
         min-height: 460px;
         padding: 0;
         overflow: hidden;
-        background: url("./textures/grass.svg") repeat;
+        background: url("./textures/grass.png") repeat;
         background-size: 192px;
         isolation: isolate;
       }
@@ -73,7 +73,7 @@
         content: "";
         position: absolute;
         inset: 8% -8% 8% 57%;
-        background: url("./textures/grove.svg") repeat;
+        background: url("./textures/grove.png") repeat;
         background-size: 192px;
         border-radius: 48% 25% 40% 20%;
         transform: rotate(-9deg);
@@ -86,7 +86,7 @@
         border-block: 9px solid #9b7c55;
         border-radius: 35%;
         transform: rotate(-12deg);
-        background: url("./textures/path.svg") repeat;
+        background: url("./textures/path.png") repeat;
         background-size: 192px;
         z-index: -2;
       }
@@ -97,7 +97,7 @@
         left: 7%;
         top: 26%;
         border-radius: 48% 33% 40% 28%;
-        background: url("./textures/yard.svg") repeat;
+        background: url("./textures/yard.png") repeat;
         background-size: 192px;
         z-index: -1;
       }
@@ -252,19 +252,22 @@
         border-radius: 16px 25px 18px 21px;
       }
       .grass {
-        background-image: url("./textures/grass.svg");
+        background-image: url("./textures/grass.png");
       }
       .grove {
-        background-image: url("./textures/grove.svg");
+        background-image: url("./textures/grove.png");
       }
       .dirt {
-        background-image: url("./textures/yard.svg");
+        background-image: url("./textures/yard.png");
       }
       .path {
-        background-image: url("./textures/path.svg");
+        background-image: url("./textures/path.png");
       }
       .edge {
-        background-image: url("./textures/path-edge.svg");
+        background-image: url("./textures/path-edge.png");
+      }
+      .industrial {
+        background-image: url("./textures/industrial-yard.png");
       }
       .size-row {
         display: flex;
@@ -534,7 +537,7 @@
         </div>
       </section>
       <section>
-        <h2>5 matières raccordables</h2>
+        <h2>6 matières raccordables</h2>
         <p>
           Chaque échantillon répète sa tuile sur deux lignes. Les touches
           traversent les raccords.
@@ -559,6 +562,10 @@
           <figure>
             <div class="swatch edge"></div>
             <figcaption>Bordure · 4 m / tuile</figcaption>
+          </figure>
+          <figure>
+            <div class="swatch industrial"></div>
+            <figcaption>Sol industriel · 4 m / tuile</figcaption>
           </figure>
         </div>
       </section>

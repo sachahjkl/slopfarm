@@ -16,6 +16,14 @@ Ouvre ensuite l’adresse affichée par Vite. Utilise `ZQSD`, `WASD` ou les flè
 
 Ouvre `/viewer.html` pour inspecter un fichier GLB et préparer un retour de retouche reproductible.
 
+En développement, le panneau de mise au point fournit trois états jouables, des vues cadrées et des métriques lisibles.
+
+Utilise ces URL pour ouvrir directement un état reproductible :
+
+- `/?debugPreset=early`
+- `/?debugPreset=mid&debugZoom=1.55`
+- `/?debugPreset=final&debugZoom=2.15`
+
 ## Commandes
 
 | Commande          | Fonction                                   |

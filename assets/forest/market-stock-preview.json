@@ -1,0 +1,45 @@
+{
+  "layout": {
+    "sources": [
+      "src/app/camera-layout.ts",
+      "src/presentation/game-view.ts",
+      "src/presentation/market-stock-layout.ts",
+      "src/presentation/resource-view.ts",
+      "src/game/stack-layout.ts"
+    ],
+    "cameraOffset": [3.2, 20, 14],
+    "yawRadians": 1.5707963267948966,
+    "wood": {
+      "center": [0.35, 1.14, -0.42],
+      "step": 0.3,
+      "size": [0.32, 0.3, 0.32],
+      "maximum": 128
+    },
+    "coins": {
+      "center": [0, 1.25, -0.57],
+      "step": 0.075,
+      "scale": 1.7,
+      "maximum": 512
+    },
+    "offsets": [12.9898, 0.035, 78.233, 1.7, 0.035, 37.719, 0.4, 0.055]
+  },
+  "scenarios": [
+    {
+      "name": "stock-low",
+      "woodItems": 6,
+      "coinItems": 12
+    },
+    {
+      "name": "stock-high",
+      "woodItems": 24,
+      "coinItems": 96
+    }
+  ],
+  "assets": [
+    "industry-market-stall-tier-1",
+    "industry-market-stall-tier-2",
+    "industry-market-stall-tier-3"
+  ],
+  "projection": "orthographic",
+  "framing": "fit-assembly"
+}

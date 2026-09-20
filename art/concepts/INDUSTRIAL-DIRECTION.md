@@ -33,6 +33,10 @@ Une destination pleine ne détruit jamais une ressource. Le convoyeur dépose so
 
 Chaque pile conserve une quantité logique exacte. Sa représentation utilise la même disposition verticale que la cargaison portée.
 
+La pile verticale reste prioritaire sur l’architecture. Aucun toit, auvent, panneau ou mécanisme ne doit masquer sa hauteur depuis la caméra du jeu.
+
+Les améliorations d’échoppe se développent sur les côtés et à l’arrière. L’espace situé au-dessus du stock reste toujours ouvert.
+
 ## Progression visuelle
 
 1. Une petite clairière contient un comptoir manuel et quelques piles au sol.

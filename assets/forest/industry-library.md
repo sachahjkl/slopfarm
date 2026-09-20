@@ -1,6 +1,6 @@
 # Industrie forestière lumineuse
 
-Cette bibliothèque contient 12 modules originaux pour les chaînes de production, le stockage et les postes de vente de Slopfarm.
+Cette bibliothèque contient 14 modules originaux pour les chaînes de production, le stockage et les postes de vente de Slopfarm.
 
 Les châssis turquoise, les protections jaunes et les plateaux en bois relient visuellement les machines. Les flèches et les voyants rendent les flux visibles.
 
@@ -10,22 +10,26 @@ Les châssis turquoise, les protections jaunes et les plateaux en bois relient v
 
 Chaque identifiant correspond à un fichier `.glb` dans ce dossier. Le manifeste utilise `family: "industry"` et `kind: "prop"`.
 
-| Identifiant                  | Triangles | Usage                                                           |
-| ---------------------------- | --------: | --------------------------------------------------------------- |
-| `industry-conveyor-straight` |       956 | Convoyeur droit de 2 m avec flèche de flux.                     |
-| `industry-conveyor-corner`   |       888 | Virage à rouleaux courbes, avec sortie à droite.                |
-| `industry-diverter`          |     1 440 | Jonction à deux sorties, palette d’aiguillage et voyants.       |
-| `industry-lift`              |     1 588 | Élévateur à guides, treuil et plateau intermédiaire.            |
-| `industry-bridge`            |     1 196 | Convoyeur surélevé de 4 m avec garde-corps.                     |
-| `industry-roller-buffer`     |     1 528 | Buffer à rouleaux avec butée et jauge de capacité.              |
-| `industry-storage-rack`      |     1 080 | Rack industriel à trois étagères et stock de planches.          |
-| `industry-gantry-crane`      |     1 096 | Petit portique-grue avec chariot, câbles et crochet ouvert.     |
-| `industry-sorter`            |     1 604 | Trieuse à portique de lecture et trois voyants.                 |
-| `industry-loading-dock`      |     1 024 | Quai en bois avec châssis métallique et rampe.                  |
-| `industry-delivery-hatch`    |       548 | Trappe arrière à volet relevé et plateau à rouleaux.            |
-| `industry-market-stall`      |     1 376 | Échoppe à livraison arrière, comptoir, caisse et auvent corail. |
+| Identifiant                    | Triangles | Usage                                                       |
+| ------------------------------ | --------: | ----------------------------------------------------------- |
+| `industry-conveyor-straight`   |       956 | Convoyeur droit de 2 m avec flèche de flux.                 |
+| `industry-conveyor-corner`     |       888 | Virage à rouleaux courbes, avec sortie à droite.            |
+| `industry-diverter`            |     1 440 | Jonction à deux sorties, palette d’aiguillage et voyants.   |
+| `industry-lift`                |     1 588 | Élévateur à guides, treuil et plateau intermédiaire.        |
+| `industry-bridge`              |     1 196 | Convoyeur surélevé de 4 m avec garde-corps.                 |
+| `industry-roller-buffer`       |     1 528 | Buffer à rouleaux avec butée et jauge de capacité.          |
+| `industry-storage-rack`        |     1 080 | Rack industriel à trois étagères et stock de planches.      |
+| `industry-gantry-crane`        |     1 096 | Petit portique-grue avec chariot, câbles et crochet ouvert. |
+| `industry-sorter`              |     1 604 | Trieuse à portique de lecture et trois voyants.             |
+| `industry-loading-dock`        |     1 024 | Quai en bois avec châssis métallique et rampe.              |
+| `industry-delivery-hatch`      |       548 | Trappe arrière à volet relevé et plateau à rouleaux.        |
+| `industry-market-stall-tier-1` |     1 128 | Comptoir manuel ouvert et réception arrière.                |
+| `industry-market-stall-tier-2` |     1 816 | Double service et trappe basse à rouleaux.                  |
+| `industry-market-stall-tier-3` |     2 464 | Distribution latérale automatisée et caisse.                |
 
-La bibliothèque totalise 14 324 triangles. Chaque module reste sous le budget de 2 500 triangles.
+La bibliothèque totalise 18 356 triangles. Chaque module reste sous le budget de 2 500 triangles.
+
+Le [guide des échoppes ouvertes](market-stalls.md) décrit leur placement et leurs preuves de visibilité avec les piles du jeu.
 
 Chaque GLB contient un seul maillage statique, une seule primitive et le matériau `forest-painted-matte`. L’atlas opaque intégré mesure 1024 × 1024 pixels.
 
@@ -42,7 +46,7 @@ Les accessoires suivants complètent les modules industriels :
 - `camp-crate` et `camp-barrel` occupent les zones de stockage et les quais.
 - `camp-awning` couvre un poste d’ouvrier ou une extension de vente.
 
-Le [catalogue des accessoires](camp-library.md) conserve leurs dimensions et leurs points d’attache. La [planche générale](contact-sheet.png) rassemble les 54 modèles.
+Le [catalogue des accessoires](camp-library.md) conserve leurs dimensions et leurs points d’attache. La [planche générale](contact-sheet.png) rassemble les 56 modèles.
 
 ## Repères et raccords
 
@@ -58,16 +62,16 @@ Chaque raccord possède une largeur utile `widthMeters: 1` et une direction ext�
 
 Les coordonnées ci-dessous suivent l’ordre `[X, Y, Z]` :
 
-| Module                           | Entrée `input`    | Sortie `output`                                     |
-| -------------------------------- | ----------------- | --------------------------------------------------- |
-| Convoyeur droit, buffer, trieuse | `[0, 0.8, -1]`    | `[0, 0.8, 1]`                                       |
-| Virage                           | `[0, 0.8, -1]`    | `[1, 0.8, 0]`                                       |
-| Jonction                         | `[0, 0.8, -1]`    | `[0, 0.8, 1]`                                       |
-| Élévateur                        | `[0, 0.8, -1]`    | `[0, 2.6, 1]`                                       |
-| Pont surélevé                    | `[0, 2.6, -2]`    | `[0, 2.6, 2]`                                       |
-| Quai                             | `[0, 0.8, -1]`    | Le point `cargo` repère la zone de dépôt.           |
-| Trappe arrière                   | `[0, 0.8, -0.6]`  | `[0, 0.8, 0.6]`                                     |
-| Échoppe industrialisée           | `[0, 0.8, -1.54]` | Le point `delivery` repère la réception intérieure. |
+| Module                           | Entrée `input`      | Sortie `output`                                     |
+| -------------------------------- | ------------------- | --------------------------------------------------- |
+| Convoyeur droit, buffer, trieuse | `[0, 0.8, -1]`      | `[0, 0.8, 1]`                                       |
+| Virage                           | `[0, 0.8, -1]`      | `[1, 0.8, 0]`                                       |
+| Jonction                         | `[0, 0.8, -1]`      | `[0, 0.8, 1]`                                       |
+| Élévateur                        | `[0, 0.8, -1]`      | `[0, 2.6, 1]`                                       |
+| Pont surélevé                    | `[0, 2.6, -2]`      | `[0, 2.6, 2]`                                       |
+| Quai                             | `[0, 0.8, -1]`      | Le point `cargo` repère la zone de dépôt.           |
+| Trappe arrière                   | `[0, 0.8, -0.6]`    | `[0, 0.8, 0.6]`                                     |
+| Échoppes ouvertes                | `[1.55, 0.8, -1.7]` | Le point `delivery` repère la réception intérieure. |
 
 La jonction possède aussi `output-right` à `[1, 0.8, 0]`. Les sorties latérales pointent vers `+X`.
 
@@ -83,12 +87,12 @@ Pour raccorder deux modules :
 
 Cette chaîne utilise une rotation nulle pour chaque module :
 
-| Module                       | Position de son origine |
-| ---------------------------- | ----------------------- |
-| `industry-conveyor-straight` | `[0, 0, 0]`             |
-| `industry-roller-buffer`     | `[0, 0, 2]`             |
-| `industry-sorter`            | `[0, 0, 4]`             |
-| `industry-market-stall`      | `[0, 0, 6.54]`          |
+| Module                         | Position de son origine |
+| ------------------------------ | ----------------------- |
+| `industry-conveyor-straight`   | `[0, 0, 0]`             |
+| `industry-roller-buffer`       | `[0, 0, 2]`             |
+| `industry-sorter`              | `[0, 0, 4]`             |
+| `industry-market-stall-tier-1` | `[-1.55, 0, 6.70]`      |
 
 Un virage à l’origine rejoint un convoyeur droit placé à `[2, 0, 0]`, avec une rotation de `+90°` autour de `Y`.
 
@@ -111,11 +115,11 @@ Le validateur contrôle ces cinq liaisons, leurs positions et leurs directions o
 | Trappe        | `mount` repère le centre de fixation au sol.                                                            |
 | Échoppe       | `delivery`, `sale`, `worker` et `customer` repèrent la réception, la vente et les positions de service. |
 
-L’échoppe intègre déjà une trappe arrière. Le module de trappe séparé équipe les autres façades.
+Les niveaux 2 et 3 intègrent une trappe basse rabattue. Les colonnes de stock restent ouvertes au-dessus du comptoir.
 
 ## Sources et direction visuelle
 
-La génération se trouve dans `scripts/blender/industry_props.py`. Le catalogue principal appelle `industry_catalog()`.
+La génération industrielle se trouve dans `scripts/blender/industry_props.py`. Les trois échoppes proviennent de `scripts/blender/market_stalls.py`.
 
 Les formes utilisent les primitives et l’atlas du projet. Aucun modèle ni aucune texture externe ne participe à la génération.
 
@@ -140,7 +144,7 @@ nix develop .#assets --command blender --background --factory-startup --threads 
   --python-exit-code 1 --python scripts/blender/validate_forest.py
 ```
 
-Générez les 12 aperçus industriels et leur planche :
+Générez les 14 aperçus industriels et leur planche :
 
 ```sh
 nix develop .#assets --command blender --background --factory-startup --threads 1 \

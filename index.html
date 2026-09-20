@@ -439,11 +439,20 @@
         >
           ☰
         </button>
-        <aside id="objective-journal">
-          <b>JOURNAL</b>
-          <ol id="objective-history"></ol>
-        </aside>
       </section>
+      <dialog id="objective-journal" aria-labelledby="objective-journal-title">
+        <header class="objective-journal-header">
+          <b id="objective-journal-title">JOURNAL</b>
+          <button
+            id="objective-journal-close"
+            type="button"
+            aria-label="Fermer le journal des objectifs"
+          >
+            ×
+          </button>
+        </header>
+        <ol id="objective-history"></ol>
+      </dialog>
       <button id="settings-button" type="button" aria-label="Réglages">
         <img src="%BASE_URL%art/icons/settings.svg" alt="" />
       </button>
